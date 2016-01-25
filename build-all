@@ -6,7 +6,7 @@ mvn -q clean || exit 1
 mvn -q package  || exit 3
 if [ $? -eq 0 ]
 then
-    rm ~/bin/wildfly/standalone/deployments/movies.war*
-    cp ./target/movies.war ~/bin/wildfly/standalone/deployments/
+    rm ~/bin/wildfly/standalone/deployments/nasphotos.war*
+    cp ./target/nasphotos.war ~/bin/wildfly/standalone/deployments/
     echo Deployed.
 fi
