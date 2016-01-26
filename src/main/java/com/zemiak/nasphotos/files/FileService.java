@@ -26,8 +26,9 @@ public class FileService {
             return getRootFolders();
         }
 
+        List<String> files;
         try {
-            return Files.walk(Paths.get(photoPath, pathName), FileVisitOption.FOLLOW_LINKS)
+            files = Files.walk(Paths.get(photoPath, pathName), 1, FileVisitOption.FOLLOW_LINKS)
                     .filter(path -> path.toFile().isDirectory())
                     .filter(path -> isNotHidden(path))
                     .map(path -> path.getFileName().toString())
@@ -36,11 +37,17 @@ public class FileService {
             LOG.log(Level.SEVERE, "getFolders IO/Exception" + ex.getMessage(), ex);
             return Collections.EMPTY_LIST;
         }
+
+        Collections.sort(files);
+        return files;
     }
 
     private List<String> getRootFolders() {
+        System.err.println("getRootFolders: " + photoPath);
+
+        List<String> files;
         try {
-            return Files.walk(Paths.get(photoPath), FileVisitOption.FOLLOW_LINKS)
+            files = Files.walk(Paths.get(photoPath), 1, FileVisitOption.FOLLOW_LINKS)
                     .filter(path -> path.toFile().isDirectory())
                     .filter(path -> isNotHidden(path))
                     .map(path -> path.getFileName().toString())
@@ -50,6 +57,9 @@ public class FileService {
             LOG.log(Level.SEVERE, "getRootFolders IO/Exception" + ex.getMessage(), ex);
             return Collections.EMPTY_LIST;
         }
+
+        Collections.sort(files);
+        return files;
     }
 
     public List<String> getPictures(String pathName) {
@@ -57,8 +67,9 @@ public class FileService {
             return Collections.EMPTY_LIST;
         }
 
+        List<String> files;
         try {
-            return Files.walk(Paths.get(photoPath, pathName), FileVisitOption.FOLLOW_LINKS)
+            files = Files.walk(Paths.get(photoPath, pathName), 1, FileVisitOption.FOLLOW_LINKS)
                     .filter(path -> !path.toFile().isDirectory())
                     .filter(path -> isNotHidden(path))
                     .map(path -> path.getFileName().toString())
@@ -68,6 +79,9 @@ public class FileService {
             LOG.log(Level.SEVERE, "getPictures IO/Exception" + ex.getMessage(), ex);
             return Collections.EMPTY_LIST;
         }
+
+        Collections.sort(files);
+        return files;
     }
 
     private boolean isNotHidden(Path path) {
