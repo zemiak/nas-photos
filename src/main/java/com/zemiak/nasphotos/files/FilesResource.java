@@ -1,5 +1,6 @@
-package files;
+package com.zemiak.nasphotos.files;
 
+import com.zemiak.nasphotos.files.FileService;
 import java.io.File;
 import javax.inject.Inject;
 import javax.json.Json;
