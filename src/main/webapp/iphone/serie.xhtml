@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/templates/iphone.xhtml">
+        <f:metadata>
+            <f:viewParam name="id" value="#{serieViewForm.id}" />
+            <f:viewAction action="#{serieViewForm.check}" />
+        </f:metadata>
+        
+        <ui:define name="title">#{serieViewForm.bean.name}</ui:define>
+
+        <ui:define name="body">
+            <div class="toolbar">
+                <h1 id="pageTitle"></h1>
+                <a class="button leftButton" href="javascript:window.history.back()">Back</a>
+            </div>
+            
+            <ul id="main" title="#{serieViewForm.bean.name}" selected="true">
+                <ui:repeat var="item" value="#{movieViewForm.bySerie}">
+                    <li>
+                        <img src="#{request.contextPath}/images/movie/#{item.id}" align="left" class="movies-thumbnail" />
+                        <a href="#{request.contextPath}/stream/#{item.id}" target="_self">#{item.name}</a>
+                    </li>
+                </ui:repeat>
+            </ul>
+        </ui:define>
+    </ui:composition>
+</html>

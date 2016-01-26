@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/templates/ipad.xhtml">
+        <f:metadata>
+            <f:viewParam name="id" value="#{genreViewForm.id}" />
+            <f:viewAction action="#{genreViewForm.check}" />
+        </f:metadata>
+        
+        <ui:define name="title">#{genreViewForm.bean.name}</ui:define>
+        <ui:define name="header">
+            <a href="index.xhtml">
+                <i class="fi-arrow-left movies-back-icon"></i>
+            </a>
+            
+            #{genreViewForm.bean.name}
+        </ui:define>
+
+        <ui:define name="body">
+            <div class="page">
+                <ui:repeat var="item" value="#{serieViewForm.byGenre}">
+                    <div class="serie-box">
+                        <a href="serie.xhtml?id=#{item.id}">
+                            <img alt="item.name} Thumbnail"
+                                src="#{request.contextPath}/images/serie/#{item.id}" />
+                            <p>#{item.name}</p>
+                        </a>
+                    </div>
+                </ui:repeat>
+                
+                <div style="clear: both;" />
+                
+                <ui:repeat var="item" value="#{movieViewForm.byGenre}">
+                    <div class="movie-box">
+                        <a href="movie.xhtml?id=#{item.id}">
+                            <img alt="#{item.name} Thumbnail"
+                                src="#{request.contextPath}/images/movie/#{item.id}" />
+                            <h:outputLabel rendered="#{item.urlEmpty}" value="#{item.name}" />
+                        </a>
+                    </div>
+                </ui:repeat>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
