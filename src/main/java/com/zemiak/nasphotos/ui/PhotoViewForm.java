@@ -1,8 +1,11 @@
 package com.zemiak.nasphotos.ui;
 
 import com.zemiak.nasphotos.files.FileService;
+import com.zemiak.nasphotos.files.PictureData;
 import java.io.Serializable;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,7 +20,7 @@ public class PhotoViewForm implements Serializable {
 
     private String path;
     private List<String> folders;
-    private List<String> pictures;
+    private List<PictureData> pictures;
 
     public String getPath() {
         return path;
@@ -28,12 +31,15 @@ public class PhotoViewForm implements Serializable {
     }
 
     public String check() {
-        if (null != path) {
-            folders = service.getFolders(path);
-            pictures = service.getPictures(path);
+        if (null == path) {
+            System.err.println("PhotoViewForm: path is null, setting to an empty string");
+            path = "";
         }
 
-        if (null == path || (folders.isEmpty() && pictures.isEmpty())) {
+        folders = service.getFolders(path).stream().map(f -> Paths.get(path, f).toString()).collect(Collectors.toList());
+        pictures = service.getPictures(path);
+
+        if (folders.isEmpty() && pictures.isEmpty()) {
             JsfMessages.addErrorMessage("Path " + path + " is empty");
             return "index";
         }
@@ -45,7 +51,11 @@ public class PhotoViewForm implements Serializable {
         return folders;
     }
 
-    public List<String> getPictures() {
+    public List<PictureData> getPictures() {
         return pictures;
+    }
+
+    public Boolean hasPictures() {
+        return !pictures.isEmpty();
     }
 }

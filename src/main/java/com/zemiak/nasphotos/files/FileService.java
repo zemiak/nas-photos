@@ -22,14 +22,21 @@ public class FileService {
     @Inject
     String photoPath;
 
+    @Inject
+    ImageControl images;
+
     public List<String> getFolders(String pathName) {
+        System.err.println("pathName: " + pathName);
         if (isRoot(pathName)) {
             return getRootFolders();
         }
 
+        System.err.println("getFolders: " + photoPath + "/" + pathName);
+
         List<String> files;
         try {
             files = Files.walk(Paths.get(photoPath, pathName), 1, FileVisitOption.FOLLOW_LINKS)
+                    .skip(1)
                     .filter(path -> path.toFile().isDirectory())
                     .filter(path -> path.toFile().canRead())
                     .filter(path -> isNotHidden(path))
@@ -41,6 +48,9 @@ public class FileService {
         }
 
         Collections.sort(files);
+
+        System.err.println("getFolders: found " + files.size());
+        System.err.println(files);
         return files;
     }
 
@@ -50,6 +60,7 @@ public class FileService {
         List<String> files;
         try {
             files = Files.walk(Paths.get(photoPath), 1, FileVisitOption.FOLLOW_LINKS)
+                    .skip(1)
                     .filter(path -> path.toFile().isDirectory())
                     .filter(path -> path.toFile().canRead())
                     .filter(path -> isNotHidden(path))
@@ -62,17 +73,22 @@ public class FileService {
         }
 
         Collections.sort(files);
+
+        System.err.println("getRootFolders: found " + files.size());
         return files;
     }
 
-    public List<String> getPictures(String pathName) {
+    public List<PictureData> getPictures(String pathName) {
         if (isRoot(pathName)) {
             return Collections.EMPTY_LIST;
         }
 
+        System.err.println("getPictures: " + photoPath + "/" + pathName);
+
         List<String> files;
         try {
             files = Files.walk(Paths.get(photoPath, pathName), 1, FileVisitOption.FOLLOW_LINKS)
+                    .skip(1)
                     .filter(path -> !path.toFile().isDirectory())
                     .filter(path -> path.toFile().canRead())
                     .filter(path -> isNotHidden(path))
@@ -85,7 +101,12 @@ public class FileService {
         }
 
         Collections.sort(files);
-        return files;
+
+        System.err.println("getPictures: found " + files.size());
+        return files
+                .stream()
+                .map(n -> images.getImage(Paths.get(photoPath, pathName, n).toFile(), pathName))
+                .collect(Collectors.toList());
     }
 
     private boolean isNotHidden(Path path) {

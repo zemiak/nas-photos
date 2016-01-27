@@ -24,7 +24,7 @@ public class FilesResource {
         fileService.getFolders(path).stream().forEach(foldersArrayBuilder::add);
 
         JsonArrayBuilder filesArrayBuilder = Json.createArrayBuilder();
-        fileService.getPictures(path).stream().forEach(filesArrayBuilder::add);
+        fileService.getPictures(path).stream().map(this::pictureDataToJsonObject).forEach(filesArrayBuilder::add);
 
         JsonObject main = Json.createObjectBuilder()
                 .add("folders", foldersArrayBuilder.build())
@@ -32,6 +32,10 @@ public class FilesResource {
                 .build();
 
         return Response.ok(main).build();
+    }
+
+    private JsonObject pictureDataToJsonObject(PictureData data) {
+        throw new IllegalStateException("Not implemented");
     }
 
     @GET
