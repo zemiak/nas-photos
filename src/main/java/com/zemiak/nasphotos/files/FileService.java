@@ -17,6 +17,7 @@ import javax.inject.Inject;
 @Stateless
 public class FileService {
     private static final Logger LOG = Logger.getLogger(FileService.class.getName());
+    private static final String COVER_FILE_NAME = "_cover.jpg";
 
     @Inject
     String photoPath;
@@ -30,6 +31,7 @@ public class FileService {
         try {
             files = Files.walk(Paths.get(photoPath, pathName), 1, FileVisitOption.FOLLOW_LINKS)
                     .filter(path -> path.toFile().isDirectory())
+                    .filter(path -> path.toFile().canRead())
                     .filter(path -> isNotHidden(path))
                     .map(path -> path.getFileName().toString())
                     .collect(Collectors.toList());
@@ -49,6 +51,7 @@ public class FileService {
         try {
             files = Files.walk(Paths.get(photoPath), 1, FileVisitOption.FOLLOW_LINKS)
                     .filter(path -> path.toFile().isDirectory())
+                    .filter(path -> path.toFile().canRead())
                     .filter(path -> isNotHidden(path))
                     .map(path -> path.getFileName().toString())
                     .filter(fileName -> fileName.length() == 4)
@@ -71,6 +74,7 @@ public class FileService {
         try {
             files = Files.walk(Paths.get(photoPath, pathName), 1, FileVisitOption.FOLLOW_LINKS)
                     .filter(path -> !path.toFile().isDirectory())
+                    .filter(path -> path.toFile().canRead())
                     .filter(path -> isNotHidden(path))
                     .map(path -> path.getFileName().toString())
                     .filter(path -> path.toLowerCase().endsWith("jpg") || path.toLowerCase().endsWith("png"))
@@ -104,6 +108,20 @@ public class FileService {
     }
 
     public File getFile(String path) {
-        return Paths.get(photoPath, path).toFile();
+        File file = Paths.get(photoPath, path).toFile();
+        if (! file.canRead()) {
+            return null;
+        }
+
+        if (file.isDirectory()) {
+            return getFolderCover(path);
+        }
+
+        return file;
+    }
+
+    private File getFolderCover(String path) {
+        File file = Paths.get(photoPath, path, COVER_FILE_NAME).toFile();
+        return file.isFile() && file.canRead() ? file : null;
     }
 }
