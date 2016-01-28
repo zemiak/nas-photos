@@ -21,7 +21,7 @@ public class FilesResource {
     @Path("list")
     public Response get(@QueryParam("path") @DefaultValue("") String path) {
         JsonArrayBuilder foldersArrayBuilder = Json.createArrayBuilder();
-        fileService.getFolders(path).stream().forEach(foldersArrayBuilder::add);
+        fileService.getFolders(path).stream().map(this::pictureDataToJsonObject).forEach(foldersArrayBuilder::add);
 
         JsonArrayBuilder filesArrayBuilder = Json.createArrayBuilder();
         fileService.getPictures(path).stream().map(this::pictureDataToJsonObject).forEach(filesArrayBuilder::add);

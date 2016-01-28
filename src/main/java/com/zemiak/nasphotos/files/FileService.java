@@ -25,9 +25,12 @@ public class FileService {
     ImageControl images;
 
     @Inject
+    FolderControl folders;
+
+    @Inject
     CoverControl covers;
 
-    public List<String> getFolders(String pathName) {
+    public List<PictureData> getFolders(String pathName) {
         if (isRoot(pathName)) {
             return getRootFolders();
         }
@@ -47,10 +50,13 @@ public class FileService {
         }
 
         Collections.sort(files);
-        return files;
+        return files
+                .stream()
+                .map(n -> folders.convertFolderToPictureData(n))
+                .collect(Collectors.toList());
     }
 
-    private List<String> getRootFolders() {
+    private List<PictureData> getRootFolders() {
         List<String> files;
         try {
             files = Files.walk(Paths.get(photoPath), 1, FileVisitOption.FOLLOW_LINKS)
@@ -67,7 +73,10 @@ public class FileService {
         }
 
         Collections.sort(files);
-        return files;
+        return files
+                .stream()
+                .map(n -> folders.convertFolderToPictureData(n))
+                .collect(Collectors.toList());
     }
 
     public List<PictureData> getPictures(String pathName) {

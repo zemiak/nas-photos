@@ -4,9 +4,7 @@ import com.zemiak.nasphotos.files.FileService;
 import com.zemiak.nasphotos.files.FolderControl;
 import com.zemiak.nasphotos.files.PictureData;
 import java.io.Serializable;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -36,10 +34,7 @@ public class PhotoViewForm implements Serializable {
             path = "";
         }
 
-        folders = service.getFolders(path).stream()
-                .map(f -> Paths.get(path, f).toString())
-                .map(folderControl::convertFolderToPictureData)
-                .collect(Collectors.toList());
+        folders = service.getFolders(path);
         pictures = service.getPictures(path);
 
         if (folders.isEmpty() && pictures.isEmpty()) {
