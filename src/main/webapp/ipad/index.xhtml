@@ -35,9 +35,9 @@
                     </div>
                 </ui:repeat>
                 
-                <ui:repeat var="item" value="#{photoViewForm.pictures}">
+                <ui:repeat var="item" value="#{photoViewForm.pictures}" varStatus="status">
                     <div class="photo-box">
-                        <a href="#">
+                        <a href="javascript:NasphotosSwipe.show(#{status.index});">
                             <img alt="Picture ${item.title}"
                                  src="#{item.coverUrl}" />
                         </a>

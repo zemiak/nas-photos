@@ -41,6 +41,7 @@
         <script type="text/javascript" src="#{request.contextPath}/js/foundation.alert.js"></script>
         
         <script type="text/javascript" src="#{request.contextPath}/js/ipad-search.js"></script>
+        <script type="text/javascript" src="#{request.contextPath}/js/NasphotosSwipe.js"></script>
     </head>
 
     <body jsf:id="body">
@@ -135,17 +136,5 @@
         </div>
         
         <ui:insert name="pictures" />   
-
-        <script>
-            if (window.photoswipe_items.length > 0) {
-                var pswpElement = document.querySelectorAll('.pswp')[0];
-                var options = {
-//                    index: 0
-                };
-
-                window.gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, window.photoswipe_items, options);
-                window.gallery.init();
-            }
-        </script>
     </body>
 </html>
