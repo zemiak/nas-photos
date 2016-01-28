@@ -18,11 +18,21 @@
         <ui:define name="folders">
             <div class="page">
                 <ui:repeat var="item" value="#{photoViewForm.folders}">
-                    <div class="genre-box">
+                    <div class="photo-box">
                         <a href="index.xhtml?path=#{item}">
                             <img alt="Folder ${item}"
                                  src="#{request.contextPath}/rest/files/download/?path=#{item}" />
                             <p>#{item}</p>
+                        </a>
+                    </div>
+                </ui:repeat>
+                
+                <ui:repeat var="item" value="#{photoViewForm.pictures}">
+                    <div class="photo-box">
+                        <a href="#">
+                            <img alt="Picture ${item.title}"
+                                 src="#{request.contextPath}/rest/files/download/?path=#{item.path}" />
+                            <p>#{item.title}</p>
                         </a>
                     </div>
                 </ui:repeat>

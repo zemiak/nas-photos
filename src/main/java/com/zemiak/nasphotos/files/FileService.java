@@ -26,12 +26,9 @@ public class FileService {
     ImageControl images;
 
     public List<String> getFolders(String pathName) {
-        System.err.println("pathName: " + pathName);
         if (isRoot(pathName)) {
             return getRootFolders();
         }
-
-        System.err.println("getFolders: " + photoPath + "/" + pathName);
 
         List<String> files;
         try {
@@ -48,15 +45,10 @@ public class FileService {
         }
 
         Collections.sort(files);
-
-        System.err.println("getFolders: found " + files.size());
-        System.err.println(files);
         return files;
     }
 
     private List<String> getRootFolders() {
-        System.err.println("getRootFolders: " + photoPath);
-
         List<String> files;
         try {
             files = Files.walk(Paths.get(photoPath), 1, FileVisitOption.FOLLOW_LINKS)
@@ -73,8 +65,6 @@ public class FileService {
         }
 
         Collections.sort(files);
-
-        System.err.println("getRootFolders: found " + files.size());
         return files;
     }
 
@@ -82,8 +72,6 @@ public class FileService {
         if (isRoot(pathName)) {
             return Collections.EMPTY_LIST;
         }
-
-        System.err.println("getPictures: " + photoPath + "/" + pathName);
 
         List<String> files;
         try {
@@ -101,8 +89,6 @@ public class FileService {
         }
 
         Collections.sort(files);
-
-        System.err.println("getPictures: found " + files.size());
         return files
                 .stream()
                 .map(n -> images.getImage(Paths.get(photoPath, pathName, n).toFile(), pathName))

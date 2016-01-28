@@ -35,7 +35,12 @@ public class FilesResource {
     }
 
     private JsonObject pictureDataToJsonObject(PictureData data) {
-        throw new IllegalStateException("Not implemented");
+        return Json.createObjectBuilder()
+                .add("path", data.getPath())
+                .add("title", data.getTitle())
+                .add("width", data.getWidth())
+                .add("height", data.getHeight())
+                .build();
     }
 
     @GET

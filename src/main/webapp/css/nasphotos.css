@@ -2,27 +2,7 @@
     width: 100%;
 }
 
-.serie-box {
-    width: 165px;
-    height: 167px;
-    margin-left: 10px;
-    float: left;
-    border: 1px black;
-    text-shadow:5px 5px 10px black;
-}
-
-.serie-box > a > p {
-    width: 165px;
-    font-size: 75%;
-    text-align: center;
-}
-
-.serie-box > a > img {
-    width:152px;
-    height:114px;
-}
-
-.genre-box {
+.photo-box {
     width: 165px;
     height: 167px;
     margin-left: 10px;
@@ -30,43 +10,15 @@
     text-shadow:5px 5px 10px black;
 }
 
-.genre-box > a > p {
+.photo-box > a > p {
     width: 165px;
     font-size: 75%;
     text-align: center;
 }
 
-.genre-box > a > img {
+.photo-box > a > img {
     width:152px;
     height:114px;
-}
-
-/**
- * One item (box)
- */
-.movie-box {
-    width: 140px;
-    height: 235px;
-    margin-left: 10px;
-    float: left;
-}
-
-/**
- * a label inside the item
- */
-.movie-box > a > label {
-    width: 140px;
-    text-align: center;
-    font-size: 75%;
-    color: black;
-}
-
-/**
- * IMG inside the item
- */
-.movie-box > a > img {
-    width:127px;
-    height:180px;
 }
 
 /**
@@ -84,7 +36,7 @@ a.item.small-icon-anchor {
     font-size: 1em;
 }
 
-i.fi-arrow-left.movies-back-icon {
+i.fi-arrow-left.nasphotos-back-icon {
     font-size: 1.25em; 
     vertical-align: top; 
     color: green;
