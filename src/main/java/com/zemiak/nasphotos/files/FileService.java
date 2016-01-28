@@ -17,13 +17,15 @@ import javax.inject.Inject;
 @Stateless
 public class FileService {
     private static final Logger LOG = Logger.getLogger(FileService.class.getName());
-    private static final String COVER_FILE_NAME = "_cover.jpg";
 
     @Inject
     String photoPath;
 
     @Inject
     ImageControl images;
+
+    @Inject
+    CoverControl covers;
 
     public List<String> getFolders(String pathName) {
         if (isRoot(pathName)) {
@@ -121,14 +123,9 @@ public class FileService {
         }
 
         if (file.isDirectory()) {
-            return getFolderCover(path);
+            return covers.getFolderCoverFile(path);
         }
 
         return file;
-    }
-
-    private File getFolderCover(String path) {
-        File file = Paths.get(photoPath, path, COVER_FILE_NAME).toFile();
-        return file.isFile() && file.canRead() ? file : null;
     }
 }

@@ -13,16 +13,24 @@
         </f:metadata>
         
         <ui:define name="title">Photos</ui:define>
-        <ui:define name="header">Photos</ui:define>
+        <ui:define name="header">
+            <ui:fragment rendered="#{photoViewForm.backButton}">
+                <a href="index.xhtml?path=#{photoViewForm.backPath}">
+                    <i class="fi-arrow-left nasphotos-back-icon"></i>
+                </a>
+            </ui:fragment>
+            
+            #{photoViewForm.title}
+        </ui:define>
 
         <ui:define name="folders">
             <div class="page">
                 <ui:repeat var="item" value="#{photoViewForm.folders}">
-                    <div class="photo-box">
-                        <a href="index.xhtml?path=#{item}">
-                            <img alt="Folder ${item}"
-                                 src="#{request.contextPath}/rest/files/download/?path=#{item}" />
-                            <p>#{item}</p>
+                    <div class="folder-box">
+                        <a href="index.xhtml?path=#{item.path}">
+                            <img alt="${item.title}"
+                                 src="#{item.coverUrl}" />
+                            <p>#{item.title}</p>
                         </a>
                     </div>
                 </ui:repeat>
@@ -31,8 +39,7 @@
                     <div class="photo-box">
                         <a href="#">
                             <img alt="Picture ${item.title}"
-                                 src="#{request.contextPath}/rest/files/download/?path=#{item.path}" />
-                            <p>#{item.title}</p>
+                                 src="#{item.coverUrl}" />
                         </a>
                     </div>
                 </ui:repeat>

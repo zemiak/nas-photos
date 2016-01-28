@@ -8,6 +8,7 @@ public class PictureData {
     private Long width;
     private Long height;
     private File file;
+    private String coverUrl;
 
     public PictureData() {
 
@@ -51,5 +52,13 @@ public class PictureData {
 
     public void setFile(File file) {
         this.file = file;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 }

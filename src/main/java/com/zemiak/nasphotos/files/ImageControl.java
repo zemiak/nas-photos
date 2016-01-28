@@ -7,21 +7,24 @@ import java.util.Iterator;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import javax.inject.Inject;
 
 public class ImageControl {
+    @Inject
+    CoverControl covers;
+
     public PictureData getImage(File file, String relativePath) {
         if (null == file) {
             System.err.println(relativePath + ": file is null");
             return null;
-        } else {
-            System.err.println("ImageControl: " + file.getAbsolutePath());
         }
 
         PictureData data = new PictureData();
         data.setFile(file);
         data.setPath(relativePath + "/" + file.getName());
 
-        String name = relativePath.contains("/") ? relativePath.substring(relativePath.lastIndexOf("/") + 1) : relativePath;
+        String name = file.getAbsolutePath();
+        name = name.contains("/") ? name.substring(name.lastIndexOf("/") + 1) : name;
         name = name.contains(".") ? name.substring(0, name.indexOf(".")) : name;
         data.setTitle(name);
 
@@ -36,6 +39,8 @@ public class ImageControl {
             data.setWidth(Math.round(dimension.getWidth()));
             data.setHeight(Math.round(dimension.getHeight()));
         }
+
+        data.setCoverUrl(covers.getPictureCoverUrl(data.getPath()));
 
         return data;
     }

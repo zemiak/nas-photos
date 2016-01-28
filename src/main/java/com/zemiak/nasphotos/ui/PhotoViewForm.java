@@ -1,6 +1,7 @@
 package com.zemiak.nasphotos.ui;
 
 import com.zemiak.nasphotos.files.FileService;
+import com.zemiak.nasphotos.files.FolderControl;
 import com.zemiak.nasphotos.files.PictureData;
 import java.io.Serializable;
 import java.nio.file.Paths;
@@ -18,17 +19,12 @@ public class PhotoViewForm implements Serializable {
     @Inject
     private FileService service;
 
+    @Inject
+    private FolderControl folderControl;
+
     private String path;
-    private List<String> folders;
+    private List<PictureData> folders;
     private List<PictureData> pictures;
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
 
     public String check() {
         if (null == path) {
@@ -36,7 +32,14 @@ public class PhotoViewForm implements Serializable {
             path = "";
         }
 
-        folders = service.getFolders(path).stream().map(f -> Paths.get(path, f).toString()).collect(Collectors.toList());
+        if ("/".equals(path)) {
+            path = "";
+        }
+
+        folders = service.getFolders(path).stream()
+                .map(f -> Paths.get(path, f).toString())
+                .map(folderControl::convertFolderToPictureData)
+                .collect(Collectors.toList());
         pictures = service.getPictures(path);
 
         if (folders.isEmpty() && pictures.isEmpty()) {
@@ -44,10 +47,15 @@ public class PhotoViewForm implements Serializable {
             return "index";
         }
 
+        System.err.println("Path: '" + path + "'");
+        System.err.println("backPath: '" + getBackPath() + "'");
+        System.err.println("backButton: '" + (getBackButton() ? "true" : "false") + "'");
+        System.err.println("Title: '" + getTitle() + "'");
+
         return null;
     }
 
-    public List<String> getFolders() {
+    public List<PictureData> getFolders() {
         return folders;
     }
 
@@ -55,7 +63,37 @@ public class PhotoViewForm implements Serializable {
         return pictures;
     }
 
-    public Boolean hasPictures() {
+    public Boolean getPicturesExist() {
         return !pictures.isEmpty();
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public Boolean getBackButton() {
+        return !"".equals(path);
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getTitle() {
+        if (! getBackButton()) {
+            return "Photos";
+        }
+
+        int pos = path.lastIndexOf("/");
+        return pos > -1 ? path.substring(pos + 1) : path;
+    }
+
+    public String getBackPath() {
+        int pos = path.lastIndexOf("/");
+        if (-1 == pos) {
+            return "/";
+        }
+
+        return path.substring(0, path.lastIndexOf("/"));
     }
 }
