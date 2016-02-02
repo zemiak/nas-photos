@@ -1,5 +1,6 @@
 package com.zemiak.nasphotos.files;
 
+import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import java.io.File;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -16,6 +17,9 @@ import javax.ws.rs.core.Response.Status;
 public class FilesResource {
     @Inject
     FileService fileService;
+
+    @Inject
+    ThumbnailService thumbnails;
 
     @GET
     @Path("list")
@@ -56,4 +60,25 @@ public class FilesResource {
         response.header("Content-Disposition", "attachment; filename=" + fileName);
         return response.build();
     }
+
+    @GET
+    @Path("thumbnail")
+    public Response thumbnail(@QueryParam("path") @DefaultValue("") String path) {
+        File file = fileService.getThumbnail(path);
+        if (null == file) {
+            return Response.status(Status.GONE).build();
+        }
+
+        String fileName = fileService.getFileName(path);
+        ResponseBuilder response = Response.ok((Object) file);
+        response.header("Content-Disposition", "attachment; filename=" + fileName);
+        return response.build();
+    }
+
+    @GET
+    @Path("thumbnails/refresh")
+    public void refreshThumbnails() {
+        thumbnails.createThumbnails();
+    }
+
 }

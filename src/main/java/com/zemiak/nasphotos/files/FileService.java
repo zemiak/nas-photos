@@ -35,6 +35,8 @@ public class FileService {
             return getRootFolders();
         }
 
+        System.err.println("Path name: " + pathName);
+
         List<String> files;
         try {
             files = Files.walk(Paths.get(photoPath, pathName), 1, FileVisitOption.FOLLOW_LINKS)
@@ -42,7 +44,7 @@ public class FileService {
                     .filter(path -> path.toFile().isDirectory())
                     .filter(path -> path.toFile().canRead())
                     .filter(path -> isNotHidden(path))
-                    .map(path -> path.getFileName().toString())
+                    .map(path -> Paths.get(pathName, path.getFileName().toString()).toString())
                     .collect(Collectors.toList());
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "getFolders IO/Exception" + ex.getMessage(), ex);
@@ -91,8 +93,8 @@ public class FileService {
                     .filter(path -> !path.toFile().isDirectory())
                     .filter(path -> path.toFile().canRead())
                     .filter(path -> isNotHidden(path))
+                    .filter(path -> isImage(path))
                     .map(path -> path.getFileName().toString())
-                    .filter(path -> path.toLowerCase().endsWith("jpg") || path.toLowerCase().endsWith("png"))
                     .collect(Collectors.toList());
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "getPictures IO/Exception" + ex.getMessage(), ex);
@@ -106,7 +108,12 @@ public class FileService {
                 .collect(Collectors.toList());
     }
 
-    private boolean isNotHidden(Path path) {
+    public static boolean isImage(Path path) {
+        String fileName = path.getFileName().toString();
+        return fileName.toLowerCase().endsWith("jpg") || fileName.toLowerCase().endsWith("png");
+    }
+
+    public static boolean isNotHidden(Path path) {
         for (int i = 0; i < path.getNameCount(); i++) {
             String name = path.getName(i).toString();
             if (name.startsWith(".") || name.startsWith("_")) {
@@ -126,6 +133,19 @@ public class FileService {
     }
 
     public File getFile(String path) {
+        File file = Paths.get(photoPath, path).toFile();
+        if (! file.canRead()) {
+            return null;
+        }
+
+        if (file.isDirectory()) {
+            return covers.getFolderCoverFile(path);
+        }
+
+        return file;
+    }
+
+    public File getThumbnail(String path) {
         File file = Paths.get(photoPath, path).toFile();
         if (! file.canRead()) {
             return null;

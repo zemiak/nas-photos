@@ -17,6 +17,7 @@ public class FolderControl implements Serializable {
         int pos = title.lastIndexOf("/");
         data.setTitle(-1 == pos ? title : title.substring(pos + 1));
         data.setCoverUrl(covers.getFolderCoverUrl(path));
+        data.setFullSizeUrl(data.getCoverUrl());
 
         return data;
     }

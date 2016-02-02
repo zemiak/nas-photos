@@ -51,7 +51,7 @@
             // build items array
             window.photoswipe_items = [
                 <ui:repeat var="item" value="#{photoViewForm.pictures}">
-                {src: '#{request.contextPath}/rest/files/download/?path=#{item.path}', w: #{item.width}, h: #{item.height} },
+                {src: '#{item.fullSizeUrl}', w: #{item.width}, h: #{item.height} },
                 </ui:repeat>
             ];
             </script>

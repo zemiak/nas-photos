@@ -9,6 +9,7 @@ public class PictureData {
     private Long height;
     private File file;
     private String coverUrl;
+    private String fullSizeUrl;
 
     public PictureData() {
 
@@ -60,5 +61,13 @@ public class PictureData {
 
     public void setCoverUrl(String coverUrl) {
         this.coverUrl = coverUrl;
+    }
+
+    public String getFullSizeUrl() {
+        return fullSizeUrl;
+    }
+
+    public void setFullSizeUrl(String fullSizeUrl) {
+        this.fullSizeUrl = fullSizeUrl;
     }
 }

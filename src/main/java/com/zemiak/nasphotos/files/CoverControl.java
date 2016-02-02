@@ -42,6 +42,17 @@ public class CoverControl implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
         try {
+            return origRequest.getContextPath() + "/rest/files/thumbnail?path=" + URLEncoder.encode(path, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            throw new IllegalStateException("UTF-8 encoding not supported");
+        }
+    }
+
+    public String getFullSizeUrl(String path) {
+        HttpServletRequest origRequest = (HttpServletRequest)
+                FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
+        try {
             return origRequest.getContextPath() + "/rest/files/download?path=" + URLEncoder.encode(path, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
             throw new IllegalStateException("UTF-8 encoding not supported");

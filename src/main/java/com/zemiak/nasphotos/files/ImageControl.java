@@ -41,6 +41,7 @@ public class ImageControl {
         }
 
         data.setCoverUrl(covers.getPictureCoverUrl(data.getPath()));
+        data.setFullSizeUrl(covers.getFullSizeUrl(data.getPath()));
 
         return data;
     }
