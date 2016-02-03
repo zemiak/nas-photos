@@ -33,6 +33,7 @@ public class ThumbnailService {
     public void createThumbnails() {
         try {
             Files.createDirectories(Paths.get(tempPath));
+            LOG.log(Level.INFO, "Created thumbnail folder {0}", tempPath);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "Cannot create the thumbnail folder " + tempPath, ex);
             return;
@@ -49,12 +50,6 @@ public class ThumbnailService {
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "createThumbnails IO/Exception" + ex.getMessage(), ex);
         }
-    }
-
-    private String getExtension(Path path) {
-        String fileName = path.toAbsolutePath().toString();
-        int pos = fileName.lastIndexOf(".");
-        return fileName.substring(pos + 1);
     }
 
     private String getThumbnailFileName(Path path) {
@@ -82,11 +77,11 @@ public class ThumbnailService {
 
     private Boolean thumbnailDoesNotExist(Path path) {
         File file = Paths.get(tempPath, getThumbnailFileName(path)).toFile();
-        return file.isFile() && file.canRead();
+        return !file.isFile() || !file.canRead();
     }
 
     private void create(Path path) {
         creator.create(path, tempPath, getThumbnailFileName(path));
+        LOG.log(Level.INFO, "Created thumbnail: {0}", path.toString());
     }
-
 }

@@ -1,10 +1,7 @@
 package com.zemiak.nasphotos.thumbnails;
 
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.geom.AffineTransform;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -14,7 +11,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 public class ThumbnailCreator {
-    private static int MAX_SIZE = 256;
+    private static final float MAX_SIZE = 256;
     private static final Logger LOG = Logger.getLogger(ThumbnailCreator.class.getName());
 
     public void create(Path original, String folder, String fileName) {
@@ -26,11 +23,13 @@ public class ThumbnailCreator {
             return;
         }
 
-        int w = (int) img.getWidth();
-        int h = (int) img.getHeight();
-        double ratio = (w > h) ? (MAX_SIZE / w) : (MAX_SIZE / h);
+        float w = img.getWidth();
+        float h = img.getHeight();
+        float ratio = (w > h) ? (MAX_SIZE / w) : (MAX_SIZE / h);
+        w = w * ratio;
+        h = h * ratio;
 
-        BufferedImage scaled = scale(img, ratio);
+        BufferedImage scaled = scale(img, Math.round(w), Math.round(h));
         Path outputPath = Paths.get(folder, fileName + ".jpg");
         try {
             ImageIO.write(scaled, "jpg", outputPath.toFile());
@@ -39,24 +38,16 @@ public class ThumbnailCreator {
         }
     }
 
-    private BufferedImage scale(BufferedImage source, double ratio) {
-        int w = (int) (source.getWidth() * ratio);
-        int h = (int) (source.getHeight() * ratio);
-        BufferedImage bi = getCompatibleImage(w, h);
-        Graphics2D g2d = bi.createGraphics();
-        double xScale = (double) w / source.getWidth();
-        double yScale = (double) h / source.getHeight();
-        AffineTransform at = AffineTransform.getScaleInstance(xScale, yScale);
-        g2d.drawRenderedImage(source, at);
-        g2d.dispose();
-        return bi;
+    public static BufferedImage scale(BufferedImage source, int destWidth, int destHeight) {
+        BufferedImage bicubic = new BufferedImage(destWidth, destHeight, source.getType());
+        Graphics2D bg = bicubic.createGraphics();
+        bg.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        float sx = (float) destWidth / source.getWidth();
+        float sy = (float) destHeight / source.getHeight();
+        bg.scale(sx, sy);
+        bg.drawImage(source, 0, 0, null);
+        bg.dispose();
+        return bicubic;
     }
 
-    private BufferedImage getCompatibleImage(int w, int h) {
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = ge.getDefaultScreenDevice();
-        GraphicsConfiguration gc = gd.getDefaultConfiguration();
-        BufferedImage image = gc.createCompatibleImage(w, h);
-        return image;
-    }
 }
