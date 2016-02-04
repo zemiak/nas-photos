@@ -1,0 +1,282 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B8537B1F1C63EFB50038576F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8537B1E1C63EFB50038576F /* AppDelegate.swift */; };
+		B8537B211C63EFB50038576F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8537B201C63EFB50038576F /* ViewController.swift */; };
+		B8537B241C63EFB50038576F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8537B221C63EFB50038576F /* Main.storyboard */; };
+		B8537B261C63EFB50038576F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8537B251C63EFB50038576F /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B8537B1B1C63EFB50038576F /* nasphotos-tvml.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "nasphotos-tvml.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8537B1E1C63EFB50038576F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B8537B201C63EFB50038576F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B8537B231C63EFB50038576F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B8537B251C63EFB50038576F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B8537B271C63EFB50038576F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B8537B181C63EFB50038576F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B8537B121C63EFB50038576F = {
+			isa = PBXGroup;
+			children = (
+				B8537B1D1C63EFB50038576F /* nasphotos-tvml */,
+				B8537B1C1C63EFB50038576F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B8537B1C1C63EFB50038576F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B8537B1B1C63EFB50038576F /* nasphotos-tvml.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B8537B1D1C63EFB50038576F /* nasphotos-tvml */ = {
+			isa = PBXGroup;
+			children = (
+				B8537B1E1C63EFB50038576F /* AppDelegate.swift */,
+				B8537B201C63EFB50038576F /* ViewController.swift */,
+				B8537B221C63EFB50038576F /* Main.storyboard */,
+				B8537B251C63EFB50038576F /* Assets.xcassets */,
+				B8537B271C63EFB50038576F /* Info.plist */,
+			);
+			path = "nasphotos-tvml";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B8537B1A1C63EFB50038576F /* nasphotos-tvml */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B8537B2A1C63EFB50038576F /* Build configuration list for PBXNativeTarget "nasphotos-tvml" */;
+			buildPhases = (
+				B8537B171C63EFB50038576F /* Sources */,
+				B8537B181C63EFB50038576F /* Frameworks */,
+				B8537B191C63EFB50038576F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "nasphotos-tvml";
+			productName = "nasphotos-tvml";
+			productReference = B8537B1B1C63EFB50038576F /* nasphotos-tvml.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B8537B131C63EFB50038576F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Miroslav Vasko";
+				TargetAttributes = {
+					B8537B1A1C63EFB50038576F = {
+						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = VPHFH6PZ4D;
+					};
+				};
+			};
+			buildConfigurationList = B8537B161C63EFB50038576F /* Build configuration list for PBXProject "nasphotos-tvml" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B8537B121C63EFB50038576F;
+			productRefGroup = B8537B1C1C63EFB50038576F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B8537B1A1C63EFB50038576F /* nasphotos-tvml */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B8537B191C63EFB50038576F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8537B261C63EFB50038576F /* Assets.xcassets in Resources */,
+				B8537B241C63EFB50038576F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B8537B171C63EFB50038576F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8537B211C63EFB50038576F /* ViewController.swift in Sources */,
+				B8537B1F1C63EFB50038576F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B8537B221C63EFB50038576F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B8537B231C63EFB50038576F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B8537B281C63EFB50038576F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = appletvos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.1;
+			};
+			name = Debug;
+		};
+		B8537B291C63EFB50038576F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B8537B2B1C63EFB50038576F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = "nasphotos-tvml/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.zemiak.nasphotos-tvml";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B8537B2C1C63EFB50038576F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = "nasphotos-tvml/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.zemiak.nasphotos-tvml";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B8537B161C63EFB50038576F /* Build configuration list for PBXProject "nasphotos-tvml" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B8537B281C63EFB50038576F /* Debug */,
+				B8537B291C63EFB50038576F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B8537B2A1C63EFB50038576F /* Build configuration list for PBXNativeTarget "nasphotos-tvml" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B8537B2B1C63EFB50038576F /* Debug */,
+				B8537B2C1C63EFB50038576F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B8537B131C63EFB50038576F /* Project object */;
+}
