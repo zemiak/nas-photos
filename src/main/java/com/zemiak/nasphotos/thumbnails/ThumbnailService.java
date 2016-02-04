@@ -43,8 +43,8 @@ public class ThumbnailService {
             Files.walk(Paths.get(photoPath), FileVisitOption.FOLLOW_LINKS)
                 .filter(path -> !path.toFile().isDirectory())
                 .filter(path -> path.toFile().canRead())
-                .filter(path -> FileService.isNotHidden(path))
-                .filter(path -> FileService.isImage(path))
+                .filter(path -> !FileService.isHidden(path))
+                .filter(path -> FileService.isImage(path, photoPath))
                 .filter(path -> thumbnailDoesNotExist(path))
                 .forEach(fileName -> create(fileName));
         } catch (IOException ex) {

@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -17,6 +18,7 @@ import javax.inject.Inject;
 @Stateless
 public class FileService {
     private static final Logger LOG = Logger.getLogger(FileService.class.getName());
+    private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d \\w+\\/\\w+(\\.jpg|\\.png)");
 
     @Inject
     String photoPath;
@@ -43,7 +45,7 @@ public class FileService {
                     .skip(1)
                     .filter(path -> path.toFile().isDirectory())
                     .filter(path -> path.toFile().canRead())
-                    .filter(path -> isNotHidden(path))
+                    .filter(path -> !isHidden(path))
                     .map(path -> Paths.get(pathName, path.getFileName().toString()).toString())
                     .collect(Collectors.toList());
         } catch (IOException ex) {
@@ -65,7 +67,7 @@ public class FileService {
                     .skip(1)
                     .filter(path -> path.toFile().isDirectory())
                     .filter(path -> path.toFile().canRead())
-                    .filter(path -> isNotHidden(path))
+                    .filter(path -> !isHidden(path))
                     .map(path -> path.getFileName().toString())
                     .filter(fileName -> fileName.length() == 4)
                     .collect(Collectors.toList());
@@ -92,8 +94,7 @@ public class FileService {
                     .skip(1)
                     .filter(path -> !path.toFile().isDirectory())
                     .filter(path -> path.toFile().canRead())
-                    .filter(path -> isNotHidden(path))
-                    .filter(path -> isImage(path))
+                    .filter(path -> isImage(path, photoPath))
                     .map(path -> path.getFileName().toString())
                     .collect(Collectors.toList());
         } catch (IOException ex) {
@@ -108,20 +109,34 @@ public class FileService {
                 .collect(Collectors.toList());
     }
 
-    public static boolean isImage(Path path) {
-        String fileName = path.getFileName().toString();
-        return fileName.toLowerCase().endsWith("jpg") || fileName.toLowerCase().endsWith("png");
+    public static boolean isImage(Path path, String rootPath) {
+        if (isHidden(path)) {
+            return false;
+        }
+
+        String name = path.toAbsolutePath().toString();
+        if (name.startsWith(rootPath)) {
+            name = name.substring(rootPath.length());
+        }
+        if (name.startsWith("/")) {
+            name = name.substring(1);
+        }
+
+        return VALID_PICTURE.matcher(name.toLowerCase()).matches();
     }
 
-    public static boolean isNotHidden(Path path) {
+    public static boolean isHidden(Path path) {
+        String name;
+
         for (int i = 0; i < path.getNameCount(); i++) {
-            String name = path.getName(i).toString();
+            name = path.getName(i).toString();
+            System.err.println("Testing for hidden. Part " + i + ": " + name);
             if (name.startsWith(".") || name.startsWith("_")) {
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     public String getFileName(String path) {
