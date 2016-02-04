@@ -15,7 +15,6 @@ public class ImageControl {
 
     public PictureData getImage(File file, String relativePath) {
         if (null == file) {
-            System.err.println(relativePath + ": file is null");
             return null;
         }
 

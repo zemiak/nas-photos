@@ -47,8 +47,6 @@ public class ThumbnailService {
     }
 
     private void createThumbnails(Path rootPath) {
-        System.err.println("Going to generate covers for " + rootPath.toString());
-
         try {
             Files.walk(rootPath, FileVisitOption.FOLLOW_LINKS)
                 .filter(path -> !path.toFile().isDirectory())

@@ -37,8 +37,6 @@ public class FileService {
             return getRootFolders();
         }
 
-        System.err.println("Path name: " + pathName);
-
         List<String> files;
         try {
             files = Files.walk(Paths.get(photoPath, pathName), 1, FileVisitOption.FOLLOW_LINKS)
