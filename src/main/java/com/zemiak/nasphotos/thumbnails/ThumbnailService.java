@@ -29,24 +29,34 @@ public class ThumbnailService {
     @Inject
     ThumbnailCreator creator;
 
+    @Inject
+    FileService service;
+
     @Schedule(hour = "1", minute = "5", persistent = false)
     public void createThumbnails() {
         try {
             Files.createDirectories(Paths.get(tempPath));
-            LOG.log(Level.INFO, "Created thumbnail folder {0}", tempPath);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "Cannot create the thumbnail folder " + tempPath, ex);
             return;
         }
 
+        service.getRootFolderPaths().stream()
+                .map(folderPath -> Paths.get(photoPath, folderPath))
+                .forEach(this::createThumbnails);
+    }
+
+    private void createThumbnails(Path rootPath) {
+        System.err.println("Going to generate covers for " + rootPath.toString());
+
         try {
-            Files.walk(Paths.get(photoPath), FileVisitOption.FOLLOW_LINKS)
+            Files.walk(rootPath, FileVisitOption.FOLLOW_LINKS)
                 .filter(path -> !path.toFile().isDirectory())
                 .filter(path -> path.toFile().canRead())
                 .filter(path -> !FileService.isHidden(path))
                 .filter(path -> FileService.isImage(path, photoPath))
                 .filter(path -> thumbnailDoesNotExist(path))
-                .forEach(fileName -> create(fileName));
+                .forEach(this::create);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "createThumbnails IO/Exception" + ex.getMessage(), ex);
         }

@@ -18,7 +18,7 @@ import javax.inject.Inject;
 @Stateless
 public class FileService {
     private static final Logger LOG = Logger.getLogger(FileService.class.getName());
-    private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d \\w+\\/\\w+(\\.jpg|\\.png)");
+    private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d \\w+\\/\\w+(\\.jpg|\\.png)");
 
     @Inject
     String photoPath;
@@ -60,7 +60,7 @@ public class FileService {
                 .collect(Collectors.toList());
     }
 
-    private List<PictureData> getRootFolders() {
+    public List<String> getRootFolderPaths() {
         List<String> files;
         try {
             files = Files.walk(Paths.get(photoPath), 1, FileVisitOption.FOLLOW_LINKS)
@@ -75,6 +75,12 @@ public class FileService {
             LOG.log(Level.SEVERE, "getRootFolders IO/Exception" + ex.getMessage(), ex);
             return Collections.EMPTY_LIST;
         }
+
+        return files;
+    }
+
+    private List<PictureData> getRootFolders() {
+        List<String> files = getRootFolderPaths();
 
         Collections.sort(files);
         return files
@@ -130,7 +136,6 @@ public class FileService {
 
         for (int i = 0; i < path.getNameCount(); i++) {
             name = path.getName(i).toString();
-            System.err.println("Testing for hidden. Part " + i + ": " + name);
             if (name.startsWith(".") || name.startsWith("_")) {
                 return true;
             }

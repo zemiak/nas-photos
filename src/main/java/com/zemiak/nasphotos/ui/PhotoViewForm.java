@@ -1,15 +1,14 @@
 package com.zemiak.nasphotos.ui;
 
 import com.zemiak.nasphotos.files.FileService;
-import com.zemiak.nasphotos.files.FolderControl;
 import com.zemiak.nasphotos.files.PictureData;
 import java.io.Serializable;
 import java.util.List;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-@SessionScoped
+@RequestScoped
 @Named("photoViewForm")
 public class PhotoViewForm implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -17,20 +16,12 @@ public class PhotoViewForm implements Serializable {
     @Inject
     private FileService service;
 
-    @Inject
-    private FolderControl folderControl;
-
     private String path;
     private List<PictureData> folders;
     private List<PictureData> pictures;
 
     public String check() {
-        if (null == path) {
-            System.err.println("PhotoViewForm: path is null, setting to an empty string");
-            path = "";
-        }
-
-        if ("/".equals(path)) {
+        if (null == path || "/".equals(path)) {
             path = "";
         }
 
@@ -41,11 +32,6 @@ public class PhotoViewForm implements Serializable {
             JsfMessages.addErrorMessage("Path " + path + " is empty");
             return "index";
         }
-
-        System.err.println("Path: '" + path + "'");
-        System.err.println("backPath: '" + getBackPath() + "'");
-        System.err.println("backButton: '" + (getBackButton() ? "true" : "false") + "'");
-        System.err.println("Title: '" + getTitle() + "'");
 
         return null;
     }

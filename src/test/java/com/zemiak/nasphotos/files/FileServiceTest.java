@@ -38,8 +38,9 @@ public class FileServiceTest {
     @Test
     public void isImage() throws Exception {
         Arrays.asList(new String[]{
-            "/Volumes/media/Pictures/2014/01 Deti/photo.Png",
-            "/Volumes/media/Pictures/2089/12 Vianoce/IMG_2302.JPG"
+            "/Volumes/media/Pictures/2014/1201 Deti/photo.Png",
+            "/Volumes/media/Pictures/2089/1202 Vianoce/IMG_2302.JPG",
+            "/Volumes/media/Pictures/2012/1203 Maruska/IMG_0126.JPG"
         }).stream().forEach(picFileName -> {
             assertTrue(picFileName, FileService.isImage(Paths.get(picFileName), service.photoPath));
         });

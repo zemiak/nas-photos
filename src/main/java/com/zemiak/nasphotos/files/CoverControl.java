@@ -23,18 +23,20 @@ public class CoverControl implements Serializable {
     }
 
     public String getFolderCoverUrl(String path) {
+        FacesContext currentInstance = FacesContext.getCurrentInstance();
         HttpServletRequest origRequest = (HttpServletRequest)
-                FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            currentInstance.getExternalContext().getRequest();
+        String contextPath = origRequest.getContextPath();
 
         if (null != getFolderCoverFile(path)) {
             try {
-                return origRequest.getContextPath() + "/rest/files/download?path=" + URLEncoder.encode(path, "UTF-8");
+                return contextPath + "/rest/files/download?path=" + URLEncoder.encode(path, "UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 throw new IllegalStateException("UTF-8 encoding not supported");
             }
         }
 
-        return origRequest.getContextPath() + "/ipad/img/folder.png";
+        return contextPath + "/ipad/img/folder.png";
     }
 
     public String getPictureCoverUrl(String path) {
