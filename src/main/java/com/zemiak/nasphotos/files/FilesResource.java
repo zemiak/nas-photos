@@ -21,6 +21,9 @@ public class FilesResource {
     @Inject
     ThumbnailService thumbnails;
 
+    @Inject
+    VersionService versionService;
+
     @GET
     @Path("list")
     public Response get(@QueryParam("path") @DefaultValue("") String path) {
@@ -76,9 +79,42 @@ public class FilesResource {
     }
 
     @GET
+    @Path("folderThumbnail")
+    public Response folderThumbnail(@QueryParam("path") @DefaultValue("") String path) {
+        File file = fileService.getThumbnail(path);
+        if (null == file) {
+            return Response.status(302).header("Location", fileService.getDefaultFolderCover()).build();
+        }
+
+        String fileName = fileService.getFileName(path);
+        ResponseBuilder response = Response.ok((Object) file);
+        response.header("Content-Disposition", "attachment; filename=" + fileName);
+        return response.build();
+    }
+
+    @GET
     @Path("thumbnails/refresh")
     public void refreshThumbnails() {
         thumbnails.createThumbnails();
     }
 
+    private JsonObject buildData() {
+        JsonObject version = Json.createObjectBuilder()
+                .add("version", versionService.getVersion())
+                .add("motd", "")
+                .build();
+        JsonObject data = Json.createObjectBuilder()
+                .add("version", version)
+                .build();
+
+        return data;
+    }
+
+    @GET
+    @Path("data")
+    public Response getData() {
+        return Response
+                .ok(buildData())
+                .build();
+    }
 }

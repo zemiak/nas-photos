@@ -8,18 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		B8537B1F1C63EFB50038576F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8537B1E1C63EFB50038576F /* AppDelegate.swift */; };
-		B8537B211C63EFB50038576F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8537B201C63EFB50038576F /* ViewController.swift */; };
-		B8537B241C63EFB50038576F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8537B221C63EFB50038576F /* Main.storyboard */; };
 		B8537B261C63EFB50038576F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8537B251C63EFB50038576F /* Assets.xcassets */; };
+		B88D655E1C6F3531008907A7 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88D65581C6F3531008907A7 /* Configuration.swift */; };
+		B88D655F1C6F3531008907A7 /* Development.plist in Resources */ = {isa = PBXBuildFile; fileRef = B88D65591C6F3531008907A7 /* Development.plist */; };
+		B88D65601C6F3531008907A7 /* JavascriptLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88D655A1C6F3531008907A7 /* JavascriptLogger.swift */; };
+		B88D65611C6F3531008907A7 /* Production.plist in Resources */ = {isa = PBXBuildFile; fileRef = B88D655B1C6F3531008907A7 /* Production.plist */; };
+		B88D65621C6F3531008907A7 /* ResourceLoaderLocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88D655C1C6F3531008907A7 /* ResourceLoaderLocal.swift */; };
+		B88D65631C6F3531008907A7 /* tvml in Resources */ = {isa = PBXBuildFile; fileRef = B88D655D1C6F3531008907A7 /* tvml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B8537B1B1C63EFB50038576F /* nasphotos-tvml.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "nasphotos-tvml.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8537B1E1C63EFB50038576F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B8537B201C63EFB50038576F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		B8537B231C63EFB50038576F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B8537B251C63EFB50038576F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B8537B271C63EFB50038576F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B88D65581C6F3531008907A7 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		B88D65591C6F3531008907A7 /* Development.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Development.plist; sourceTree = "<group>"; };
+		B88D655A1C6F3531008907A7 /* JavascriptLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JavascriptLogger.swift; sourceTree = "<group>"; };
+		B88D655B1C6F3531008907A7 /* Production.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Production.plist; sourceTree = "<group>"; };
+		B88D655C1C6F3531008907A7 /* ResourceLoaderLocal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceLoaderLocal.swift; sourceTree = "<group>"; };
+		B88D655D1C6F3531008907A7 /* tvml */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tvml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,9 +60,13 @@
 		B8537B1D1C63EFB50038576F /* nasphotos-tvml */ = {
 			isa = PBXGroup;
 			children = (
+				B88D65581C6F3531008907A7 /* Configuration.swift */,
+				B88D65591C6F3531008907A7 /* Development.plist */,
+				B88D655A1C6F3531008907A7 /* JavascriptLogger.swift */,
+				B88D655B1C6F3531008907A7 /* Production.plist */,
+				B88D655C1C6F3531008907A7 /* ResourceLoaderLocal.swift */,
+				B88D655D1C6F3531008907A7 /* tvml */,
 				B8537B1E1C63EFB50038576F /* AppDelegate.swift */,
-				B8537B201C63EFB50038576F /* ViewController.swift */,
-				B8537B221C63EFB50038576F /* Main.storyboard */,
 				B8537B251C63EFB50038576F /* Assets.xcassets */,
 				B8537B271C63EFB50038576F /* Info.plist */,
 			);
@@ -121,7 +133,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8537B261C63EFB50038576F /* Assets.xcassets in Resources */,
-				B8537B241C63EFB50038576F /* Main.storyboard in Resources */,
+				B88D65611C6F3531008907A7 /* Production.plist in Resources */,
+				B88D65631C6F3531008907A7 /* tvml in Resources */,
+				B88D655F1C6F3531008907A7 /* Development.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,23 +146,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8537B211C63EFB50038576F /* ViewController.swift in Sources */,
+				B88D655E1C6F3531008907A7 /* Configuration.swift in Sources */,
+				B88D65601C6F3531008907A7 /* JavascriptLogger.swift in Sources */,
+				B88D65621C6F3531008907A7 /* ResourceLoaderLocal.swift in Sources */,
 				B8537B1F1C63EFB50038576F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		B8537B221C63EFB50038576F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B8537B231C63EFB50038576F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		B8537B281C63EFB50038576F /* Debug */ = {
@@ -168,6 +173,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CONFIGURATION_PLIST = Development;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -212,6 +218,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CONFIGURATION_PLIST = Production;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -275,6 +282,7 @@
 				B8537B2C1C63EFB50038576F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

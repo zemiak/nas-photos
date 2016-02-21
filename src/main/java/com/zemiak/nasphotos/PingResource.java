@@ -8,6 +8,6 @@ import javax.ws.rs.core.Response;
 public class PingResource {
     @GET
     public Response ping() {
-        return Response.ok("OK").build();
+        return Response.ok("pong").build();
     }
 }

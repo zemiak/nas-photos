@@ -1,0 +1,24 @@
+<document>
+    <stackTemplate id="template-data" data-template="Folders" data-folder="{{&mainFolder}}">
+        <banner>
+            <title>{{title}}</title>
+        </banner>
+
+        <collectionList><grid>
+            <section>
+                {{#folders}}
+                    <lockup action="{{&action}}">
+                        <img src="{{&src}}" width="{{width}}" height="{{height}}" />
+                        <title>{{title}}</title>
+                    </lockup>
+                {{/folders}}
+
+                {{#photos}}
+                    <lockup action="{{&action}}">
+                        <img src="{{&src}}" width="{{width}}" height="{{height}}" />
+                    </lockup>
+                {{/photos}}
+            </section>
+        </grid></collectionList>
+    </stackTemplate>
+</document>

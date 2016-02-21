@@ -18,7 +18,7 @@ import javax.inject.Inject;
 @Stateless
 public class FileService {
     private static final Logger LOG = Logger.getLogger(FileService.class.getName());
-    private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d \\w+\\/\\w+(\\.jpg|\\.png)");
+    private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.jpg|\\.png)");
 
     @Inject
     String photoPath;
@@ -80,7 +80,7 @@ public class FileService {
     private List<PictureData> getRootFolders() {
         List<String> files = getRootFolderPaths();
 
-        Collections.sort(files);
+        Collections.sort(files, Collections.reverseOrder());
         return files
                 .stream()
                 .map(n -> folders.convertFolderToPictureData(n))
@@ -110,11 +110,24 @@ public class FileService {
         return files
                 .stream()
                 .map(n -> images.getImage(Paths.get(photoPath, pathName, n).toFile(), pathName))
+                .map(this::switchWidthAndHeightIfRotated)
                 .collect(Collectors.toList());
+    }
+
+    public PictureData switchWidthAndHeightIfRotated(PictureData pic) {
+        PictureData newPic = new PictureData(pic);
+        
+        if (1 != pic.getOrientation()) {
+            newPic.setWidth(pic.getHeight());
+            newPic.setHeight(pic.getWidth());
+        }
+
+        return newPic;
     }
 
     public static boolean isImage(Path path, String rootPath) {
         if (isHidden(path)) {
+            System.err.println("isImage: hidden");
             return false;
         }
 
@@ -126,7 +139,12 @@ public class FileService {
             name = name.substring(1);
         }
 
-        return VALID_PICTURE.matcher(name.toLowerCase()).matches();
+        boolean matches = VALID_PICTURE.matcher(name.toLowerCase()).matches();
+        if (! matches) {
+            System.err.println("Not a valid pic name: " + name.toLowerCase());
+        }
+
+        return matches;
     }
 
     public static boolean isHidden(Path path) {
@@ -174,5 +192,9 @@ public class FileService {
         }
 
         return file;
+    }
+
+    public String getDefaultFolderCover() {
+        return covers.getDefaultFolderCover();
     }
 }

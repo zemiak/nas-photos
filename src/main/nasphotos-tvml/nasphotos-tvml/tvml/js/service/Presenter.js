@@ -65,27 +65,5 @@ var Presenter = {
 
     getCurrentDocument: function() {
         return navigationDocument.documents[navigationDocument.documents.length - 1];
-    },
-
-    getRadioNameFromPage: function() {
-        if ("Detail" === Presenter.getDocumentName()) {
-            return Presenter.getDocumentDataElement().getAttribute("data-radioName");
-        }
-
-        return null;
-    },
-
-    getMainDocument: function() {
-        for (var i in navigationDocument.documents) {
-            var doc = navigationDocument.documents[i];
-            var ele = doc.getElementById("template-data");
-            var name = ele.getAttribute("data-template");
-
-            if ("Main" == name) {
-                return doc;
-            }
-        }
-
-        return null;
     }
 };

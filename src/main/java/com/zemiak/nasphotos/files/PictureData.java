@@ -5,14 +5,22 @@ import java.io.File;
 public class PictureData {
     private String path;
     private String title;
-    private Long width;
-    private Long height;
     private File file;
     private String coverUrl;
     private String fullSizeUrl;
+    private ImageInformation info;
 
     public PictureData() {
+        info = new ImageInformation();
+    }
 
+    public PictureData(PictureData pic) {
+        path = pic.path;
+        title = pic.title;
+        file = pic.file;
+        coverUrl = pic.coverUrl;
+        fullSizeUrl = pic.fullSizeUrl;
+        info = new ImageInformation(pic.info);
     }
 
     public String getPath() {
@@ -31,20 +39,16 @@ public class PictureData {
         this.title = title;
     }
 
-    public Long getWidth() {
-        return width;
+    public long getWidth() {
+        return info.getWidth();
     }
 
-    public void setWidth(Long width) {
-        this.width = width;
+    public long getHeight() {
+        return info.getHeight();
     }
 
-    public Long getHeight() {
-        return height;
-    }
-
-    public void setHeight(Long height) {
-        this.height = height;
+    public int getOrientation() {
+        return info.getOrientation();
     }
 
     public File getFile() {
@@ -69,5 +73,21 @@ public class PictureData {
 
     public void setFullSizeUrl(String fullSizeUrl) {
         this.fullSizeUrl = fullSizeUrl;
+    }
+
+    public ImageInformation getInfo() {
+        return info;
+    }
+
+    public void setInfo(ImageInformation info) {
+        this.info = info;
+    }
+
+    public void setHeight(long height) {
+        info.setHeight(height);
+    }
+
+    public void setWidth(long width) {
+        info.setWidth(width);
     }
 }

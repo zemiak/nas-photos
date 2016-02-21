@@ -1,11 +1,3 @@
-//
-//  Configuration.swift
-//  slovakradio
-//
-//  Created by Miroslav Vasko on 06/01/16.
-//  Copyright © 2016 Miroslav Vasko. All rights reserved.
-//
-
 import Foundation
 
 class Configuration {

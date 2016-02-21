@@ -4,5 +4,7 @@
 <dict>
 	<key>Environment</key>
 	<string>Development</string>
+	<key>BaseUrl</key>
+	<string>http://localhost:8080/nasphotos/rest/</string>
 </dict>
 </plist>

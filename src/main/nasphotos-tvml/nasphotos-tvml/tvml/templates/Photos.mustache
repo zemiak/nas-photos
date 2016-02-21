@@ -1,0 +1,15 @@
+<document>
+    <oneupTemplate mode="oneup caption" allowsZooming="true" id="template-data" data-template="Photos" data-folder="{{&mainFolder}}">
+        <section>
+            {{#photos}}
+                <lockup>
+                    <img src="{{&src}}" width="{{width}}" height="{{height}}" />
+                    <title>{{title}}</title>
+                    <row>
+                        <subtitle>{{index}} / {{count}}</subtitle>
+                    </row>
+                </lockup>
+            {{/photos}}
+        </section>
+    </oneupTemplate>
+</document>

@@ -9,33 +9,27 @@ App.onLaunch = function(options) {
     LOG = JavascriptLogger.create();
 
     var javascriptFiles = [
+        resourceLoaderLocal.scriptUrl("PhotoData.js"),
         resourceLoaderLocal.scriptUrl("service/Presenter.js"),
-        resourceLoaderLocal.scriptUrl("data/RadioData.js"),
-        resourceLoaderLocal.scriptUrl("service/RadioRepository.js"),
         resourceLoaderLocal.scriptUrl("service/ApplicationStorage.js"),
-        resourceLoaderLocal.scriptUrl("service/RadioPlayer.js"),
-        resourceLoaderLocal.scriptUrl("service/Favorites.js"),
-        resourceLoaderLocal.scriptUrl("service/DataUpdater.js"),
-        resourceLoaderLocal.scriptUrl("service/playlist/RadioPlaylist.js"),
-        resourceLoaderLocal.scriptUrl("service/playlist/RadioPlaylistParser.js"),
-        resourceLoaderLocal.scriptUrl("service/playlist/RtvsPlaylistParser.js"),
-        resourceLoaderLocal.scriptUrl("service/playlist/RadiaSKPlaylistParser.js"),
+        resourceLoaderLocal.scriptUrl("service/DataReader.js"),
         resourceLoaderLocal.scriptUrl("lib/mustache.min.js")
     ];
 
     evaluateScripts(javascriptFiles, function(success) {
-        if(success) {
-            DataUpdater.check();
+        if (success) {
+            DataReader.clearCache();
+
             Presenter.options = options;
             Presenter.loader = resourceLoaderLocal;
-            Presenter.navigate("Main");
+            DataReader.init();
+            DataReader.read("/"); // navigates to Folders template after reading the data
         } else {
             var errorDoc = createAlert("Evaluate Scripts Error", "Error attempting to evaluate external JavaScript files.");
             navigationDocument.presentModal(errorDoc);
         }
     });
 };
-
 
 var createAlert = function(title, description) {
     var alertString = '<?xml version="1.0" encoding="UTF-8" ?>'

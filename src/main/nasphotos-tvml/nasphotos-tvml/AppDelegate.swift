@@ -14,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let appControllerContext = TVApplicationControllerContext()
         let config = Configuration()
         let javascriptURL = ResourceLoaderLocal().mainUrl()
-        print(javascriptURL)
 
         appControllerContext.javaScriptApplicationURL = javascriptURL!
         if let options = launchOptions {
@@ -26,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         appControllerContext.launchOptions["Version"] = config.getVersion() + (config.isDevelopment() ? " DEV" : "");
+        appControllerContext.launchOptions["BaseUrl"] = config.getBaseUrl();
         appController = TVApplicationController(context: appControllerContext, window: self.window, delegate: self)
         
         return true
