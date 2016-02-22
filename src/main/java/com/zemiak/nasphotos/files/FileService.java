@@ -116,7 +116,7 @@ public class FileService {
 
     public PictureData switchWidthAndHeightIfRotated(PictureData pic) {
         PictureData newPic = new PictureData(pic);
-        
+
         if (1 != pic.getOrientation()) {
             newPic.setWidth(pic.getHeight());
             newPic.setHeight(pic.getWidth());
@@ -176,6 +176,10 @@ public class FileService {
 
         if (file.isDirectory()) {
             return covers.getFolderCoverFile(path);
+        }
+
+        if (images.isRotated(file)) {
+            file = images.getRotatedFilePath(file).toFile();
         }
 
         return file;

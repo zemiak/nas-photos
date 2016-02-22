@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.files;
+package com.zemiak.nasphotos.files.rotation;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;

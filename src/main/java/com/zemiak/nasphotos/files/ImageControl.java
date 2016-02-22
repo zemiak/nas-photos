@@ -1,6 +1,10 @@
 package com.zemiak.nasphotos.files;
 
+import com.zemiak.nasphotos.files.rotation.ImageMetadataControl;
+import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.inject.Inject;
 
 public class ImageControl {
@@ -9,6 +13,12 @@ public class ImageControl {
 
     @Inject
     ImageMetadataControl metaData;
+
+    @Inject
+    ThumbnailService thumbnails;
+
+    @Inject
+    String tempPath;
 
     public PictureData getImage(File file, String relativePath) {
         if (null == file) {
@@ -29,5 +39,18 @@ public class ImageControl {
         data.setFullSizeUrl(covers.getFullSizeUrl(data.getPath()));
 
         return data;
+    }
+
+    public Path getRotatedFilePath(File file) {
+        String fileName = thumbnails.getThumbnailFileName(Paths.get(file.getAbsolutePath()));
+        fileName = fileName + "-r.jpg";
+
+        return Paths.get(tempPath, fileName);
+
+    }
+
+    public boolean isRotated(File file) {
+        File rotatedFile = getRotatedFilePath(file).toFile();
+        return rotatedFile.isFile() && rotatedFile.canRead();
     }
 }

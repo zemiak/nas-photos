@@ -1,7 +1,6 @@
 package com.zemiak.nasphotos.thumbnails;
 
 import com.zemiak.nasphotos.files.FileService;
-import com.zemiak.nasphotos.files.VersionService;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -13,11 +12,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.Schedule;
-import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-@Stateless
 public class ThumbnailService {
     private static final Logger LOG = Logger.getLogger(ThumbnailService.class.getName());
 
@@ -33,23 +29,10 @@ public class ThumbnailService {
     @Inject
     FileService service;
 
-    @Inject
-    VersionService version;
-
-    @Schedule(hour = "1", minute = "5", persistent = false)
     public void createThumbnails() {
-        try {
-            Files.createDirectories(Paths.get(tempPath));
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, "Cannot create the thumbnail folder " + tempPath, ex);
-            return;
-        }
-
         service.getRootFolderPaths().stream()
                 .map(folderPath -> Paths.get(photoPath, folderPath))
                 .forEach(this::createThumbnails);
-
-        version.clearVersion();
     }
 
     private void createThumbnails(Path rootPath) {
@@ -66,7 +49,7 @@ public class ThumbnailService {
         }
     }
 
-    private String getThumbnailFileName(Path path) {
+    public String getThumbnailFileName(Path path) {
         String fileName = path.toAbsolutePath().toString();
 
         MessageDigest digest;

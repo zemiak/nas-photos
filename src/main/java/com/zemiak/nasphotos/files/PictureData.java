@@ -1,5 +1,6 @@
 package com.zemiak.nasphotos.files;
 
+import com.zemiak.nasphotos.files.rotation.ImageInformation;
 import java.io.File;
 
 public class PictureData {
