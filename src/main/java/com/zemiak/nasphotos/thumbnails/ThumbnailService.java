@@ -29,6 +29,9 @@ public class ThumbnailService {
     @Inject
     FileService service;
 
+    @Inject
+    ImageMetadataControl metaData;
+
     public void createThumbnails() {
         service.getRootFolderPaths().stream()
                 .map(folderPath -> Paths.get(photoPath, folderPath))
@@ -42,7 +45,7 @@ public class ThumbnailService {
                 .filter(path -> path.toFile().canRead())
                 .filter(path -> !FileService.isHidden(path))
                 .filter(path -> FileService.isImage(path, photoPath))
-                .filter(path -> thumbnailDoesNotExist(path))
+                .filter(path -> !isThumbnailCreated(path))
                 .forEach(this::create);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "createThumbnails IO/Exception" + ex.getMessage(), ex);
@@ -64,7 +67,7 @@ public class ThumbnailService {
     }
 
     private String bytesToHex(byte[] bytes) {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         for (byte byt : bytes) {
             result.append(Integer.toString((byt & 0xff) + 0x100, 16).substring(1));
         }
@@ -72,13 +75,14 @@ public class ThumbnailService {
         return result.toString();
      }
 
-    private Boolean thumbnailDoesNotExist(Path path) {
-        File file = Paths.get(tempPath, getThumbnailFileName(path)).toFile();
-        return !file.isFile() || !file.canRead();
+    private Boolean isThumbnailCreated(Path path) {
+        File file = Paths.get(tempPath, getThumbnailFileName(path) + ".jpg").toFile();
+        return file.isFile() && file.canRead();
     }
 
     private void create(Path path) {
-        creator.create(path, tempPath, getThumbnailFileName(path));
-        LOG.log(Level.INFO, "Created thumbnail: {0}", path.toString());
+        String dest = getThumbnailFileName(path);
+        creator.create(path, tempPath, dest, metaData.getImageInfo(path.toFile()));
+        LOG.log(Level.INFO, "Thumbnailed {0} -> {1}", new Object[]{path.toString(), tempPath + "/" + dest + ".jpg"});
     }
 }

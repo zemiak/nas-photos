@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.files.rotation;
+package com.zemiak.nasphotos.thumbnails;
 
 import java.awt.geom.AffineTransform;
 
@@ -17,6 +17,10 @@ public class ImageInformation {
         this.orientation = orientation;
         this.width = width;
         this.height = height;
+    }
+
+    public boolean isRotated() {
+        return 1 != orientation;
     }
 
     public ImageInformation(ImageInformation info) {

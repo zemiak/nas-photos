@@ -1,6 +1,6 @@
 package com.zemiak.nasphotos.files;
 
-import com.zemiak.nasphotos.files.rotation.ImageMetadataControl;
+import com.zemiak.nasphotos.thumbnails.ImageMetadataControl;
 import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import java.io.File;
 import java.nio.file.Path;

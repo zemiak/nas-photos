@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.files.rotation;
+package com.zemiak.nasphotos.thumbnails;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -33,14 +33,15 @@ public class ImageRotationControl {
 
         try {
             ImageIO.write(scaled, "jpg", destination.toFile());
+            LOG.log(Level.INFO, "Rotated and cached image {0} -> {1}", new Object[]{original.toString(), destination.toString()});
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "Cannot write rotated image " + destination.toString(), ex);
         }
     }
 
-    private BufferedImage transformImage(BufferedImage image, ImageInformation info) throws Exception {
+    public static BufferedImage transformImage(BufferedImage image, ImageInformation info) {
         AffineTransform transform = info.getAffineTransform();
-        AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_BICUBIC);
+        AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 
         BufferedImage destinationImage = op.createCompatibleDestImage(image,  (image.getType() == BufferedImage.TYPE_BYTE_GRAY)? image.getColorModel() : null );
         Graphics2D g = destinationImage.createGraphics();

@@ -14,7 +14,7 @@ public class ThumbnailCreator {
     private static final float MAX_SIZE = 256;
     private static final Logger LOG = Logger.getLogger(ThumbnailCreator.class.getName());
 
-    public void create(Path original, String folder, String fileName) {
+    public void create(Path original, String folder, String fileName, ImageInformation info) {
         BufferedImage img;
         try {
             img = ImageIO.read(original.toFile());
@@ -29,7 +29,24 @@ public class ThumbnailCreator {
         w = w * ratio;
         h = h * ratio;
 
+        if (info.isRotated()) {
+            BufferedImage rotated = ImageRotationControl.transformImage(img, info);
+
+            Path outputPath = Paths.get(folder, fileName + "-r.jpg");
+            try {
+                ImageIO.write(rotated, "jpg", outputPath.toFile());
+            } catch (IOException ex) {
+                LOG.log(Level.SEVERE, "Cannot write rotated " + outputPath.toString(), ex);
+            }
+
+            img = rotated;
+            float e = w;
+            w = h;
+            h = e;
+        }
+
         BufferedImage scaled = scale(img, Math.round(w), Math.round(h));
+
         Path outputPath = Paths.get(folder, fileName + ".jpg");
         try {
             ImageIO.write(scaled, "jpg", outputPath.toFile());

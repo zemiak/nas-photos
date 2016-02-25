@@ -1,6 +1,6 @@
 package com.zemiak.nasphotos.files;
 
-import com.zemiak.nasphotos.thumbnails.ThumbnailService;
+import com.zemiak.nasphotos.batch.ScheduledCacheRegeneration;
 import java.io.File;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -19,7 +19,7 @@ public class FilesResource {
     FileService fileService;
 
     @Inject
-    ThumbnailService thumbnails;
+    ScheduledCacheRegeneration cache;
 
     @Inject
     VersionService versionService;
@@ -95,7 +95,7 @@ public class FilesResource {
     @GET
     @Path("thumbnails/refresh")
     public void refreshThumbnails() {
-        thumbnails.createThumbnails();
+        cache.refreshImageCache();
     }
 
     private JsonObject buildData() {

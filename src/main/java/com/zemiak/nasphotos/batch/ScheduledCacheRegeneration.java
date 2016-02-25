@@ -1,7 +1,6 @@
 package com.zemiak.nasphotos.batch;
 
 import com.zemiak.nasphotos.files.VersionService;
-import com.zemiak.nasphotos.files.rotation.RotationService;
 import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,11 +24,8 @@ public class ScheduledCacheRegeneration {
     @Inject
     ThumbnailService thumbnails;
 
-    @Inject
-    RotationService rotations;
-
     @Schedule(hour = "1", minute = "5", persistent = false)
-    public void createThumbnails() {
+    public void refreshImageCache() {
         try {
             Files.createDirectories(Paths.get(tempPath));
         } catch (IOException ex) {
@@ -38,7 +34,6 @@ public class ScheduledCacheRegeneration {
         }
 
         thumbnails.createThumbnails();
-        rotations.rotatePictures();
 
         version.clearVersion();
     }
