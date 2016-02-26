@@ -3,35 +3,26 @@
 }
 
 .photo-box {
-    max-width: 150px;
-    max-height: 150px;
     margin-left: 9%;
     float: left;
     text-shadow:5px 5px 10px black;
 }
 
 .photo-box > a > img {
-    max-width:145px;
-    max-height:145px;
 }
 
 .folder-box {
-    width: 150px;
-    height: 170px;
     margin-left: 9%;
     float: left;
     text-shadow:5px 5px 10px black;
 }
 
 .folder-box > a > p {
-    width: 145px;
     font-size: 75%;
     text-align: center;
 }
 
 .folder-box > a > img {
-    width:145px;
-    height:145px;
 }
 
 /**
