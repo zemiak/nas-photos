@@ -1,8 +1,8 @@
 /* global Presenter, Mustache */
 
 function FoldersTemplate_setSize(itemData, item) {
-    if (itemData.width != -1 && itemData.height != -1) {
-        if (itemData.width > itemData.height) {
+    if (itemData.coverWidth != -1 && itemData.coverHeight != -1) {
+        if (itemData.coverWidth > itemData.coverHeight) {
             item.width = Presenter.width;
             item.height = Presenter.height;
         } else {
@@ -29,7 +29,7 @@ var Template = function() {
     for (var i in serverData.folders) {
         var itemData = serverData.folders[i];
         var item = {title: itemData.title,
-            src: Presenter.options.BaseUrl + "files/folderThumbnail?path=" + encodeURIComponent(itemData.path),
+            src: Presenter.options.BaseUrl + "files/folderThumbnails?path=" + encodeURIComponent(itemData.path),
             action: "DataReader.read('" + itemData.path + "');"};
 
         FoldersTemplate_setSize(itemData, item);
@@ -40,7 +40,7 @@ var Template = function() {
         var itemData = serverData.files[i];
 
         var item = {title: itemData.title,
-            src: Presenter.options.BaseUrl + "files/thumbnail?path=" + encodeURIComponent(itemData.path),
+            src: Presenter.options.BaseUrl + "files/thumbnails?path=" + encodeURIComponent(itemData.path),
             action: "Presenter.navigate('Photos')"};
 
         FoldersTemplate_setSize(itemData, item);

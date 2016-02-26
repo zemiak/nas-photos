@@ -52,7 +52,7 @@ var DataReader = {
         var newVersion = data.version.version;
         var ourVersion = PhotoData.version.version;
 
-        if (newVersion <= ourVersion) {
+        if (newVersion == ourVersion) {
             LOG.log("newVersionLoaded: We have the most recent version");
             return;
         }
@@ -91,7 +91,7 @@ var DataReader = {
 
     read: function(folder) {
         DataReader.currentFolder = folder;
-        
+
         if (PhotoData.cache[folder]) {
             LOG.log("DataReader.read: Cache hit for folder " + folder);
             Presenter.navigateReplace("Folders");

@@ -70,7 +70,7 @@ public class ThumbnailService {
         return bytesToHex(digest.digest(fileName.getBytes(StandardCharsets.UTF_8)));
     }
 
-    private String bytesToHex(byte[] bytes) {
+    public static String bytesToHex(byte[] bytes) {
         StringBuilder result = new StringBuilder();
         for (byte byt : bytes) {
             result.append(Integer.toString((byt & 0xff) + 0x100, 16).substring(1));

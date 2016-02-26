@@ -11,7 +11,7 @@
             <f:viewParam name="months" value="#{searchViewForm.months}" />
             <f:viewAction action="#{searchViewForm.search}" />
         </f:metadata>
-        
+
         <ui:define name="title">#{searchViewForm.title}</ui:define>
         <ui:define name="header">#{searchViewForm.title}</ui:define>
 
@@ -21,17 +21,17 @@
                     <div class="serie-box">
                         <a href="serie.xhtml?id=${item.id}">
                             <img class="serie-thumbnail" alt="#{item.name} Thumbnail"
-                                src="#{request.contextPath}/images/serie/#{item.id}" />
+                                src="#{request.contextPath}/images/serie/#{item.id}" width="#{item.coverWidth}" height="#{item.coverHeight}" />
                             <p class="serie-label">#{item.name}</p>
                         </a>
                     </div>
                 </ui:repeat>
-                
+
                 <ui:repeat var="item" value="#{searchViewForm.movies}">
                     <div class="movie-box">
                         <a href="movie.xhtml?id=#{item.id}">
                             <img class="movie-thumbnail" alt="#{item.name} Thumbnail"
-                                src="#{request.contextPath}/images/movie/#{item.id}" />
+                                src="#{request.contextPath}/images/movie/#{item.id}" width="#{item.coverWidth}" height="#{item.coverHeight}" />
                             <p class="movie-label">#{item.name}</p>
                         </a>
                     </div>

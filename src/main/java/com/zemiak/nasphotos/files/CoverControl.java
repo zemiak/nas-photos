@@ -27,7 +27,7 @@ public class CoverControl implements Serializable {
     public String getFolderCoverUrl(String path) {
         if (null != getFolderCoverFile(path)) {
             try {
-                return externalUrl + "rest/files/thumbnail?path=" + URLEncoder.encode(path, "UTF-8");
+                return externalUrl + "rest/files/folderThumbnails?path=" + URLEncoder.encode(path, "UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 throw new IllegalStateException("UTF-8 encoding not supported");
             }
@@ -42,7 +42,7 @@ public class CoverControl implements Serializable {
 
     public String getPictureCoverUrl(String path) {
         try {
-            return externalUrl + "rest/files/thumbnail?path=" + URLEncoder.encode(path, "UTF-8");
+            return externalUrl + "rest/files/thumbnails?path=" + URLEncoder.encode(path, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
             throw new IllegalStateException("UTF-8 encoding not supported");
         }

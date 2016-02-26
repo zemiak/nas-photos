@@ -76,7 +76,7 @@ public class FilesResource {
     }
 
     @GET
-    @Path("thumbnail")
+    @Path("thumbnails")
     public Response thumbnail(@QueryParam("path") @DefaultValue("") String path) {
         File file = thumbnails.getThumbnail(path);
         if (null == file) {
@@ -91,7 +91,7 @@ public class FilesResource {
     }
 
     @GET
-    @Path("folderThumbnail")
+    @Path("folderThumbnails")
     public Response folderThumbnail(@QueryParam("path") @DefaultValue("") String path) {
         File file = thumbnails.getThumbnail(path);
         if (null == file) {
@@ -117,8 +117,10 @@ public class FilesResource {
                 .add("version", versionService.getVersion())
                 .add("motd", "")
                 .build();
+        JsonObject cache = Json.createObjectBuilder().build();
         JsonObject data = Json.createObjectBuilder()
                 .add("version", version)
+                .add("cache", cache)
                 .build();
 
         return data;
