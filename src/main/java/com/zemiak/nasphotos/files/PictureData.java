@@ -10,6 +10,8 @@ public class PictureData {
     private String coverUrl;
     private String fullSizeUrl;
     private ImageInformation info;
+    private long coverWidth;
+    private long coverHeight;
 
     public PictureData() {
         info = new ImageInformation();
@@ -22,6 +24,8 @@ public class PictureData {
         coverUrl = pic.coverUrl;
         fullSizeUrl = pic.fullSizeUrl;
         info = new ImageInformation(pic.info);
+        coverWidth = pic.coverWidth;
+        coverHeight = pic.coverHeight;
     }
 
     public String getPath() {
@@ -90,5 +94,21 @@ public class PictureData {
 
     public void setWidth(long width) {
         info.setWidth(width);
+    }
+
+    public long getCoverWidth() {
+        return coverWidth;
+    }
+
+    public void setCoverWidth(long coverWidth) {
+        this.coverWidth = coverWidth;
+    }
+
+    public long getCoverHeight() {
+        return coverHeight;
+    }
+
+    public void setCoverHeight(long coverHeight) {
+        this.coverHeight = coverHeight;
     }
 }

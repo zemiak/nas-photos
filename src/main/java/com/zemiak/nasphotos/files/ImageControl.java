@@ -1,5 +1,6 @@
 package com.zemiak.nasphotos.files;
 
+import com.zemiak.nasphotos.thumbnails.ImageInformation;
 import com.zemiak.nasphotos.thumbnails.ImageMetadataControl;
 import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import java.io.File;
@@ -37,6 +38,11 @@ public class ImageControl {
 
         data.setCoverUrl(covers.getPictureCoverUrl(data.getPath()));
         data.setFullSizeUrl(covers.getFullSizeUrl(data.getPath()));
+
+        File thumbnail = Paths.get(tempPath, thumbnails.getThumbnailFileName(Paths.get(file.getAbsolutePath())) + ".jpg").toFile();
+        ImageInformation thumbnailInfo = metaData.getImageInfo(thumbnail);
+        data.setCoverWidth(thumbnailInfo.getWidth());
+        data.setCoverHeight(thumbnailInfo.getHeight());
 
         return data;
     }

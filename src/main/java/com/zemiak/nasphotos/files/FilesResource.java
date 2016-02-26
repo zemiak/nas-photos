@@ -1,6 +1,7 @@
 package com.zemiak.nasphotos.files;
 
 import com.zemiak.nasphotos.batch.ScheduledCacheRegeneration;
+import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import java.io.File;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -16,7 +17,10 @@ import javax.ws.rs.core.Response.Status;
 @Produces(MediaType.APPLICATION_JSON)
 public class FilesResource {
     @Inject
-    FileService fileService;
+    FileService files;
+
+    @Inject
+    ThumbnailService thumbnails;
 
     @Inject
     ScheduledCacheRegeneration cache;
@@ -28,10 +32,10 @@ public class FilesResource {
     @Path("list")
     public Response get(@QueryParam("path") @DefaultValue("") String path) {
         JsonArrayBuilder foldersArrayBuilder = Json.createArrayBuilder();
-        fileService.getFolders(path).stream().map(this::pictureDataToJsonObject).forEach(foldersArrayBuilder::add);
+        files.getFolders(path).stream().map(this::pictureDataToJsonObject).forEach(foldersArrayBuilder::add);
 
         JsonArrayBuilder filesArrayBuilder = Json.createArrayBuilder();
-        fileService.getPictures(path).stream().map(this::pictureDataToJsonObject).forEach(filesArrayBuilder::add);
+        files.getPictures(path).stream().map(this::pictureDataToJsonObject).forEach(filesArrayBuilder::add);
 
         JsonObject main = Json.createObjectBuilder()
                 .add("folders", foldersArrayBuilder.build())
@@ -53,42 +57,52 @@ public class FilesResource {
     @GET
     @Path("download")
     public Response download(@QueryParam("path") @DefaultValue("") String path) {
-        File file = fileService.getFile(path);
+        File file = files.getFile(path);
         if (null == file) {
             return Response.status(Status.GONE).build();
         }
 
-        String fileName = fileService.getFileName(path);
+        String fileName = files.getFileName(path);
         ResponseBuilder response = Response.ok((Object) file);
         response.header("Content-Disposition", "attachment; filename=" + fileName);
+
+        if (fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".jpeg")) {
+            response.header("Content-Type", "image/jpeg");
+        } else if (fileName.toLowerCase().endsWith(".png")) {
+            response.header("Content-Type", "image/png");
+        }
+
         return response.build();
     }
 
     @GET
     @Path("thumbnail")
     public Response thumbnail(@QueryParam("path") @DefaultValue("") String path) {
-        File file = fileService.getThumbnail(path);
+        File file = thumbnails.getThumbnail(path);
         if (null == file) {
             return Response.status(Status.GONE).build();
         }
 
-        String fileName = fileService.getFileName(path);
+        String fileName = files.getFileName(path);
         ResponseBuilder response = Response.ok((Object) file);
         response.header("Content-Disposition", "attachment; filename=" + fileName);
+        response.header("Content-Type", "image/jpeg");
         return response.build();
     }
 
     @GET
     @Path("folderThumbnail")
     public Response folderThumbnail(@QueryParam("path") @DefaultValue("") String path) {
-        File file = fileService.getThumbnail(path);
+        File file = thumbnails.getThumbnail(path);
         if (null == file) {
-            return Response.status(302).header("Location", fileService.getDefaultFolderCover()).build();
+            return Response.status(302).header("Location", files.getDefaultFolderCover()).build();
         }
 
-        String fileName = fileService.getFileName(path);
+        String fileName = files.getFileName(path);
         ResponseBuilder response = Response.ok((Object) file);
         response.header("Content-Disposition", "attachment; filename=" + fileName);
+        response.header("Content-Type", "image/jpeg");
+
         return response.build();
     }
 

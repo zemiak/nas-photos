@@ -11,7 +11,7 @@
             <f:viewParam name="path" value="#{photoViewForm.path}" />
             <f:viewAction action="#{photoViewForm.check}" />
         </f:metadata>
-        
+
         <ui:define name="title">Photos</ui:define>
         <ui:define name="header">
             <ui:fragment rendered="#{photoViewForm.backButton}">
@@ -19,7 +19,7 @@
                     <i class="fi-arrow-left nasphotos-back-icon"></i>
                 </a>
             </ui:fragment>
-            
+
             #{photoViewForm.title}
         </ui:define>
 
@@ -29,23 +29,23 @@
                     <div class="folder-box">
                         <a href="index.xhtml?path=#{item.path}">
                             <img alt="${item.title}"
-                                 src="#{item.coverUrl}" />
+                                 src="#{item.coverUrl}" width="#{item.coverWidth}" height="#{item.coverHeight}" />
                             <p>#{item.title}</p>
                         </a>
                     </div>
                 </ui:repeat>
-                
+
                 <ui:repeat var="item" value="#{photoViewForm.pictures}" varStatus="status">
                     <div class="photo-box">
                         <a href="javascript:NasphotosSwipe.show(#{status.index});">
                             <img alt="Picture ${item.title}"
-                                 src="#{item.coverUrl}" />
+                                 src="#{item.coverUrl}" width="#{item.coverWidth}" height="#{item.coverHeight}" />
                         </a>
                     </div>
                 </ui:repeat>
             </div>
         </ui:define>
-        
+
         <ui:define name="pictures">
             <script>
             // build items array
@@ -56,6 +56,6 @@
             ];
             </script>
         </ui:define>
-        
+
     </ui:composition>
 </html>

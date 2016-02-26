@@ -185,19 +185,6 @@ public class FileService {
         return file;
     }
 
-    public File getThumbnail(String path) {
-        File file = Paths.get(photoPath, path).toFile();
-        if (! file.canRead()) {
-            return null;
-        }
-
-        if (file.isDirectory()) {
-            return covers.getFolderCoverFile(path);
-        }
-
-        return file;
-    }
-
     public String getDefaultFolderCover() {
         return covers.getDefaultFolderCover();
     }

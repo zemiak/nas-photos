@@ -1,5 +1,6 @@
 package com.zemiak.nasphotos.thumbnails;
 
+import com.zemiak.nasphotos.files.CoverControl;
 import com.zemiak.nasphotos.files.FileService;
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +32,9 @@ public class ThumbnailService {
 
     @Inject
     ImageMetadataControl metaData;
+
+    @Inject
+    CoverControl covers;
 
     public void createThumbnails() {
         service.getRootFolderPaths().stream()
@@ -84,5 +88,19 @@ public class ThumbnailService {
         String dest = getThumbnailFileName(path);
         creator.create(path, tempPath, dest, metaData.getImageInfo(path.toFile()));
         LOG.log(Level.INFO, "Thumbnailed {0} -> {1}", new Object[]{path.toString(), tempPath + "/" + dest + ".jpg"});
+    }
+
+    public File getThumbnail(String pathName) {
+        Path path = Paths.get(photoPath, pathName);
+        File file = path.toFile();
+        if (! file.canRead()) {
+            return null;
+        }
+
+        if (file.isDirectory()) {
+            return covers.getFolderCoverFile(pathName);
+        }
+
+        return Paths.get(tempPath, getThumbnailFileName(path) + ".jpg").toFile();
     }
 }

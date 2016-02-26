@@ -3,16 +3,16 @@
 }
 
 .photo-box {
-    width: 150px;
-    height: 150px;
+    max-width: 150px;
+    max-height: 150px;
     margin-left: 9%;
     float: left;
     text-shadow:5px 5px 10px black;
 }
 
 .photo-box > a > img {
-    width:145px;
-    height:145px;
+    max-width:145px;
+    max-height:145px;
 }
 
 .folder-box {
@@ -50,7 +50,7 @@ a.item.small-icon-anchor {
 }
 
 i.fi-arrow-left.nasphotos-back-icon {
-    font-size: 1.25em; 
-    vertical-align: top; 
+    font-size: 1.25em;
+    vertical-align: top;
     color: green;
 }
