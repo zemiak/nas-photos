@@ -18,6 +18,10 @@ public class FolderControl implements Serializable {
         data.setTitle(-1 == pos ? title : title.substring(pos + 1));
         data.setCoverUrl(covers.getFolderCoverUrl(path));
         data.setFullSizeUrl(data.getCoverUrl());
+        data.setCoverWidth(ThumbnailSize.WIDTH);
+        data.setCoverHeight(ThumbnailSize.HEIGHT);
+        data.setWidth(ThumbnailSize.WIDTH);
+        data.setHeight(ThumbnailSize.HEIGHT);
 
         return data;
     }

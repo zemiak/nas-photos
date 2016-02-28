@@ -3,16 +3,17 @@
 }
 
 .photo-box {
-    margin-left: 9%;
+    margin-left: 15px;
+    margin-top: 11px;
     float: left;
-    text-shadow:5px 5px 10px black;
 }
 
 .photo-box > a > img {
 }
 
 .folder-box {
-    margin-left: 9%;
+    margin-left: 15px;
+    margin-top: 11px;
     float: left;
     text-shadow:5px 5px 10px black;
 }

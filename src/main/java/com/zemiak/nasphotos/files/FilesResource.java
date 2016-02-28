@@ -101,7 +101,12 @@ public class FilesResource {
         String fileName = files.getFileName(path);
         ResponseBuilder response = Response.ok((Object) file);
         response.header("Content-Disposition", "attachment; filename=" + fileName);
-        response.header("Content-Type", "image/jpeg");
+
+        if (fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".jpeg")) {
+            response.header("Content-Type", "image/jpeg");
+        } else if (fileName.toLowerCase().endsWith(".png")) {
+            response.header("Content-Type", "image/png");
+        }
 
         return response.build();
     }

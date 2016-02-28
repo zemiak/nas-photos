@@ -1,8 +1,8 @@
 /* global Presenter, Mustache */
 
 function FoldersTemplate_setSize(itemData, item) {
-    if (itemData.coverWidth != -1 && itemData.coverHeight != -1) {
-        if (itemData.coverWidth > itemData.coverHeight) {
+    if (itemData.width != -1 && itemData.height != -1) {
+        if (itemData.width > itemData.height) {
             item.width = Presenter.width;
             item.height = Presenter.height;
         } else {
@@ -38,6 +38,7 @@ var Template = function() {
 
     for (var i in serverData.files) {
         var itemData = serverData.files[i];
+        LOG.log(itemData);
 
         var item = {title: itemData.title,
             src: Presenter.options.BaseUrl + "files/thumbnails?path=" + encodeURIComponent(itemData.path),

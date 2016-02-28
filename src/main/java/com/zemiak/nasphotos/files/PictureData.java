@@ -111,4 +111,9 @@ public class PictureData {
     public void setCoverHeight(long coverHeight) {
         this.coverHeight = coverHeight;
     }
+
+    @Override
+    public String toString() {
+        return "PictureData{" + "path=" + path + ", title=" + title + ", file=" + file + ", coverUrl=" + coverUrl + ", fullSizeUrl=" + fullSizeUrl + ", info=" + info + ", coverWidth=" + coverWidth + ", coverHeight=" + coverHeight + '}';
+    }
 }
