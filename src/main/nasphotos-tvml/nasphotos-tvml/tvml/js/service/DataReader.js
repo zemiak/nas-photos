@@ -103,9 +103,17 @@ var DataReader = {
         var request = new XMLHttpRequest();
         request._folder = folder;
         request.responseType = "text";
+        request.timeout = 5000; // 5 seconds
+        request.ontimeout = function(){DataReader.timeout(request);};
+        request.onerror = function(){DataReader.timeout(request);};
         request.addEventListener("load", function(){DataReader.folderDataLoaded(request);});
         request.open("GET", DataReader.DATA_URL + "?path=" + encodeURIComponent(folder));
         request.send();
+    },
+
+    timeout: function(request) {
+        var errorDoc = createAlert("Data Loading Error", "Error reading the data files.");
+        navigationDocument.presentModal(errorDoc);
     },
 
     folderDataLoaded: function(that) {
