@@ -11,7 +11,7 @@ var Template = function() {
         var itemData = serverData.files[i];
 
         var item = {title: itemData.title,
-        src: Presenter.options.BaseUrl + "files/download?path=" + encodeURIComponent(itemData.path),
+        src: Presenter.options.BaseUrl + "files?path=" + encodeURIComponent(itemData.path),
             action: "Presenter.navigate('Photos')", width: itemData.width, height: itemData.height,
             index: i, count: serverData.files.length};
 

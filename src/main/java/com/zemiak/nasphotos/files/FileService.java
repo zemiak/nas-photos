@@ -24,10 +24,10 @@ public class FileService {
     String photoPath;
 
     @Inject
-    ImageControl images;
+    ImageReader images;
 
     @Inject
-    FolderControl folders;
+    FolderConverter folders;
 
     @Inject
     CoverControl covers;

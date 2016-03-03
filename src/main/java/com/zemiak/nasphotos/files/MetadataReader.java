@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.thumbnails;
+package com.zemiak.nasphotos.files;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
@@ -6,6 +6,7 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataException;
 import com.drew.metadata.exif.ExifIFD0Directory;
+import com.zemiak.nasphotos.thumbnails.ImageInformation;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +17,8 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 
-public class ImageMetadataControl {
-    private static final Logger LOG = Logger.getLogger(ImageMetadataControl.class.getName());
+public class MetadataReader {
+    private static final Logger LOG = Logger.getLogger(MetadataReader.class.getName());
 
     public ImageInformation getImageInfo(File file) {
         long width = -1, height = -1;

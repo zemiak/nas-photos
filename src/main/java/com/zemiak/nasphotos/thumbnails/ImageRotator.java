@@ -11,10 +11,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
-public class ImageRotationControl {
-    private static final Logger LOG = Logger.getLogger(ImageRotationControl.class.getName());
+public class ImageRotator {
+    private static final Logger LOG = Logger.getLogger(ImageRotator.class.getName());
 
-    public void create(Path original, Path destination, ImageInformation info) {
+    public void createRotatedVersion(Path original, Path destination, ImageInformation info) {
         BufferedImage img;
         try {
             img = ImageIO.read(original.toFile());

@@ -1,5 +1,6 @@
 package com.zemiak.nasphotos.thumbnails;
 
+import com.zemiak.nasphotos.files.MetadataReader;
 import com.zemiak.nasphotos.files.CoverControl;
 import com.zemiak.nasphotos.files.FileService;
 import java.io.File;
@@ -31,7 +32,7 @@ public class ThumbnailService {
     FileService service;
 
     @Inject
-    ImageMetadataControl metaData;
+    MetadataReader metaData;
 
     @Inject
     CoverControl covers;

@@ -1,11 +1,12 @@
 package com.zemiak.nasphotos.files;
 
+import com.zemiak.nasphotos.thumbnails.ThumbnailSize;
 import java.io.Serializable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
-public class FolderControl implements Serializable {
+public class FolderConverter implements Serializable {
     @Inject
     CoverControl covers;
 

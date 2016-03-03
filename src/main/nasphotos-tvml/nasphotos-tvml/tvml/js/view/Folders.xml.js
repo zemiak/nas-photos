@@ -29,7 +29,7 @@ var Template = function() {
     for (var i in serverData.folders) {
         var itemData = serverData.folders[i];
         var item = {title: itemData.title,
-            src: Presenter.options.BaseUrl + "files/folderThumbnails?path=" + encodeURIComponent(itemData.path),
+            src: Presenter.options.BaseUrl + "thumbnails/folders?path=" + encodeURIComponent(itemData.path),
             action: "DataReader.read('" + itemData.path + "');"};
 
         FoldersTemplate_setSize(itemData, item);
@@ -41,7 +41,7 @@ var Template = function() {
         LOG.log(itemData);
 
         var item = {title: itemData.title,
-            src: Presenter.options.BaseUrl + "files/thumbnails?path=" + encodeURIComponent(itemData.path),
+            src: Presenter.options.BaseUrl + "thumbnails?path=" + encodeURIComponent(itemData.path),
             action: "Presenter.navigate('Photos')"};
 
         FoldersTemplate_setSize(itemData, item);

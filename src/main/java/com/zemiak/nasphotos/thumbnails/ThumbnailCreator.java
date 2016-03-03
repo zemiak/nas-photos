@@ -30,7 +30,7 @@ public class ThumbnailCreator {
         h = h * ratio;
 
         if (info.isRotated()) {
-            BufferedImage rotated = ImageRotationControl.transformImage(img, info);
+            BufferedImage rotated = ImageRotator.transformImage(img, info);
 
             Path outputPath = Paths.get(folder, fileName + "-r.jpg");
             try {

@@ -1,7 +1,5 @@
 package com.zemiak.nasphotos.files;
 
-import com.zemiak.nasphotos.batch.ScheduledCacheRegeneration;
-import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import java.io.File;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -20,13 +18,27 @@ public class FilesResource {
     FileService files;
 
     @Inject
-    ThumbnailService thumbnails;
-
-    @Inject
-    ScheduledCacheRegeneration cache;
-
-    @Inject
     VersionService versionService;
+
+    @GET
+    public Response download(@QueryParam("path") @DefaultValue("") String path) {
+        File file = files.getFile(path);
+        if (null == file) {
+            return Response.status(Status.GONE).build();
+        }
+
+        String fileName = files.getFileName(path);
+        ResponseBuilder response = Response.ok((Object) file);
+        response.header("Content-Disposition", "attachment; filename=" + fileName);
+
+        if (fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".jpeg")) {
+            response.header("Content-Type", "image/jpeg");
+        } else if (fileName.toLowerCase().endsWith(".png")) {
+            response.header("Content-Type", "image/png");
+        }
+
+        return response.build();
+    }
 
     @GET
     @Path("list")
@@ -55,66 +67,11 @@ public class FilesResource {
     }
 
     @GET
-    @Path("download")
-    public Response download(@QueryParam("path") @DefaultValue("") String path) {
-        File file = files.getFile(path);
-        if (null == file) {
-            return Response.status(Status.GONE).build();
-        }
-
-        String fileName = files.getFileName(path);
-        ResponseBuilder response = Response.ok((Object) file);
-        response.header("Content-Disposition", "attachment; filename=" + fileName);
-
-        if (fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".jpeg")) {
-            response.header("Content-Type", "image/jpeg");
-        } else if (fileName.toLowerCase().endsWith(".png")) {
-            response.header("Content-Type", "image/png");
-        }
-
-        return response.build();
-    }
-
-    @GET
-    @Path("thumbnails")
-    public Response thumbnail(@QueryParam("path") @DefaultValue("") String path) {
-        File file = thumbnails.getThumbnail(path);
-        if (null == file) {
-            return Response.status(Status.GONE).build();
-        }
-
-        String fileName = files.getFileName(path);
-        ResponseBuilder response = Response.ok((Object) file);
-        response.header("Content-Disposition", "attachment; filename=" + fileName);
-        response.header("Content-Type", "image/jpeg");
-        return response.build();
-    }
-
-    @GET
-    @Path("folderThumbnails")
-    public Response folderThumbnail(@QueryParam("path") @DefaultValue("") String path) {
-        File file = thumbnails.getThumbnail(path);
-        if (null == file) {
-            return Response.status(302).header("Location", files.getDefaultFolderCover()).build();
-        }
-
-        String fileName = files.getFileName(path);
-        ResponseBuilder response = Response.ok((Object) file);
-        response.header("Content-Disposition", "attachment; filename=" + fileName);
-
-        if (fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".jpeg")) {
-            response.header("Content-Type", "image/jpeg");
-        } else if (fileName.toLowerCase().endsWith(".png")) {
-            response.header("Content-Type", "image/png");
-        }
-
-        return response.build();
-    }
-
-    @GET
-    @Path("thumbnails/refresh")
-    public void refreshThumbnails() {
-        cache.refreshImageCache();
+    @Path("data")
+    public Response getData() {
+        return Response
+                .ok(buildData())
+                .build();
     }
 
     private JsonObject buildData() {
@@ -129,13 +86,5 @@ public class FilesResource {
                 .build();
 
         return data;
-    }
-
-    @GET
-    @Path("data")
-    public Response getData() {
-        return Response
-                .ok(buildData())
-                .build();
     }
 }
