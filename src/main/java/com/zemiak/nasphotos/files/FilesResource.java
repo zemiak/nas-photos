@@ -18,7 +18,7 @@ public class FilesResource {
     FileService files;
 
     @Inject
-    VersionService versionService;
+    CacheDataReader cache;
 
     @GET
     public Response download(@QueryParam("path") @DefaultValue("") String path) {
@@ -44,10 +44,10 @@ public class FilesResource {
     @Path("list")
     public Response get(@QueryParam("path") @DefaultValue("") String path) {
         JsonArrayBuilder foldersArrayBuilder = Json.createArrayBuilder();
-        files.getFolders(path).stream().map(this::pictureDataToJsonObject).forEach(foldersArrayBuilder::add);
+        files.getFolders(path).stream().map(cache::pictureDataToJsonObject).forEach(foldersArrayBuilder::add);
 
         JsonArrayBuilder filesArrayBuilder = Json.createArrayBuilder();
-        files.getPictures(path).stream().map(this::pictureDataToJsonObject).forEach(filesArrayBuilder::add);
+        files.getPictures(path).stream().map(cache::pictureDataToJsonObject).forEach(filesArrayBuilder::add);
 
         JsonObject main = Json.createObjectBuilder()
                 .add("folders", foldersArrayBuilder.build())
@@ -55,15 +55,6 @@ public class FilesResource {
                 .build();
 
         return Response.ok(main).build();
-    }
-
-    private JsonObject pictureDataToJsonObject(PictureData data) {
-        return Json.createObjectBuilder()
-                .add("path", data.getPath())
-                .add("title", data.getTitle())
-                .add("width", data.getWidth())
-                .add("height", data.getHeight())
-                .build();
     }
 
     @GET
@@ -76,13 +67,13 @@ public class FilesResource {
 
     private JsonObject buildData() {
         JsonObject version = Json.createObjectBuilder()
-                .add("version", versionService.getVersion())
+                .add("version", cache.getVersion())
                 .add("motd", "")
                 .build();
-        JsonObject cache = Json.createObjectBuilder().build();
+        JsonObject dataCache = cache.getCache();
         JsonObject data = Json.createObjectBuilder()
                 .add("version", version)
-                .add("cache", cache)
+                .add("cache", dataCache)
                 .build();
 
         return data;

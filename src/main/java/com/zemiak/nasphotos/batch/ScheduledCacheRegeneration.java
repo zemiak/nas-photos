@@ -1,6 +1,6 @@
 package com.zemiak.nasphotos.batch;
 
-import com.zemiak.nasphotos.files.VersionService;
+import com.zemiak.nasphotos.files.CacheDataReader;
 import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,7 +19,7 @@ public class ScheduledCacheRegeneration {
     String tempPath;
 
     @Inject
-    VersionService version;
+    CacheDataReader cache;
 
     @Inject
     ThumbnailService thumbnails;
@@ -35,6 +35,7 @@ public class ScheduledCacheRegeneration {
 
         thumbnails.createThumbnails();
 
-        version.clearVersion();
+        cache.clearVersion();
+        cache.reload();
     }
 }

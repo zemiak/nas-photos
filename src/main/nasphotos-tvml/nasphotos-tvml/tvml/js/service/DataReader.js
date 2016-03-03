@@ -103,7 +103,7 @@ var DataReader = {
         var request = new XMLHttpRequest();
         request._folder = folder;
         request.responseType = "text";
-        request.timeout = 5000; // 5 seconds
+        request.timeout = 15000; // 15 seconds
         request.ontimeout = function(){DataReader.timeout(request);};
         request.onerror = function(){DataReader.timeout(request);};
         request.addEventListener("load", function(){DataReader.folderDataLoaded(request);});

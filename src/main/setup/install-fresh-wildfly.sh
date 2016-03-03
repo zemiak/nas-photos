@@ -13,4 +13,13 @@ unzip $WILDFLY.zip >/dev/null
 rm $WILDFLY.zip
 mv $WILDFLY $TARGET
 
+cd $TARGET/standalone/configuration
+rm standalone*.xml
+cp $PROJECT/src/main/setup/standalone-dev.xml ./standalone.xml
+ln -s standalone.xml standalone-full.xml
+ln -s standalone.xml standalone-full-ha.xml
+ln -s standalone.xml standalone-ha.xml
+cd ../../..
+
 ./$TARGET/bin/add-user.sh admin admin --silent
+cd $PROJECT
