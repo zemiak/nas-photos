@@ -169,7 +169,7 @@ public class MovieControl {
 
     private String getFullMovieSizeUrl(String path) {
         try {
-            return externalUrl + "movie?path=" + URLEncoder.encode(path, "UTF-8");
+            return externalUrl + "stream/" + URLEncoder.encode(path, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
             throw new IllegalStateException("UTF-8 encoding not supported");
         }
