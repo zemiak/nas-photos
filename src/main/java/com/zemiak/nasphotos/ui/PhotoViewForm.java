@@ -1,7 +1,6 @@
 package com.zemiak.nasphotos.ui;
 
-import com.zemiak.nasphotos.files.FileService;
-import com.zemiak.nasphotos.files.PictureData;
+import com.zemiak.nasphotos.files.*;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
@@ -14,21 +13,34 @@ public class PhotoViewForm implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    private FileService service;
+    FileService service;
+
+    @Inject
+    FolderControl folderControl;
+
+    @Inject
+    PictureControl pictureControl;
+
+    @Inject
+    MovieControl movieControl;
 
     private String path;
     private List<PictureData> folders;
     private List<PictureData> pictures;
+    private List<PictureData> movies;
+    private List<PictureData> livePhotos;
 
     public String check() {
         if (null == path || "/".equals(path)) {
             path = "";
         }
 
-        folders = service.getFolders(path);
-        pictures = service.getPictures(path);
+        folders = folderControl.getFolders(path);
+        pictures = pictureControl.getPictures(path);
+        movies = movieControl.getMovies(path);
+        livePhotos = movieControl.getLivePhotos(path);
 
-        if (folders.isEmpty() && pictures.isEmpty()) {
+        if (folders.isEmpty() && pictures.isEmpty() && livePhotos.isEmpty() && movies.isEmpty()) {
             JsfMessages.addErrorMessage("Path " + path + " is empty");
             return "index";
         }
@@ -42,6 +54,14 @@ public class PhotoViewForm implements Serializable {
 
     public List<PictureData> getPictures() {
         return pictures;
+    }
+
+    public List<PictureData> getMovies() {
+        return movies;
+    }
+
+    public List<PictureData> getLivePhotos() {
+        return livePhotos;
     }
 
     public Boolean getPicturesExist() {

@@ -3,7 +3,6 @@ package com.zemiak.nasphotos.files;
 import java.io.File;
 import javax.inject.Inject;
 import javax.json.Json;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -43,18 +42,7 @@ public class FilesResource {
     @GET
     @Path("list")
     public Response get(@QueryParam("path") @DefaultValue("") String path) {
-        JsonArrayBuilder foldersArrayBuilder = Json.createArrayBuilder();
-        files.getFolders(path).stream().map(cache::pictureDataToJsonObject).forEach(foldersArrayBuilder::add);
-
-        JsonArrayBuilder filesArrayBuilder = Json.createArrayBuilder();
-        files.getPictures(path).stream().map(cache::pictureDataToJsonObject).forEach(filesArrayBuilder::add);
-
-        JsonObject main = Json.createObjectBuilder()
-                .add("folders", foldersArrayBuilder.build())
-                .add("files", filesArrayBuilder.build())
-                .build();
-
-        return Response.ok(main).build();
+        return Response.ok(files.getList(path)).build();
     }
 
     @GET

@@ -5,18 +5,16 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 import javax.json.Json;
-import javax.json.JsonArrayBuilder;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
@@ -29,6 +27,9 @@ public class CacheDataReader {
 
     @Inject
     String photoPath;
+
+    @Inject
+    FolderControl folders;
 
     @Inject
     FileService service;
@@ -81,15 +82,6 @@ public class CacheDataReader {
         return digest;
     }
 
-    public JsonObject pictureDataToJsonObject(PictureData data) {
-        return Json.createObjectBuilder()
-                .add("path", data.getPath())
-                .add("title", data.getTitle())
-                .add("width", data.getWidth())
-                .add("height", data.getHeight())
-                .build();
-    }
-
     public JsonObject getCache() {
         if (null == cache) {
             buildCache();
@@ -100,35 +92,28 @@ public class CacheDataReader {
 
     private void buildCache() {
         JsonObjectBuilder builder = Json.createObjectBuilder();
-        service.getRootFolderPaths()
+        folders.getRootFolderPaths()
                 .stream()
-                .limit(2)
                 .forEach(folder -> this.processFolder(folder, builder));
 
         cache = builder.build();
     }
 
     private void processFolder(String folder, JsonObjectBuilder builder) {
-        Path path = Paths.get(folder);
-        List<PictureData> folders = service.getFolders(path.toString());
-        List<PictureData> pictures = service.getPictures(path.toString());
+        JsonObject list = service.getList(folder);
 
-        if (folders.isEmpty() && pictures.isEmpty()) {
+        if (list.getJsonArray("folders").isEmpty() && list.getJsonArray("files").isEmpty() &&
+                list.getJsonArray("movies").isEmpty() && list.getJsonArray("livePhotos").isEmpty()) {
             return;
         }
 
-        JsonArrayBuilder filesArrayBuilder = Json.createArrayBuilder();
-        pictures.stream().map(this::pictureDataToJsonObject).forEach(filesArrayBuilder::add);
+        builder.add(folder, list);
 
-        JsonArrayBuilder foldersArrayBuilder = Json.createArrayBuilder();
-        folders.stream().map(this::pictureDataToJsonObject).forEach(foldersArrayBuilder::add);
-
-        JsonObjectBuilder folderBuilder = Json.createObjectBuilder();
-        folderBuilder.add("folders", foldersArrayBuilder);
-        folderBuilder.add("files", filesArrayBuilder);
-        builder.add(path.toString(), folderBuilder);
-
-        folders.stream().forEach(folderData -> processFolder(folderData.getPath(), builder));
+        JsonArray folderArray = list.getJsonArray("folders");
+        for (int i = 0; i < list.size(); i++) {
+            JsonObject item = folderArray.getJsonObject(i);
+            processFolder(item.getString("path"), builder);
+        }
     }
 
     public void reload() {

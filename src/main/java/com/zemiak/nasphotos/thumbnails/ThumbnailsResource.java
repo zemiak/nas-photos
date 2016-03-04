@@ -1,8 +1,8 @@
 package com.zemiak.nasphotos.thumbnails;
 
 import com.zemiak.nasphotos.batch.ScheduledCacheRegeneration;
+import com.zemiak.nasphotos.files.CoverControl;
 import com.zemiak.nasphotos.files.FileService;
-import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import java.io.File;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -20,6 +20,9 @@ public class ThumbnailsResource {
 
     @Inject
     FileService files;
+
+    @Inject
+    CoverControl covers;
 
     @GET
     public Response thumbnail(@QueryParam("path") @DefaultValue("") String path) {
@@ -40,7 +43,7 @@ public class ThumbnailsResource {
     public Response folderThumbnail(@QueryParam("path") @DefaultValue("") String path) {
         File file = thumbnails.getThumbnail(path);
         if (null == file) {
-            return Response.status(302).header("Location", files.getDefaultFolderCover()).build();
+            return Response.status(302).header("Location", covers.getDefaultFolderCover()).build();
         }
 
         String fileName = files.getFileName(path);

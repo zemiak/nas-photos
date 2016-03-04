@@ -4,17 +4,12 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-public class FileServiceTest {
-    FileService service;
-
-    @Before
-    public void setUp() {
-        service = new FileService();
-        service.photoPath = "/Volumes/media/Pictures/";
-    }
+public class PictureControlTest {
+    private final static String PHOTO_PATH = "/Volumes/media/Pictures/";
 
     @Test
     public void isNotImage() throws Exception {
@@ -31,7 +26,7 @@ public class FileServiceTest {
             "/Volumes/media/Pictures/YYMM Svadba/website/.Fotografie_files/P4010496.jpg",
             "/Volumes/media/Pictures/YYMM Svadba/website/Fotografie_files/.P4010496.jpg",
         }).stream().forEach(picFileName -> {
-            assertFalse(picFileName, FileService.isImage(Paths.get(picFileName), service.photoPath));
+            assertFalse(picFileName, PictureControl.isImage(Paths.get(picFileName), PHOTO_PATH));
         });
     }
 
@@ -42,7 +37,7 @@ public class FileServiceTest {
             "/Volumes/media/Pictures/2089/1202 Vianoce/IMG_2302.JPG",
             "/Volumes/media/Pictures/2012/1203 Maruska/IMG_0126.JPG"
         }).stream().forEach(picFileName -> {
-            assertTrue(picFileName, FileService.isImage(Paths.get(picFileName), service.photoPath));
+            assertTrue(picFileName, PictureControl.isImage(Paths.get(picFileName), PHOTO_PATH));
         });
     }
 
@@ -55,7 +50,7 @@ public class FileServiceTest {
             "/Volumes/media/Pictures/2014/01 Deti/photo.Png",
             "/Volumes/media/Pictures/2089/12 Vianoce/IMG_2302.JPG"
         }).stream().forEach(picFileName -> {
-            assertFalse(picFileName, FileService.isHidden(Paths.get(picFileName)));
+            assertFalse(picFileName, PictureControl.isHidden(Paths.get(picFileName)));
         });
     }
 
@@ -71,7 +66,7 @@ public class FileServiceTest {
             "/Volumes/media/Pictures/YYMM Svadba/website/.Fotografie_files/P4010496.jpg",
             "/Volumes/media/Pictures/YYMM Svadba/website/Fotografie_files/.P4010496.jpg"
         }).stream().forEach(picFileName -> {
-            assertTrue(picFileName, FileService.isHidden(Paths.get(picFileName)));
+            assertTrue(picFileName, PictureControl.isHidden(Paths.get(picFileName)));
         });
     }
 }

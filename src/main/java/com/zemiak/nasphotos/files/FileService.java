@@ -1,191 +1,67 @@
 package com.zemiak.nasphotos.files;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileVisitOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 
 @Stateless
 public class FileService {
     private static final Logger LOG = Logger.getLogger(FileService.class.getName());
-    private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.jpg|\\.png)");
 
     @Inject
-    String photoPath;
+    FolderControl folders;
 
     @Inject
-    ImageReader images;
+    PictureControl pictures;
 
     @Inject
-    FolderConverter folders;
+    MovieControl movies;
 
-    @Inject
-    CoverControl covers;
+    public JsonObject getList(String path) {
+        JsonArrayBuilder foldersArrayBuilder = Json.createArrayBuilder();
+        folders.getFolders(path).stream().map(this::pictureDataToJsonObject).forEach(foldersArrayBuilder::add);
 
-    public List<PictureData> getFolders(String pathName) {
-        if (isRoot(pathName)) {
-            return getRootFolders();
-        }
+        JsonArrayBuilder filesArrayBuilder = Json.createArrayBuilder();
+        pictures.getPictures(path).stream().map(this::pictureDataToJsonObject).forEach(filesArrayBuilder::add);
 
-        List<String> files;
-        try {
-            files = Files.walk(Paths.get(photoPath, pathName), 1, FileVisitOption.FOLLOW_LINKS)
-                    .skip(1)
-                    .filter(path -> path.toFile().isDirectory())
-                    .filter(path -> path.toFile().canRead())
-                    .filter(path -> !isHidden(path))
-                    .map(path -> Paths.get(pathName, path.getFileName().toString()).toString())
-                    .collect(Collectors.toList());
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, "getFolders IO/Exception" + ex.getMessage(), ex);
-            return Collections.EMPTY_LIST;
-        }
+        JsonArrayBuilder livePhotosArrayBuilder = Json.createArrayBuilder();
+        movies.getLivePhotos(path).stream().map(this::pictureDataToJsonObject).forEach(livePhotosArrayBuilder::add);
 
-        Collections.sort(files);
-        return files
-                .stream()
-                .map(n -> folders.convertFolderToPictureData(n))
-                .collect(Collectors.toList());
+        JsonArrayBuilder moviesArrayBuilder = Json.createArrayBuilder();
+        movies.getMovies(path).stream().map(this::pictureDataToJsonObject).forEach(moviesArrayBuilder::add);
+
+        JsonObject main = Json.createObjectBuilder()
+                .add("folders", foldersArrayBuilder.build())
+                .add("files", filesArrayBuilder.build())
+                .add("movies", moviesArrayBuilder.build())
+                .add("livePhotos", livePhotosArrayBuilder.build())
+                .build();
+
+        return main;
     }
 
-    public List<String> getRootFolderPaths() {
-        List<String> files;
-        try {
-            files = Files.walk(Paths.get(photoPath), 1, FileVisitOption.FOLLOW_LINKS)
-                    .skip(1)
-                    .filter(path -> path.toFile().isDirectory())
-                    .filter(path -> path.toFile().canRead())
-                    .filter(path -> !isHidden(path))
-                    .map(path -> path.getFileName().toString())
-                    .filter(fileName -> fileName.length() == 4)
-                    .collect(Collectors.toList());
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, "getRootFolders IO/Exception" + ex.getMessage(), ex);
-            return Collections.EMPTY_LIST;
-        }
-
-        return files;
+    public JsonObject pictureDataToJsonObject(PictureData data) {
+        return Json.createObjectBuilder()
+                .add("path", data.getPath())
+                .add("title", data.getTitle())
+                .add("width", data.getWidth())
+                .add("height", data.getHeight())
+                .build();
     }
 
-    private List<PictureData> getRootFolders() {
-        List<String> files = getRootFolderPaths();
-
-        Collections.sort(files, Collections.reverseOrder());
-        return files
-                .stream()
-                .map(n -> folders.convertFolderToPictureData(n))
-                .collect(Collectors.toList());
-    }
-
-    public List<PictureData> getPictures(String pathName) {
-        if (isRoot(pathName)) {
-            return Collections.EMPTY_LIST;
-        }
-
-        List<String> files;
-        try {
-            files = Files.walk(Paths.get(photoPath, pathName), 1, FileVisitOption.FOLLOW_LINKS)
-                    .skip(1)
-                    .filter(path -> !path.toFile().isDirectory())
-                    .filter(path -> path.toFile().canRead())
-                    .filter(path -> isImage(path, photoPath))
-                    .map(path -> path.getFileName().toString())
-                    .collect(Collectors.toList());
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, "getPictures IO/Exception" + ex.getMessage(), ex);
-            return Collections.EMPTY_LIST;
-        }
-
-        Collections.sort(files);
-        return files
-                .stream()
-                .map(n -> images.getImage(Paths.get(photoPath, pathName, n).toFile(), pathName))
-                .map(this::switchWidthAndHeightIfRotated)
-                .collect(Collectors.toList());
-    }
-
-    public PictureData switchWidthAndHeightIfRotated(PictureData pic) {
-        PictureData newPic = new PictureData(pic);
-
-        if (1 != pic.getOrientation()) {
-            newPic.setWidth(pic.getHeight());
-            newPic.setHeight(pic.getWidth());
-        }
-
-        return newPic;
-    }
-
-    public static boolean isImage(Path path, String rootPath) {
-        if (isHidden(path)) {
-            System.err.println("isImage: hidden");
-            return false;
-        }
-
-        String name = path.toAbsolutePath().toString();
-        if (name.startsWith(rootPath)) {
-            name = name.substring(rootPath.length());
-        }
-        if (name.startsWith("/")) {
-            name = name.substring(1);
-        }
-
-        boolean matches = VALID_PICTURE.matcher(name.toLowerCase()).matches();
-        if (! matches) {
-            System.err.println("Not a valid pic name: " + name.toLowerCase());
-        }
-
-        return matches;
-    }
-
-    public static boolean isHidden(Path path) {
-        String name;
-
-        for (int i = 0; i < path.getNameCount(); i++) {
-            name = path.getName(i).toString();
-            if (name.startsWith(".") || name.startsWith("_")) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public String getFileName(String path) {
-        return Paths.get(path).getFileName().toString();
-    }
-
-    private boolean isRoot(String path) {
+    public static boolean isRoot(String path) {
         return null == path || "".equals(path) || "/".equals(path);
     }
 
     public File getFile(String path) {
-        File file = Paths.get(photoPath, path).toFile();
-        if (! file.canRead()) {
-            return null;
-        }
-
-        if (file.isDirectory()) {
-            return covers.getFolderCoverFile(path);
-        }
-
-        if (images.isRotated(file)) {
-            file = images.getRotatedFilePath(file).toFile();
-        }
-
-        return file;
+        return pictures.getFile(path);
     }
 
-    public String getDefaultFolderCover() {
-        return covers.getDefaultFolderCover();
+    public String getFileName(String path) {
+        return pictures.getFileName(path);
     }
 }

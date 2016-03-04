@@ -1,8 +1,9 @@
 package com.zemiak.nasphotos.thumbnails;
 
-import com.zemiak.nasphotos.files.MetadataReader;
 import com.zemiak.nasphotos.files.CoverControl;
-import com.zemiak.nasphotos.files.FileService;
+import com.zemiak.nasphotos.files.FolderControl;
+import com.zemiak.nasphotos.files.MetadataReader;
+import com.zemiak.nasphotos.files.PictureControl;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -29,7 +30,7 @@ public class ThumbnailService {
     ThumbnailCreator creator;
 
     @Inject
-    FileService service;
+    FolderControl folders;
 
     @Inject
     MetadataReader metaData;
@@ -38,7 +39,7 @@ public class ThumbnailService {
     CoverControl covers;
 
     public void createThumbnails() {
-        service.getRootFolderPaths().stream()
+        folders.getRootFolderPaths().stream()
                 .map(folderPath -> Paths.get(photoPath, folderPath))
                 .forEach(this::createThumbnails);
     }
@@ -48,8 +49,8 @@ public class ThumbnailService {
             Files.walk(rootPath, FileVisitOption.FOLLOW_LINKS)
                 .filter(path -> !path.toFile().isDirectory())
                 .filter(path -> path.toFile().canRead())
-                .filter(path -> !FileService.isHidden(path))
-                .filter(path -> FileService.isImage(path, photoPath))
+                .filter(path -> !PictureControl.isHidden(path))
+                .filter(path -> PictureControl.isImage(path, photoPath))
                 .filter(path -> !isThumbnailCreated(path))
                 .forEach(this::create);
         } catch (IOException ex) {
