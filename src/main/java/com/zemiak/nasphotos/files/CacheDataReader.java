@@ -100,7 +100,10 @@ public class CacheDataReader {
 
     private void buildCache() {
         JsonObjectBuilder builder = Json.createObjectBuilder();
-        service.getRootFolderPaths().stream().forEach(folder -> this.processFolder(folder, builder));
+        service.getRootFolderPaths()
+                .stream()
+                .limit(2)
+                .forEach(folder -> this.processFolder(folder, builder));
 
         cache = builder.build();
     }
@@ -120,8 +123,10 @@ public class CacheDataReader {
         JsonArrayBuilder foldersArrayBuilder = Json.createArrayBuilder();
         folders.stream().map(this::pictureDataToJsonObject).forEach(foldersArrayBuilder::add);
 
-        builder.add("folders", foldersArrayBuilder);
-        builder.add("files", filesArrayBuilder);
+        JsonObjectBuilder folderBuilder = Json.createObjectBuilder();
+        folderBuilder.add("folders", foldersArrayBuilder);
+        folderBuilder.add("files", filesArrayBuilder);
+        builder.add(path.toString(), folderBuilder);
 
         folders.stream().forEach(folderData -> processFolder(folderData.getPath(), builder));
     }
