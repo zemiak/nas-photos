@@ -68,7 +68,7 @@ public class PictureControl {
 
     public static boolean isImage(Path path, String rootPath) {
         if (isHidden(path)) {
-            System.err.println("isImage: hidden");
+            System.err.println("isImage: hidden: " + path.toString());
             return false;
         }
 

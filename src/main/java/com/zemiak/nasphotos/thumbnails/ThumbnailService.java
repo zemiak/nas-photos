@@ -1,9 +1,6 @@
 package com.zemiak.nasphotos.thumbnails;
 
-import com.zemiak.nasphotos.files.CoverControl;
-import com.zemiak.nasphotos.files.FolderControl;
-import com.zemiak.nasphotos.files.MetadataReader;
-import com.zemiak.nasphotos.files.PictureControl;
+import com.zemiak.nasphotos.files.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -38,6 +35,12 @@ public class ThumbnailService {
     @Inject
     CoverControl covers;
 
+    @Inject
+    MovieThumbnailCreator movieThumbnails;
+
+    @Inject
+    MovieControl movies;
+
     public void createThumbnails() {
         folders.getRootFolderPaths().stream()
                 .map(folderPath -> Paths.get(photoPath, folderPath))
@@ -50,15 +53,20 @@ public class ThumbnailService {
                 .filter(path -> !path.toFile().isDirectory())
                 .filter(path -> path.toFile().canRead())
                 .filter(path -> !PictureControl.isHidden(path))
-                .filter(path -> PictureControl.isImage(path, photoPath))
                 .filter(path -> !isThumbnailCreated(path))
-                .forEach(this::create);
+                .forEach(path -> {
+                    if (PictureControl.isImage(path, photoPath)) {
+                        this.createPictureThumbnail(path);
+                    } else if (movies.isMovieFile(path)) {
+                        this.createMovieThumbnail(path);
+                    }
+                });
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "createThumbnails IO/Exception" + ex.getMessage(), ex);
         }
     }
 
-    public String getThumbnailFileName(Path path) {
+    public static String getThumbnailFileName(Path path) {
         String fileName = path.toAbsolutePath().toString();
 
         MessageDigest digest;
@@ -86,9 +94,15 @@ public class ThumbnailService {
         return file.isFile() && file.canRead();
     }
 
-    private void create(Path path) {
+    private void createPictureThumbnail(Path path) {
         String dest = getThumbnailFileName(path);
         creator.create(path, tempPath, dest, metaData.getImageInfo(path.toFile()));
+        LOG.log(Level.INFO, "Thumbnailed {0} -> {1}", new Object[]{path.toString(), tempPath + "/" + dest + ".jpg"});
+    }
+
+    private void createMovieThumbnail(Path path) {
+        String dest = getThumbnailFileName(path);
+        movieThumbnails.create(path, tempPath, dest);
         LOG.log(Level.INFO, "Thumbnailed {0} -> {1}", new Object[]{path.toString(), tempPath + "/" + dest + ".jpg"});
     }
 

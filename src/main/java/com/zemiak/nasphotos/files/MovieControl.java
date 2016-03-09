@@ -23,13 +23,12 @@ import javax.inject.Inject;
 
 public class MovieControl {
     private static final Logger LOG = Logger.getLogger(MovieControl.class.getName());
-    private static final Pattern VALID_MOVIE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.mov|\\.mp4)");
+    private static final Pattern VALID_MOVIE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.mov|\\.mp4|\\.m4v)");
 
     @Inject String photoPath;
     @Inject CoverControl covers;
     @Inject String externalUrl;
     @Inject String tempPath;
-    @Inject ThumbnailService thumbnails;
     @Inject MetadataReader metaData;
 
     public List<PictureData> getMovies(String pathName) {
@@ -47,7 +46,7 @@ public class MovieControl {
                     .map(path -> path.getFileName().toString())
                     .collect(Collectors.toList());
         } catch (IOException ex) {
-            LOG.log(Level.SEVERE, "getPictures IO/Exception" + ex.getMessage(), ex);
+            LOG.log(Level.SEVERE, "getMovies IO/Exception" + ex.getMessage(), ex);
             return Collections.EMPTY_LIST;
         }
 
@@ -58,7 +57,7 @@ public class MovieControl {
                 .collect(Collectors.toList());
     }
 
-    public List<PictureData> getLivePhotos(String pathName) {
+    public List<LivePhotoData> getLivePhotos(String pathName) {
         if (FileService.isRoot(pathName)) {
             return Collections.EMPTY_LIST;
         }
@@ -73,7 +72,7 @@ public class MovieControl {
                     .map(path -> path.getFileName().toString())
                     .collect(Collectors.toList());
         } catch (IOException ex) {
-            LOG.log(Level.SEVERE, "getPictures IO/Exception" + ex.getMessage(), ex);
+            LOG.log(Level.SEVERE, "getLivePhotos IO/Exception" + ex.getMessage(), ex);
             return Collections.EMPTY_LIST;
         }
 
@@ -81,12 +80,17 @@ public class MovieControl {
         return files
                 .stream()
                 .map(n -> getPictureData(Paths.get(photoPath, pathName, n).toFile(), pathName))
+                .peek(n -> System.err.println("::" + Paths.get(photoPath, n.getPath())))
+                .map(data -> {
+                    data.setImagePath(getPictureNameAssociatedToMovie(Paths.get(photoPath, data.getPath())));
+                    return data;
+                })
                 .collect(Collectors.toList());
     }
 
-    private boolean isMovieFile(Path path) {
+    public boolean isMovieFile(Path path) {
         if (PictureControl.isHidden(path)) {
-            System.err.println("isMovieFile: hidden");
+            System.err.println("isMovieFile: hidden " + path.toString());
             return false;
         }
 
@@ -117,16 +121,23 @@ public class MovieControl {
         Optional<String> found = Arrays.asList("jpg", "JPG", "png", "PNG").stream()
                 .filter(ext -> pictureExists(nameWithoutExt, ext))
                 .findFirst();
+
         if (found.isPresent()) {
-            return found.get();
+            name = nameWithoutExt.substring(photoPath.length());
+            return name + "." + found.get();
         }
 
-        String nameWithoutExt2 = name + "-2";
+        if (! nameWithoutExt.endsWith("-2")) {
+            return null;
+        }
+
+        String nameWithoutExt2 = name.substring(0, name.length() - 2);
         found = Arrays.asList("jpg", "JPG", "png", "PNG").stream()
                 .filter(ext -> pictureExists(nameWithoutExt2, ext))
                 .findFirst();
 
-        return found.isPresent() ? found.get() : null;
+        name = nameWithoutExt2.substring(photoPath.length());
+        return found.isPresent() ? name + "." + found.get() : null;
     }
 
     private boolean pictureExists(String name, String ext) {
@@ -134,12 +145,12 @@ public class MovieControl {
         return (null != file && file.canRead());
     }
 
-    private PictureData getPictureData(File file, String relativePath) {
+    private LivePhotoData getPictureData(File file, String relativePath) {
         if (null == file) {
             return null;
         }
 
-        PictureData data = new PictureData();
+        LivePhotoData data = new LivePhotoData();
         data.setFile(file);
         data.setPath(relativePath + "/" + file.getName());
 
@@ -151,7 +162,7 @@ public class MovieControl {
         data.setCoverUrl(covers.getMovieCoverUrl(data.getPath()));
         data.setFullSizeUrl(getFullMovieSizeUrl(data.getPath()));
 
-        File thumbnail = Paths.get(tempPath, thumbnails.getThumbnailFileName(Paths.get(file.getAbsolutePath())) + ".jpg").toFile();
+        File thumbnail = Paths.get(tempPath, ThumbnailService.getThumbnailFileName(Paths.get(file.getAbsolutePath())) + ".jpg").toFile();
         ImageInformation thumbnailInfo = metaData.getImageInfo(thumbnail);
 
         if (thumbnailInfo.getWidth() > thumbnailInfo.getHeight()) {

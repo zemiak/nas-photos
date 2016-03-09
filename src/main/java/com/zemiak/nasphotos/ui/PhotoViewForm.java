@@ -28,7 +28,7 @@ public class PhotoViewForm implements Serializable {
     private List<PictureData> folders;
     private List<PictureData> pictures;
     private List<PictureData> movies;
-    private List<PictureData> livePhotos;
+    private List<LivePhotoData> livePhotos;
 
     public String check() {
         if (null == path || "/".equals(path)) {
@@ -60,7 +60,7 @@ public class PhotoViewForm implements Serializable {
         return movies;
     }
 
-    public List<PictureData> getLivePhotos() {
+    public List<LivePhotoData> getLivePhotos() {
         return livePhotos;
     }
 

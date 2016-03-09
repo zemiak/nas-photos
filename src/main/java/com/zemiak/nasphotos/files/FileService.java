@@ -29,7 +29,7 @@ public class FileService {
         pictures.getPictures(path).stream().map(this::pictureDataToJsonObject).forEach(filesArrayBuilder::add);
 
         JsonArrayBuilder livePhotosArrayBuilder = Json.createArrayBuilder();
-        movies.getLivePhotos(path).stream().map(this::pictureDataToJsonObject).forEach(livePhotosArrayBuilder::add);
+        movies.getLivePhotos(path).stream().map(this::livePhotoDataToJsonObject).forEach(livePhotosArrayBuilder::add);
 
         JsonArrayBuilder moviesArrayBuilder = Json.createArrayBuilder();
         movies.getMovies(path).stream().map(this::pictureDataToJsonObject).forEach(moviesArrayBuilder::add);
@@ -42,6 +42,16 @@ public class FileService {
                 .build();
 
         return main;
+    }
+
+    private JsonObject livePhotoDataToJsonObject(LivePhotoData data) {
+        return Json.createObjectBuilder()
+                .add("path", data.getPath())
+                .add("imagePath", data.getImagePath())
+                .add("title", data.getTitle())
+                .add("width", data.getWidth())
+                .add("height", data.getHeight())
+                .build();
     }
 
     public JsonObject pictureDataToJsonObject(PictureData data) {

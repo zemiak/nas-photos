@@ -26,10 +26,15 @@ public class MetadataReader {
 
         try {
             Dimension dimension = getDimensions(file);
+            if (null == dimension) {
+                return null;
+            }
+
             width = Math.round(dimension.getWidth());
             height = Math.round(dimension.getHeight());
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
+            return null;
         }
 
         try {
@@ -50,6 +55,11 @@ public class MetadataReader {
 
     private Dimension getDimensions(File file) throws IOException {
         try (ImageInputStream in = ImageIO.createImageInputStream(file)){
+            if (null == in) {
+                LOG.log(Level.SEVERE, "Cannot get a reader for file {0}", file.toString());
+                return null;
+            }
+
             final Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
             if (readers.hasNext()) {
                 ImageReader reader = readers.next();

@@ -111,7 +111,13 @@ public class CacheDataReader {
 
         JsonArray folderArray = list.getJsonArray("folders");
         for (int i = 0; i < list.size(); i++) {
-            JsonObject item = folderArray.getJsonObject(i);
+            JsonObject item;
+            try {
+                item = folderArray.getJsonObject(i);
+            } catch (IndexOutOfBoundsException ex) {
+                continue;
+            }
+
             processFolder(item.getString("path"), builder);
         }
     }
