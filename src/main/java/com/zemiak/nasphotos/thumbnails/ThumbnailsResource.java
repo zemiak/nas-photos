@@ -60,6 +60,12 @@ public class ThumbnailsResource {
     }
 
     @GET
+    @Path("movies")
+    public Response movieThumbnail(@QueryParam("path") @DefaultValue("") String path) {
+        return thumbnail(path);
+    }
+
+    @GET
     @Path("refresh")
     public void refreshThumbnails() {
         cache.refreshImageCache();

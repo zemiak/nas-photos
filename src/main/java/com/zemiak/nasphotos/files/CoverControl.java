@@ -55,4 +55,12 @@ public class CoverControl implements Serializable {
             throw new IllegalStateException("UTF-8 encoding not supported");
         }
     }
+
+    public String getPictureFullSizeUrl(String path) {
+        try {
+            return externalUrl + "rest/files?path=" + URLEncoder.encode(path, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            throw new IllegalStateException("UTF-8 encoding not supported");
+        }
+    }
 }

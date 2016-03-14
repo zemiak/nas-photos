@@ -63,10 +63,15 @@ public class MovieThumbnailCreator {
         try {
             CommandLine.execCmd(ffmpegPath, params);
 
+            if (! new File(imageFileName).isFile()) {
+                throw new IllegalStateException("Image file does not exist");
+            }
+
             LOG.log(Level.INFO, "Generated thumbnail {0} ...", imageFileName);
         } catch (IllegalStateException | InterruptedException | IOException ex) {
             LOG.log(Level.SEVERE, "DID NOT generate thumbnail {0}: {1} ...",
                     new Object[]{imageFileName, ex});
+            throw new RuntimeException(ex);
         }
     }
 

@@ -80,9 +80,11 @@ public class MovieControl {
         return files
                 .stream()
                 .map(n -> getPictureData(Paths.get(photoPath, pathName, n).toFile(), pathName))
-                .peek(n -> System.err.println("::" + Paths.get(photoPath, n.getPath())))
                 .map(data -> {
-                    data.setImagePath(getPictureNameAssociatedToMovie(Paths.get(photoPath, data.getPath())));
+                    Path path = Paths.get(photoPath, data.getPath());
+                    String picturePath = getPictureNameAssociatedToMovie(path);
+                    data.setImageUrl(covers.getPictureFullSizeUrl(picturePath));
+                    data.setInfo(metaData.getImageInfo(Paths.get(photoPath, picturePath).toFile()));
                     return data;
                 })
                 .collect(Collectors.toList());
@@ -90,7 +92,7 @@ public class MovieControl {
 
     public boolean isMovieFile(Path path) {
         if (PictureControl.isHidden(path)) {
-            System.err.println("isMovieFile: hidden " + path.toString());
+            LOG.log(Level.FINE, "isMovieFile: hidden {0}", path.toString());
             return false;
         }
 
@@ -140,8 +142,13 @@ public class MovieControl {
                 .filter(ext -> pictureExists(nameWithoutExt2, ext))
                 .findFirst();
 
-        name = nameWithoutExt2.substring(photoPath.length());
-        return found.isPresent() ? name + "." + found.get() : null;
+        name = found.isPresent() ? nameWithoutExt2 + "." + found.get() : null;
+
+        if (null != name) {
+            name = name.substring(photoPath.length());
+        }
+
+        return name;
     }
 
     private boolean pictureExists(String name, String ext) {
@@ -162,6 +169,7 @@ public class MovieControl {
         name = name.contains("/") ? name.substring(name.lastIndexOf("/") + 1) : name;
         name = name.contains(".") ? name.substring(0, name.indexOf(".")) : name;
         data.setTitle(name);
+        data.setInfo(metaData.getImageInfo(file));
 
         data.setCoverUrl(covers.getMovieCoverUrl(data.getPath()));
         data.setFullSizeUrl(getFullMovieSizeUrl(data.getPath()));
@@ -177,7 +185,9 @@ public class MovieControl {
             data.setCoverHeight(Math.min(ThumbnailSize.WIDTH, thumbnailInfo.getHeight()));
         }
 
-        data.setInfo(metaData.getImageInfo(thumbnail));
+        if (null == data.getInfo()) {
+            data.setInfo(thumbnailInfo);
+        }
 
         return data;
     }

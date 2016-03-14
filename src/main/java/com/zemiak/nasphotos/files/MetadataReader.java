@@ -24,6 +24,12 @@ public class MetadataReader {
         long width = -1, height = -1;
         int orientation = 1;
 
+        if (! file.isFile()) {
+            throw new RuntimeException("File " + file.getAbsolutePath() + " does not exist");
+        }
+
+
+
         try {
             Dimension dimension = getDimensions(file);
             if (null == dimension) {

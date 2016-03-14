@@ -79,7 +79,7 @@ public class ImageManipulation {
             System.out.println("The tex watermark is added to the image.");
 
         } catch (IOException ex) {
-            System.err.println(ex);
+            LOG.log(Level.SEVERE, "Watermarking error for " + sourceImageFile.getAbsolutePath(), ex);
         }
     }
 }

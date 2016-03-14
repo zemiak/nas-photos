@@ -47,7 +47,7 @@ public class FileService {
     private JsonObject livePhotoDataToJsonObject(LivePhotoData data) {
         return Json.createObjectBuilder()
                 .add("path", data.getPath())
-                .add("imagePath", data.getImagePath())
+                .add("imagePath", data.getImageUrl())
                 .add("title", data.getTitle())
                 .add("width", data.getWidth())
                 .add("height", data.getHeight())

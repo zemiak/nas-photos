@@ -1,13 +1,13 @@
 package com.zemiak.nasphotos.files;
 
 public class LivePhotoData extends PictureData {
-    private String imagePath;
+    private String imageUrl;
 
-    public String getImagePath() {
-        return imagePath;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImageUrl(String imagePath) {
+        this.imageUrl = imagePath;
     }
 }

@@ -4,8 +4,6 @@ import com.zemiak.nasphotos.thumbnails.ImageInformation;
 import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import com.zemiak.nasphotos.thumbnails.ThumbnailSize;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.inject.Inject;
@@ -41,8 +39,8 @@ public class ImageReader {
         data.setTitle(name);
         data.setInfo(metaData.getImageInfo(file));
 
-        data.setCoverUrl(covers.getMovieCoverUrl(data.getPath()));
-        data.setFullSizeUrl(getFullSizeUrl(data.getPath()));
+        data.setCoverUrl(covers.getPictureCoverUrl(data.getPath()));
+        data.setFullSizeUrl(covers.getPictureFullSizeUrl(data.getPath()));
 
         File thumbnail = Paths.get(tempPath, thumbnails.getThumbnailFileName(Paths.get(file.getAbsolutePath())) + ".jpg").toFile();
         ImageInformation thumbnailInfo = metaData.getImageInfo(thumbnail);
@@ -70,13 +68,5 @@ public class ImageReader {
     public boolean isRotated(File file) {
         File rotatedFile = getRotatedFilePath(file).toFile();
         return rotatedFile.isFile() && rotatedFile.canRead();
-    }
-
-    public String getFullSizeUrl(String path) {
-        try {
-            return externalUrl + "rest/files/download?path=" + URLEncoder.encode(path, "UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            throw new IllegalStateException("UTF-8 encoding not supported");
-        }
     }
 }
