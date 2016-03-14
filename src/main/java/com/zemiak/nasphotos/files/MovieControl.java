@@ -68,7 +68,7 @@ public class MovieControl {
                     .skip(1)
                     .filter(path -> !path.toFile().isDirectory())
                     .filter(path -> path.toFile().canRead())
-                    .filter(path -> isMovieFile(path) && pictureAssociatedToMovieExists(path))
+                    .filter(this::isLivePhotoMovieFile)
                     .map(path -> path.getFileName().toString())
                     .collect(Collectors.toList());
         } catch (IOException ex) {
@@ -104,6 +104,10 @@ public class MovieControl {
 
         boolean matches = VALID_MOVIE.matcher(name.toLowerCase()).matches();
         return matches;
+    }
+
+    public boolean isLivePhotoMovieFile(Path path) {
+        return isMovieFile(path) && pictureAssociatedToMovieExists(path);
     }
 
     private boolean pictureAssociatedToMovieExists(Path path) {

@@ -43,6 +43,18 @@
                         </a>
                     </div>
                 </ui:repeat>
+                
+                <ui:repeat var="item" value="#{photoViewForm.livePhotos}" varStatus="status">
+                    <video class="photo-box" controls poster="${item.coverUrl}">
+                        <source src="#{item.fullSizeUrl}" type="video/mp4" />
+                    </video>
+                </ui:repeat>
+                
+                <ui:repeat var="item" value="#{photoViewForm.movies}" varStatus="status">
+                    <video class="photo-box" controls poster="${item.coverUrl}">
+                        <source src="#{item.fullSizeUrl}" type="video/mp4" />
+                    </video>
+                </ui:repeat>
             </div>
         </ui:define>
 
@@ -51,6 +63,10 @@
             // build items array
             window.photoswipe_items = [
                 <ui:repeat var="item" value="#{photoViewForm.pictures}">
+                {src: '#{item.fullSizeUrl}', w: #{item.width}, h: #{item.height} },
+                </ui:repeat>
+        
+                <ui:repeat var="item" value="#{photoViewForm.livePhotos}">
                 {src: '#{item.fullSizeUrl}', w: #{item.width}, h: #{item.height} },
                 </ui:repeat>
             ];
