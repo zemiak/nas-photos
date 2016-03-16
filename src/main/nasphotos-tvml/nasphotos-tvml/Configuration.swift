@@ -13,6 +13,10 @@ class Configuration {
         return config["BaseUrl"]!
     }
 
+    func getMovieUrl() -> String {
+        return config["MovieUrl"]!
+    }
+
     func getEnvironment() -> String {
         return config["Environment"]!
     }

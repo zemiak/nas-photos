@@ -79,7 +79,7 @@ var DataReader = {
     },
 
     showMessage: function() {
-//        var errorDoc = createAlert("Dáta o fotkách aktualizované", PhotoData.version.version + ": " + PhotoData.version.motd);
+//        var errorDoc = createAlert("Dáta o fotkách boli aktualizované", PhotoData.version.version + ": " + PhotoData.version.motd);
 //        navigationDocument.presentModal(errorDoc);
 
         if (null === DataReader.currentFolder) {
@@ -94,7 +94,7 @@ var DataReader = {
 
         if (PhotoData.cache[folder]) {
             LOG.log("DataReader.read: Cache hit for folder " + folder);
-            Presenter.navigateReplace("Folders");
+            Presenter.navigate("Folders");
             return;
         }
 

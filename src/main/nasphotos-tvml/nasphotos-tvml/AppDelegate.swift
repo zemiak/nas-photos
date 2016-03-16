@@ -26,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         appControllerContext.launchOptions["Version"] = config.getVersion() + (config.isDevelopment() ? " DEV" : "");
         appControllerContext.launchOptions["BaseUrl"] = config.getBaseUrl();
+        appControllerContext.launchOptions["MovieUrl"] = config.getMovieUrl();
         appController = TVApplicationController(context: appControllerContext, window: self.window, delegate: self)
         
         return true

@@ -6,5 +6,7 @@
 	<string>Production</string>
 	<key>BaseUrl</key>
 	<string>http://lenovo-server.local:8081/nasphotos/rest/</string>
+	<key>MovieUrl</key>
+	<string>http://lenovo-server.local:8081/nasphotos/stream/</string>
 </dict>
 </plist>

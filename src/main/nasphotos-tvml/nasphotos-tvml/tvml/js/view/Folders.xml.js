@@ -45,8 +45,8 @@ function FoldersTemplate_fillMovies(data, movies) {
         var itemData = movies[i];
 
         var item = {title: itemData.title,
-            src: Presenter.options.BaseUrl + "thumbnails/movies?path=" + encodeURIComponent(itemData.coverUrl),
-            action: "Player.play('" + itemData.path + "')"};
+            src: Presenter.options.BaseUrl + "thumbnails/movies?path=" + encodeURIComponent(itemData.path),
+            action: "MoviePlayer.play('" + Presenter.options.MovieUrl + encodeURIComponent(itemData.path) + "')"};
 
         FoldersTemplate_setSize(itemData, item);
         data.photos.push(item);
@@ -58,8 +58,8 @@ function FoldersTemplate_fillLivePhotos(data, livePhotos) {
         var itemData = livePhotos[i];
 
         var item = {title: itemData.title,
-            src: Presenter.options.BaseUrl + "thumbnails/movies?path=" + encodeURIComponent(itemData.cocerUrl),
-            action: "Player.play('" + itemData.path + "')"};
+            src: Presenter.options.BaseUrl + "thumbnails/movies?path=" + encodeURIComponent(itemData.path),
+            action: "MoviePlayer.play('" + Presenter.options.MovieUrl + encodeURIComponent(itemData.path) + "')"};
 
         FoldersTemplate_setSize(itemData, item);
         data.photos.push(item);
