@@ -13,6 +13,7 @@ App.onLaunch = function(options) {
         resourceLoaderLocal.scriptUrl("service/Presenter.js"),
         resourceLoaderLocal.scriptUrl("service/ApplicationStorage.js"),
         resourceLoaderLocal.scriptUrl("service/DataReader.js"),
+        resourceLoaderLocal.scriptUrl("service/Player.js"),
         resourceLoaderLocal.scriptUrl("lib/mustache.min.js")
     ];
 

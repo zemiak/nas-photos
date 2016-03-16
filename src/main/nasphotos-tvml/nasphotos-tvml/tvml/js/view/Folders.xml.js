@@ -1,4 +1,4 @@
-/* global Presenter, Mustache */
+/* global Presenter, Mustache, DataReader, LOG, resourceLoaderLocal */
 
 function FoldersTemplate_setSize(itemData, item) {
     if (itemData.width != -1 && itemData.height != -1) {
@@ -15,6 +15,57 @@ function FoldersTemplate_setSize(itemData, item) {
     }
 }
 
+function FoldersTemplate_fillFolders(data, folders) {
+    for (var i in folders) {
+        var itemData = folders[i];
+        var item = {title: itemData.title,
+            src: Presenter.options.BaseUrl + "thumbnails/folders?path=" + encodeURIComponent(itemData.path),
+            action: "DataReader.read('" + itemData.path + "');"};
+
+        FoldersTemplate_setSize(itemData, item);
+        data.folders.push(item);
+    }
+}
+
+function FoldersTemplate_fillPictures(data, pictures) {
+    for (var i in pictures) {
+        var itemData = pictures[i];
+
+        var item = {title: itemData.title,
+            src: Presenter.options.BaseUrl + "thumbnails?path=" + encodeURIComponent(itemData.path),
+            action: "Presenter.navigate('Photos')"};
+
+        FoldersTemplate_setSize(itemData, item);
+        data.photos.push(item);
+    }
+}
+
+function FoldersTemplate_fillMovies(data, movies) {
+    for (var i in movies) {
+        var itemData = movies[i];
+
+        var item = {title: itemData.title,
+            src: Presenter.options.BaseUrl + "thumbnails/movies?path=" + encodeURIComponent(itemData.coverUrl),
+            action: "Player.play('" + itemData.path + "')"};
+
+        FoldersTemplate_setSize(itemData, item);
+        data.photos.push(item);
+    }
+}
+
+function FoldersTemplate_fillLivePhotos(data, livePhotos) {
+    for (var i in livePhotos) {
+        var itemData = livePhotos[i];
+
+        var item = {title: itemData.title,
+            src: Presenter.options.BaseUrl + "thumbnails/movies?path=" + encodeURIComponent(itemData.cocerUrl),
+            action: "Player.play('" + itemData.path + "')"};
+
+        FoldersTemplate_setSize(itemData, item);
+        data.photos.push(item);
+    }
+}
+
 var Template = function() {
     var folder = DataReader.currentFolder;
     LOG.log("Preparing template for folder " + folder);
@@ -26,27 +77,10 @@ var Template = function() {
         data.title = "Roky";
     }
 
-    for (var i in serverData.folders) {
-        var itemData = serverData.folders[i];
-        var item = {title: itemData.title,
-            src: Presenter.options.BaseUrl + "thumbnails/folders?path=" + encodeURIComponent(itemData.path),
-            action: "DataReader.read('" + itemData.path + "');"};
-
-        FoldersTemplate_setSize(itemData, item);
-        data.folders.push(item);
-    }
-
-    for (var i in serverData.files) {
-        var itemData = serverData.files[i];
-        LOG.log(itemData);
-
-        var item = {title: itemData.title,
-            src: Presenter.options.BaseUrl + "thumbnails?path=" + encodeURIComponent(itemData.path),
-            action: "Presenter.navigate('Photos')"};
-
-        FoldersTemplate_setSize(itemData, item);
-        data.photos.push(item);
-    }
+    FoldersTemplate_fillFolders(data, serverData.folders);
+    FoldersTemplate_fillPictures(data, serverData.files);
+    FoldersTemplate_fillMovies(data, serverData.movies);
+    FoldersTemplate_fillLivePhotos(data, serverData.livePhotos);
 
     var template = resourceLoaderLocal.loadBundleResource("templates/Folders.mustache");
     var html = Mustache.render(template, data);

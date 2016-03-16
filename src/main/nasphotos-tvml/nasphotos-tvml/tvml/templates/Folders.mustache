@@ -18,6 +18,18 @@
                         <img src="{{&src}}" width="{{width}}" height="{{height}}" />
                     </lockup>
                 {{/photos}}
+
+                {{#movies}}
+                    <lockup action="{{&action}}">
+                        <img src="{{&src}}" width="{{width}}" height="{{height}}" />
+                    </lockup>
+                {{/movies}}
+
+                {{#livePhotos}}
+                    <lockup action="{{&action}}">
+                        <img src="{{&src}}" width="{{width}}" height="{{height}}" />
+                    </lockup>
+                {{/livePhotos}}
             </section>
         </grid></collectionList>
     </stackTemplate>
