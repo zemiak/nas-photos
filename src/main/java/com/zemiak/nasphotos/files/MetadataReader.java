@@ -21,14 +21,13 @@ public class MetadataReader {
     private static final Logger LOG = Logger.getLogger(MetadataReader.class.getName());
 
     public ImageInformation getImageInfo(File file) {
-        long width = -1, height = -1;
+        long width, height;
         int orientation = 1;
 
         if (! file.isFile()) {
-            throw new RuntimeException("File " + file.getAbsolutePath() + " does not exist");
+            LOG.severe(file.getAbsolutePath() + "File does not exist: ");
+            return null;
         }
-
-
 
         try {
             Dimension dimension = getDimensions(file);

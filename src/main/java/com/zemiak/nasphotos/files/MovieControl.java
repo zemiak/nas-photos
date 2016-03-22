@@ -153,7 +153,7 @@ public class MovieControl {
 
     private boolean pictureExists(String name, String ext) {
         File file = new File(name + "." + ext);
-        return (null != file && file.canRead());
+        return file.canRead();
     }
 
     private LivePhotoData getPictureData(File file, String relativePath) {
@@ -176,17 +176,18 @@ public class MovieControl {
 
         File thumbnail = Paths.get(tempPath, ThumbnailService.getThumbnailFileName(Paths.get(file.getAbsolutePath())) + ".jpg").toFile();
         ImageInformation thumbnailInfo = metaData.getImageInfo(thumbnail);
+        if (null != thumbnailInfo) {
+            if (thumbnailInfo.getWidth() > thumbnailInfo.getHeight()) {
+                data.setCoverWidth(Math.min(ThumbnailSize.WIDTH, thumbnailInfo.getWidth()));
+                data.setCoverHeight(Math.min(ThumbnailSize.HEIGHT, thumbnailInfo.getHeight()));
+            } else {
+                data.setCoverWidth(Math.min(ThumbnailSize.HEIGHT, thumbnailInfo.getWidth()));
+                data.setCoverHeight(Math.min(ThumbnailSize.WIDTH, thumbnailInfo.getHeight()));
+            }
 
-        if (thumbnailInfo.getWidth() > thumbnailInfo.getHeight()) {
-            data.setCoverWidth(Math.min(ThumbnailSize.WIDTH, thumbnailInfo.getWidth()));
-            data.setCoverHeight(Math.min(ThumbnailSize.HEIGHT, thumbnailInfo.getHeight()));
-        } else {
-            data.setCoverWidth(Math.min(ThumbnailSize.HEIGHT, thumbnailInfo.getWidth()));
-            data.setCoverHeight(Math.min(ThumbnailSize.WIDTH, thumbnailInfo.getHeight()));
-        }
-
-        if (null == data.getInfo()) {
-            data.setInfo(thumbnailInfo);
+            if (null == data.getInfo()) {
+                data.setInfo(thumbnailInfo);
+            }
         }
 
         return data;
