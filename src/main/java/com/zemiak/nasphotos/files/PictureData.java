@@ -45,15 +45,15 @@ public class PictureData {
     }
 
     public long getWidth() {
-        return info.getWidth();
+        return null == info ? -1 : info.getWidth();
     }
 
     public long getHeight() {
-        return info.getHeight();
+        return null == info ? -1 : info.getHeight();
     }
 
     public int getOrientation() {
-        return info.getOrientation();
+        return null == info ? 1 : info.getOrientation();
     }
 
     public File getFile() {

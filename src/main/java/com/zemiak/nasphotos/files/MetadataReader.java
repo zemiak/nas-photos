@@ -25,7 +25,7 @@ public class MetadataReader {
         int orientation = 1;
 
         if (! file.isFile()) {
-            LOG.severe(file.getAbsolutePath() + "File does not exist: ");
+            LOG.log(Level.SEVERE, "File does not exist: {0}", file.getAbsolutePath());
             return null;
         }
 
