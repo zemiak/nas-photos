@@ -103,7 +103,7 @@ public class ThumbnailService {
     private void createMovieThumbnail(Path path) {
         String dest = getThumbnailFileName(path);
         movieThumbnails.create(path, tempPath, dest);
-        LOG.log(Level.INFO, "Thumbnailed {0} -> {1}", new Object[]{path.toString(), tempPath + "/" + dest + ".jpg"});
+        LOG.log(Level.INFO, "Thumbnailed/movie {0} -> {1}", new Object[]{path.toString(), tempPath + "/" + dest + ".jpg"});
     }
 
     public File getThumbnail(String pathName) {

@@ -21,7 +21,6 @@ public class MovieThumbnailCreator {
 
     @Inject private String ffmpegPath;
     @Inject private String tempPath;
-    @Inject Boolean developmentSystem;
     @Inject MovieControl movies;
     @Inject ImageManipulation manipulator;
 
@@ -29,7 +28,7 @@ public class MovieThumbnailCreator {
         Path outputPath = Paths.get(folder, fileName + ".jpg");
         String movieFileName = original.toAbsolutePath().toString();
         String imageFileName = outputPath.toAbsolutePath().toString();
-        String ext = getExtension(imageFileName).toLowerCase();
+        String ext = getExtension(movieFileName).toLowerCase();
 
         if (ext.equals("mp4") || ext.equals("m4v") || ext.equals("mov")) {
             createFfmpegThumbnail(movieFileName, imageFileName);
@@ -43,6 +42,8 @@ public class MovieThumbnailCreator {
             } catch (IOException ex) {
                 LOG.log(Level.SEVERE, "Cannot watermark thumbnail for {0}", original.toString());
             }
+        } else {
+            LOG.log(Level.WARNING, "Unknown movie type {0}", movieFileName);
         }
     }
 
@@ -77,7 +78,7 @@ public class MovieThumbnailCreator {
 
     private void watermark(Path outputPath, String text) throws IOException {
         File source = outputPath.toFile();
-        File target = File.createTempFile("w", ".jpg", new File(tempPath));
+        File target = File.createTempFile("watered-", ".jpg", new File(tempPath));
 
         manipulator.watermark(text, source, target);
 

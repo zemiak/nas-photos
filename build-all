@@ -6,7 +6,11 @@ mvn -q clean || exit 1
 mvn -q package  || exit 3
 if [ $? -eq 0 ]
 then
-    rm ~/bin/wildfly/standalone/deployments/nasphotos.war*
-    cp ./target/nasphotos.war ~/bin/wildfly/standalone/deployments/
+    cp ./target/nasphotos.war ../docker/containers/nasphotos/
+    cd ../docker/containers/nasphotos
+    docker stop nasphotos
+    docker rm nasphotos
+    docker build -t nasphotos . && sh run-local.sh
+    cd ../../../nasphotos
     echo Deployed.
 fi
