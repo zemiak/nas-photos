@@ -1,6 +1,7 @@
 package com.zemiak.nasphotos.thumbnails;
 
 import com.zemiak.nasphotos.commandline.CommandLine;
+import com.zemiak.nasphotos.files.MetadataReader;
 import com.zemiak.nasphotos.files.MovieControl;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +24,8 @@ public class MovieThumbnailCreator {
     @Inject private String tempPath;
     @Inject MovieControl movies;
     @Inject ImageManipulation manipulator;
+    @Inject MediaInfoControl mediaInfo;
+    @Inject MetadataReader metaData;
 
     public void create(Path original, String folder, String fileName) {
         Path outputPath = Paths.get(folder, fileName + ".jpg");
@@ -34,6 +37,8 @@ public class MovieThumbnailCreator {
             createFfmpegThumbnail(movieFileName, imageFileName);
 
             try {
+                rotateIfNeeded(original.toAbsolutePath(), outputPath);
+
                 if (movies.isLivePhotoMovieFile(original)) {
                     watermark(outputPath, "**>>");
                 } else {
@@ -78,9 +83,32 @@ public class MovieThumbnailCreator {
 
     private void watermark(Path outputPath, String text) throws IOException {
         File source = outputPath.toFile();
-        File target = File.createTempFile("watered-", ".jpg", new File(tempPath));
+        File target = File.createTempFile("watermarked-", ".jpg", new File(tempPath));
 
         manipulator.watermark(text, source, target);
+
+        if (! source.delete()) {
+            throw new IOException("Cannot delete " + source.toString());
+        }
+
+        LOG.log(Level.INFO, "Watermarked movie thumbnail {0} with {1}", new Object[]{outputPath.toString(), text});
+
+        Files.move(Paths.get(target.getAbsolutePath()), outputPath, StandardCopyOption.ATOMIC_MOVE);
+    }
+
+    private void rotateIfNeeded(Path movie, Path outputPath) throws IOException {
+        if (!mediaInfo.isRotated(movie)) {
+            return;
+        }
+
+        File source = outputPath.toFile();
+        File target = File.createTempFile("rotated-", ".jpg", new File(tempPath));
+
+        ImageInformation info = metaData.getImageInfo(outputPath.toFile());
+        info.setOrientation(ImageInformation.ROTATED_CLOCKWISE);
+        manipulator.rotate(source.toPath(), outputPath, info);
+
+        LOG.log(Level.INFO, "Rotated movie thumbnail {0}", new Object[]{outputPath.toString()});
 
         if (! source.delete()) {
             throw new IOException("Cannot delete " + source.toString());

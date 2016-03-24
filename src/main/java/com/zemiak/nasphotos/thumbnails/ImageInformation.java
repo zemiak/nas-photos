@@ -3,6 +3,8 @@ package com.zemiak.nasphotos.thumbnails;
 import java.awt.geom.AffineTransform;
 
 public class ImageInformation {
+    public static int ROTATED_CLOCKWISE = 6;
+
     private int orientation;
     private long width;
     private long height;
@@ -50,6 +52,10 @@ public class ImageInformation {
 
     public long getHeight() {
         return height;
+    }
+
+    public void setOrientation(int orientation) {
+        this.orientation = orientation;
     }
 
     public AffineTransform getAffineTransform() {
