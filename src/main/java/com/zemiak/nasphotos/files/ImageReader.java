@@ -45,14 +45,18 @@ public class ImageReader {
         File thumbnail = Paths.get(tempPath, thumbnails.getThumbnailFileName(Paths.get(file.getAbsolutePath())) + ".jpg").toFile();
         ImageInformation thumbnailInfo = metaData.getImageInfo(thumbnail);
 
-        if (thumbnailInfo.getWidth() > thumbnailInfo.getHeight()) {
-            data.setCoverWidth(Math.min(ThumbnailSize.WIDTH, thumbnailInfo.getWidth()));
-            data.setCoverHeight(Math.min(ThumbnailSize.HEIGHT, thumbnailInfo.getHeight()));
+        if (null != thumbnailInfo) {
+            if (thumbnailInfo.getWidth() > thumbnailInfo.getHeight()) {
+                data.setCoverWidth(Math.min(ThumbnailSize.WIDTH, thumbnailInfo.getWidth()));
+                data.setCoverHeight(Math.min(ThumbnailSize.HEIGHT, thumbnailInfo.getHeight()));
+            } else {
+                data.setCoverWidth(Math.min(ThumbnailSize.HEIGHT, thumbnailInfo.getWidth()));
+                data.setCoverHeight(Math.min(ThumbnailSize.WIDTH, thumbnailInfo.getHeight()));
+            }
         } else {
-            data.setCoverWidth(Math.min(ThumbnailSize.HEIGHT, thumbnailInfo.getWidth()));
-            data.setCoverHeight(Math.min(ThumbnailSize.WIDTH, thumbnailInfo.getHeight()));
+            data.setCoverWidth(ThumbnailSize.WIDTH);
+            data.setCoverHeight(ThumbnailSize.HEIGHT);
         }
-
 
         return data;
     }
