@@ -65,5 +65,9 @@ var Presenter = {
 
     getCurrentDocument: function() {
         return navigationDocument.documents[navigationDocument.documents.length - 1];
+    },
+
+    navigatePhotos: function(index) {
+
     }
 };

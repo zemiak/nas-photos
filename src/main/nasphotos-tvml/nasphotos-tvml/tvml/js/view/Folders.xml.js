@@ -33,7 +33,7 @@ function FoldersTemplate_fillPictures(data, pictures) {
 
         var item = {title: itemData.title,
             src: Presenter.options.BaseUrl + "thumbnails?path=" + encodeURIComponent(itemData.path),
-            action: "Presenter.navigate('Photos')"};
+            action: "PhotoViewer.showPhoto(" + i + ")"};
 
         FoldersTemplate_setSize(itemData, item);
         data.photos.push(item);
