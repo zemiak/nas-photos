@@ -19,9 +19,13 @@ import javax.inject.Inject;
 @Dependent
 public class MovieThumbnailCreator {
     private static final Logger LOG = Logger.getLogger(MovieThumbnailCreator.class.getName());
+    private static final String LIVEPHOTO_WATERMARK = "live.png";
+    private static final String MOVIE_WATERMARK = "movie.png";
 
-    @Inject private String ffmpegPath;
-    @Inject private String tempPath;
+    @Inject String ffmpegPath;
+    @Inject String tempPath;
+    @Inject String compositePath;
+    @Inject String watermarkPath;
     @Inject MovieControl movies;
     @Inject ImageManipulation manipulator;
     @Inject MediaInfoControl mediaInfo;
@@ -40,9 +44,9 @@ public class MovieThumbnailCreator {
                 rotateIfNeeded(original.toAbsolutePath(), outputPath);
 
                 if (movies.isLivePhotoMovieFile(original)) {
-                    watermark(outputPath, "**>>");
+                    watermark(outputPath, LIVEPHOTO_WATERMARK);
                 } else {
-                    watermark(outputPath, "||>>");
+                    watermark(outputPath, MOVIE_WATERMARK);
                 }
             } catch (IOException ex) {
                 LOG.log(Level.SEVERE, "Cannot watermark thumbnail for {0}", original.toString());
@@ -81,17 +85,26 @@ public class MovieThumbnailCreator {
         }
     }
 
-    private void watermark(Path outputPath, String text) throws IOException {
+    private void watermark(Path outputPath, String watermark) throws IOException {
         File source = outputPath.toFile();
         File target = File.createTempFile("watermarked-", ".jpg", new File(tempPath));
 
-        manipulator.watermark(text, source, target);
+        final List<String> params = Arrays.asList("-gravity", "center", watermarkPath + watermark,
+                outputPath.toAbsolutePath().toString(), target.getAbsolutePath());
+
+        try {
+            CommandLine.execCmd(compositePath, params);
+        } catch (InterruptedException | IllegalStateException ex) {
+            LOG.log(Level.SEVERE, "DID NOT generate watermark {0}: {1} ...",
+                    new Object[]{target.getAbsolutePath(), ex});
+            throw new RuntimeException(ex);
+        }
 
         if (! source.delete()) {
             throw new IOException("Cannot delete " + source.toString());
         }
 
-        LOG.log(Level.INFO, "Watermarked movie thumbnail {0} with {1}", new Object[]{outputPath.toString(), text});
+        LOG.log(Level.INFO, "Watermarked movie thumbnail {0} with {1}", new Object[]{outputPath.toString(), watermark});
 
         Files.move(Paths.get(target.getAbsolutePath()), outputPath, StandardCopyOption.REPLACE_EXISTING);
     }
