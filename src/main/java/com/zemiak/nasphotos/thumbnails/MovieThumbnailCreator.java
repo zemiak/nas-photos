@@ -63,7 +63,7 @@ public class MovieThumbnailCreator {
 
     private void createFfmpegThumbnail(String movieFileName, String imageFileName) {
         final List<String> params = Arrays.asList(
-            "-s", "180", "-i", movieFileName, "-o", imageFileName
+            "-s", "256", "-i", movieFileName, "-o", imageFileName
         );
 
         try {
@@ -93,7 +93,7 @@ public class MovieThumbnailCreator {
 
         LOG.log(Level.INFO, "Watermarked movie thumbnail {0} with {1}", new Object[]{outputPath.toString(), text});
 
-        Files.move(Paths.get(target.getAbsolutePath()), outputPath, StandardCopyOption.ATOMIC_MOVE);
+        Files.move(Paths.get(target.getAbsolutePath()), outputPath, StandardCopyOption.REPLACE_EXISTING);
     }
 
     private void rotateIfNeeded(Path movie, Path outputPath) throws IOException {
@@ -106,7 +106,7 @@ public class MovieThumbnailCreator {
 
         ImageInformation info = metaData.getImageInfo(outputPath.toFile());
         info.setOrientation(ImageInformation.ROTATED_CLOCKWISE);
-        manipulator.rotate(source.toPath(), outputPath, info);
+        manipulator.rotate(source.toPath(), target.toPath(), info);
 
         LOG.log(Level.INFO, "Rotated movie thumbnail {0}", new Object[]{outputPath.toString()});
 
@@ -114,6 +114,6 @@ public class MovieThumbnailCreator {
             throw new IOException("Cannot delete " + source.toString());
         }
 
-        Files.move(Paths.get(target.getAbsolutePath()), outputPath, StandardCopyOption.ATOMIC_MOVE);
+        Files.move(Paths.get(target.getAbsolutePath()), outputPath, StandardCopyOption.REPLACE_EXISTING);
     }
 }

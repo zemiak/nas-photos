@@ -11,8 +11,8 @@
 .movie-box {
     margin-left: 15px;
     margin-top: 11px;
-    width: 150px;
-    height: 112px;
+    max-height: 256px;
+    max-width: 191px;
     float: left;
 }
 
