@@ -39,7 +39,7 @@
 
     <profiles>
         <profile>
-            <id>dev</id>
+            <id>localdev</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -47,7 +47,19 @@
             <build>
                 <resources>
                     <resource>
-                        <directory>src/dev/resources</directory>
+                        <directory>src/main/config/localdev/resources</directory>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        
+        <profile>
+            <id>machine</id>
+
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/config/machine/resources</directory>
                     </resource>
                 </resources>
             </build>
@@ -59,7 +71,7 @@
             <build>
                 <resources>
                     <resource>
-                        <directory>src/prod/resources</directory>
+                        <directory>src/main/config/prod/resources</directory>
                     </resource>
                 </resources>
             </build>

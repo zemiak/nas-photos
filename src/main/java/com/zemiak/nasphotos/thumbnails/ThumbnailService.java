@@ -87,7 +87,7 @@ public class ThumbnailService {
         }
 
         return result.toString();
-     }
+    }
 
     private Boolean isThumbnailCreated(Path path) {
         File file = Paths.get(tempPath, getThumbnailFileName(path) + ".jpg").toFile();
