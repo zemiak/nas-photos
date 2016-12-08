@@ -7,8 +7,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class FolderConverter implements Serializable {
-    @Inject
-    CoverControl covers;
+    @Inject CoverControl covers;
 
     public PictureData convertFolderToPictureData(String path) {
         PictureData data = new PictureData();

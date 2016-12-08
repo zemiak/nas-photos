@@ -1,6 +1,7 @@
 package com.zemiak.nasphotos.thumbnails;
 
 import com.zemiak.nasphotos.files.*;
+import com.zemiak.nasphotos.lookup.ConfigurationProvider;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -17,29 +18,14 @@ import javax.inject.Inject;
 public class ThumbnailService {
     private static final Logger LOG = Logger.getLogger(ThumbnailService.class.getName());
 
-    @Inject
-    String photoPath;
-
-    @Inject
-    String tempPath;
-
-    @Inject
-    ThumbnailCreator creator;
-
-    @Inject
-    FolderControl folders;
-
-    @Inject
-    MetadataReader metaData;
-
-    @Inject
-    CoverControl covers;
-
-    @Inject
-    MovieThumbnailCreator movieThumbnails;
-
-    @Inject
-    MovieControl movies;
+    final private String photoPath = ConfigurationProvider.getPhotoPath();
+    final private String tempPath = ConfigurationProvider.getTempPath();
+    @Inject ThumbnailCreator creator;
+    @Inject FolderControl folders;
+    @Inject MetadataReader metaData;
+    @Inject CoverControl covers;
+    @Inject MovieThumbnailCreator movieThumbnails;
+    @Inject MovieControl movies;
 
     public void createThumbnails() {
         folders.getRootFolderPaths().stream()

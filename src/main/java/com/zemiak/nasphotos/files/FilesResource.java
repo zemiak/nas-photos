@@ -13,11 +13,8 @@ import javax.ws.rs.core.Response.Status;
 @Path("files")
 @Produces(MediaType.APPLICATION_JSON)
 public class FilesResource {
-    @Inject
-    FileService files;
-
-    @Inject
-    CacheDataReader cache;
+    @Inject FileService files;
+    @Inject CacheDataReader cache;
 
     @GET
     public Response download(@QueryParam("path") @DefaultValue("") String path) {

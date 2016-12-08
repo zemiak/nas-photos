@@ -1,5 +1,6 @@
 package com.zemiak.nasphotos.files;
 
+import com.zemiak.nasphotos.lookup.ConfigurationProvider;
 import com.zemiak.nasphotos.thumbnails.ImageInformation;
 import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import com.zemiak.nasphotos.thumbnails.ThumbnailSize;
@@ -25,10 +26,11 @@ public class MovieControl {
     private static final Logger LOG = Logger.getLogger(MovieControl.class.getName());
     private static final Pattern VALID_MOVIE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.mov|\\.mp4|\\.m4v)");
 
-    @Inject String photoPath;
+    final private String photoPath = ConfigurationProvider.getPhotoPath();
+    final private String externalUrl = ConfigurationProvider.getExternalUrl();
+    final private String tempPath = ConfigurationProvider.getTempPath();
+
     @Inject CoverControl covers;
-    @Inject String externalUrl;
-    @Inject String tempPath;
     @Inject MetadataReader metaData;
 
     public List<PictureData> getMovies(String pathName) {

@@ -1,5 +1,6 @@
 package com.zemiak.nasphotos.files;
 
+import com.zemiak.nasphotos.lookup.ConfigurationProvider;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
@@ -14,14 +15,10 @@ import javax.inject.Inject;
 public class FolderControl {
     private static final Logger LOG = Logger.getLogger(FolderControl.class.getName());
 
-    @Inject
-    String photoPath;
+    final private String photoPath = ConfigurationProvider.getPhotoPath();
 
-    @Inject
-    FolderConverter folderConverter;
-
-    @Inject
-    CoverControl covers;
+    @Inject FolderConverter folderConverter;
+    @Inject CoverControl covers;
 
     public List<PictureData> getFolders(String pathName) {
         if (FileService.isRoot(pathName)) {

@@ -12,17 +12,10 @@ import javax.inject.Named;
 public class PhotoViewForm implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Inject
-    FileService service;
-
-    @Inject
-    FolderControl folderControl;
-
-    @Inject
-    PictureControl pictureControl;
-
-    @Inject
-    MovieControl movieControl;
+    @Inject FileService service;
+    @Inject FolderControl folderControl;
+    @Inject PictureControl pictureControl;
+    @Inject MovieControl movieControl;
 
     private String path;
     private List<PictureData> folders;

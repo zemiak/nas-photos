@@ -1,5 +1,6 @@
 package com.zemiak.nasphotos.files;
 
+import com.zemiak.nasphotos.lookup.ConfigurationProvider;
 import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,17 +23,10 @@ import javax.json.JsonObjectBuilder;
 public class CacheDataReader {
     private static final Logger LOG = Logger.getLogger(CacheDataReader.class.getName());
 
-    @Inject
-    String tempPath;
+    final private String tempPath = ConfigurationProvider.getTempPath();
 
-    @Inject
-    String photoPath;
-
-    @Inject
-    FolderControl folders;
-
-    @Inject
-    FileService service;
+    @Inject FolderControl folders;
+    @Inject FileService service;
 
     private String version;
     private JsonObject cache;

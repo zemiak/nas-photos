@@ -3,6 +3,7 @@ package com.zemiak.nasphotos.thumbnails;
 import com.zemiak.nasphotos.commandline.CommandLine;
 import com.zemiak.nasphotos.files.MetadataReader;
 import com.zemiak.nasphotos.files.MovieControl;
+import com.zemiak.nasphotos.lookup.ConfigurationProvider;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,10 +23,11 @@ public class MovieThumbnailCreator {
     private static final String LIVEPHOTO_WATERMARK = "live.png";
     private static final String MOVIE_WATERMARK = "movie.png";
 
-    @Inject String ffmpegPath;
-    @Inject String tempPath;
-    @Inject String compositePath;
-    @Inject String watermarkPath;
+    final private String tempPath = ConfigurationProvider.getTempPath();
+    final private String ffmpegPath = ConfigurationProvider.getFfmpegPath();
+    final private String compositePath = ConfigurationProvider.getCompositePath();
+    final private String watermarkPath = ConfigurationProvider.getWatermarkPath();
+
     @Inject MovieControl movies;
     @Inject ImageManipulation manipulator;
     @Inject MediaInfoControl mediaInfo;

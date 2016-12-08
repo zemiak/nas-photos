@@ -1,6 +1,7 @@
 package com.zemiak.nasphotos.batch;
 
 import com.zemiak.nasphotos.files.CacheDataReader;
+import com.zemiak.nasphotos.lookup.ConfigurationProvider;
 import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,14 +16,10 @@ import javax.inject.Inject;
 public class ScheduledCacheRegeneration {
     private static final Logger LOG = Logger.getLogger(ScheduledCacheRegeneration.class.getName());
 
-    @Inject
-    String tempPath;
+    final private String tempPath = ConfigurationProvider.getTempPath();
 
-    @Inject
-    CacheDataReader cache;
-
-    @Inject
-    ThumbnailService thumbnails;
+    @Inject CacheDataReader cache;
+    @Inject ThumbnailService thumbnails;
 
     @Schedule(hour = "1", minute = "5", persistent = false)
     public void refreshImageCache() {

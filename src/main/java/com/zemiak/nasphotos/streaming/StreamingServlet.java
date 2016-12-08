@@ -17,7 +17,7 @@
 
 package com.zemiak.nasphotos.streaming;
 
-import com.zemiak.nasphotos.lookup.CDILookup;
+import com.zemiak.nasphotos.lookup.ConfigurationProvider;
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.file.Path;
@@ -48,7 +48,7 @@ public class StreamingServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        this.photoPath = new CDILookup().lookup(ServletConfiguration.class).getPhotoPath();
+        this.photoPath = ConfigurationProvider.getPhotoPath();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.zemiak.nasphotos.thumbnails;
 
 import com.zemiak.nasphotos.commandline.CommandLine;
+import com.zemiak.nasphotos.lookup.ConfigurationProvider;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -8,14 +9,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.inject.Inject;
 
 public class MediaInfoControl {
     private static final Logger LOG = Logger.getLogger(MediaInfoControl.class.getName());
     private static final String ROTATED = "Rotation";
 
-    @Inject
-    private String mediaInfoPath;
+    final private String mediaInfoPath = ConfigurationProvider.getMediaInfoPath();
 
     public List<String> getMediaInfo(Path path) {
         List<String> params = Arrays.asList(

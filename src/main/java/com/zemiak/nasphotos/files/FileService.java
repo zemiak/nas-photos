@@ -12,14 +12,9 @@ import javax.json.JsonObject;
 public class FileService {
     private static final Logger LOG = Logger.getLogger(FileService.class.getName());
 
-    @Inject
-    FolderControl folders;
-
-    @Inject
-    PictureControl pictures;
-
-    @Inject
-    MovieControl movies;
+    @Inject FolderControl folders;
+    @Inject PictureControl pictures;
+    @Inject MovieControl movies;
 
     public JsonObject getList(String path) {
         JsonArrayBuilder foldersArrayBuilder = Json.createArrayBuilder();

@@ -17,5 +17,13 @@ echo "AS_ADMIN_PASSWORD=admin" > payarapwd
 
 bin/asadmin --user=admin --passwordfile=payarapwd enable-secure-admin
 bin/asadmin --user=admin --passwordfile=payarapwd stop-domain domain1
+
+export BIN_PATH=/Users/vasko/bin
+export PHOTO_PATH=/Volumes/media/Pictures
+export TEMP_PATH=/Volumes/media/Pictures/cache
+export WATERMARK_PATH=/opt/watermarks
+export EXTERNAL_URL=http://127.0.0.1:8080/nasphotos/
+
+bin/asadmin --user=admin --passwordfile=payarapwd start-domain domain1 --debug
 rm payarapwd
 cd "$SAVE"

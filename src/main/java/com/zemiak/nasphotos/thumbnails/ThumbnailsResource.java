@@ -12,17 +12,10 @@ import javax.ws.rs.core.Response;
 @Path("thumbnails")
 @Produces(MediaType.APPLICATION_JSON)
 public class ThumbnailsResource {
-    @Inject
-    ThumbnailService thumbnails;
-
-    @Inject
-    ScheduledCacheRegeneration cache;
-
-    @Inject
-    FileService files;
-
-    @Inject
-    CoverControl covers;
+    @Inject ThumbnailService thumbnails;
+    @Inject ScheduledCacheRegeneration cache;
+    @Inject FileService files;
+    @Inject CoverControl covers;
 
     @GET
     public Response thumbnail(@QueryParam("path") @DefaultValue("") String path) {

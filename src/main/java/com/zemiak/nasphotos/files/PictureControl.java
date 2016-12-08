@@ -1,6 +1,7 @@
 package com.zemiak.nasphotos.files;
 
 import static com.zemiak.nasphotos.files.FileService.isRoot;
+import com.zemiak.nasphotos.lookup.ConfigurationProvider;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
@@ -19,14 +20,9 @@ public class PictureControl {
     private static final Logger LOG = Logger.getLogger(PictureControl.class.getName());
     private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.jpg|\\.png)");
 
-    @Inject
-    String photoPath;
-
-    @Inject
-    ImageReader imageReader;
-
-    @Inject
-    CoverControl covers;
+    final private String photoPath = ConfigurationProvider.getPhotoPath();
+    @Inject ImageReader imageReader;
+    @Inject CoverControl covers;
 
     public List<PictureData> getPictures(String pathName) {
         if (isRoot(pathName)) {

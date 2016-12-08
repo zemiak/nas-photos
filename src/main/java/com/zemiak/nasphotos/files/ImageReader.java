@@ -1,5 +1,6 @@
 package com.zemiak.nasphotos.files;
 
+import com.zemiak.nasphotos.lookup.ConfigurationProvider;
 import com.zemiak.nasphotos.thumbnails.ImageInformation;
 import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import com.zemiak.nasphotos.thumbnails.ThumbnailSize;
@@ -9,20 +10,11 @@ import java.nio.file.Paths;
 import javax.inject.Inject;
 
 public class ImageReader {
-    @Inject
-    CoverControl covers;
+    final private String tempPath = ConfigurationProvider.getTempPath();
 
-    @Inject
-    MetadataReader metaData;
-
-    @Inject
-    ThumbnailService thumbnails;
-
-    @Inject
-    String tempPath;
-
-    @Inject
-    String externalUrl;
+    @Inject CoverControl covers;
+    @Inject MetadataReader metaData;
+    @Inject ThumbnailService thumbnails;
 
     public PictureData getImage(File file, String relativePath) {
         if (null == file) {

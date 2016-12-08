@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.zemiak</groupId>
     <artifactId>nasphotos</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>war</packaging>
     <name>nasphotos</name>
     
@@ -36,47 +36,6 @@
         <failOnMissingWebXml>false</failOnMissingWebXml>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <profiles>
-        <profile>
-            <id>localdev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/config/localdev/resources</directory>
-                    </resource>
-                </resources>
-            </build>
-        </profile>
-        
-        <profile>
-            <id>machine</id>
-
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/config/machine/resources</directory>
-                    </resource>
-                </resources>
-            </build>
-        </profile>
-
-        <profile>
-            <id>prod</id>
-
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/config/prod/resources</directory>
-                    </resource>
-                </resources>
-            </build>
-        </profile>
-    </profiles>
 
     <build>
         <finalName>nasphotos</finalName>

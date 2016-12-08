@@ -1,23 +1,20 @@
 package com.zemiak.nasphotos.files;
 
+import com.zemiak.nasphotos.lookup.ConfigurationProvider;
 import java.io.File;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Paths;
 import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
 
 @Dependent
 public class CoverControl implements Serializable {
     private static final String COVER_FILE_NAME = "_cover.jpg";
     private static final String DEFAULT_COVER_FILE_URL = "ipad/img/folder.png";
 
-    @Inject
-    String photoPath;
-
-    @Inject
-    String externalUrl;
+    final private String photoPath = ConfigurationProvider.getPhotoPath();
+    final private String externalUrl = ConfigurationProvider.getExternalUrl();
 
     public File getFolderCoverFile(String path) {
         File file = Paths.get(photoPath, path, COVER_FILE_NAME).toFile();
