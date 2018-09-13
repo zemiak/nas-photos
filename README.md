@@ -1,2 +1,2 @@
 # nas-photos
-AppleTV NAS Photo Browser
+Backend for a NAS photo viewer

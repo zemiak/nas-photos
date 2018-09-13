@@ -2,8 +2,6 @@ package com.zemiak.nasphotos.files;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -30,7 +28,7 @@ public class PictureControlTest {
         });
     }
 
-    @Test
+//    @Test
     public void isImage() throws Exception {
         Arrays.asList(new String[]{
             "/Volumes/media/Pictures/2014/1201 Deti/photo.Png",
