@@ -2,12 +2,9 @@ FROM payara/server-full
 MAINTAINER zemiak@gmail.com
 
 USER root
-RUN echo deb http://www.deb-multimedia.org jessie main non-free >>/etc/apt/sources.list
-RUN apt-get update && apt-get -yq --force-yes install ffmpegthumbnailer mediainfo imagemagick
-
-RUN mkdir -p /pictures
-RUN mkdir -p /cache
-RUN mkdir -p /opt/watermarks
+RUN echo deb http://www.deb-multimedia.org jessie main non-free >>/etc/apt/sources.list && \
+    apt-get update && apt-get -yq --force-yes install ffmpegthumbnailer mediainfo imagemagick && \
+    mkdir -p /pictures /cache /opt/watermarks
 
 VOLUME ["/pictures", "/cache"]
 
