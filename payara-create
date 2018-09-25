@@ -1,7 +1,7 @@
 #!/bin/sh
 
-SERVER="/Users/vasko/Downloads/payara-4.1.1.163.zip"
-FOLDER=payara41
+SERVER="/Users/vasko/Downloads/payara-5.183.zip"
+FOLDER=payara5
 SAVE="$(pwd)"
 
 cd ~
@@ -17,6 +17,8 @@ echo "AS_ADMIN_PASSWORD=admin" > payarapwd
 
 bin/asadmin --user=admin --passwordfile=payarapwd enable-secure-admin
 bin/asadmin --user=admin --passwordfile=payarapwd stop-domain domain1
+
+cp $SAVE/src/main/docker/lib/* $FOLDER/glassfish/domains/domain1/lib/
 
 export BIN_PATH=/Users/vasko/bin
 export PHOTO_PATH=/Volumes/media/Pictures
