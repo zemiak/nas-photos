@@ -1,16 +1,14 @@
 package com.zemiak.nasphotos.thumbnails;
 
+import com.zemiak.nasphotos.Hasher;
 import com.zemiak.nasphotos.files.*;
 import com.zemiak.nasphotos.lookup.ConfigurationProvider;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -53,26 +51,7 @@ public class ThumbnailService {
     }
 
     public static String getThumbnailFileName(Path path) {
-        String fileName = path.toAbsolutePath().toString();
-
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException ex) {
-            LOG.log(Level.SEVERE, "SHA-256 not supported!", ex);
-            return fileName.replace("/", "_");
-        }
-
-        return bytesToHex(digest.digest(fileName.getBytes(StandardCharsets.UTF_8)));
-    }
-
-    public static String bytesToHex(byte[] bytes) {
-        StringBuilder result = new StringBuilder();
-        for (byte byt : bytes) {
-            result.append(Integer.toString((byt & 0xff) + 0x100, 16).substring(1));
-        }
-
-        return result.toString();
+        return Hasher.getHash(path.toAbsolutePath().toString());
     }
 
     private Boolean isThumbnailCreated(Path path) {

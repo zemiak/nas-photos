@@ -1,7 +1,7 @@
 package com.zemiak.nasphotos.files;
 
+import com.zemiak.nasphotos.Hasher;
 import com.zemiak.nasphotos.lookup.ConfigurationProvider;
-import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitOption;
@@ -46,18 +46,14 @@ public class CacheDataReader {
     }
 
     private void buildVersion() {
-        final MessageDigest digest = getInitialDigest();
-        if (null == digest) {
-            version = "err-digest";
-            return;
-        }
+        final MessageDigest digest = Hasher.getDigest();
 
         try {
             Files.walk(Paths.get(tempPath), FileVisitOption.FOLLOW_LINKS)
                 .filter(path -> !path.toFile().isDirectory())
                 .filter(path -> path.toFile().canRead())
                 .forEach(path -> digest.update(path.toString().getBytes(StandardCharsets.UTF_8)));
-            version = ThumbnailService.bytesToHex(digest.digest());
+            version = Hasher.bytesToHex(digest.digest());
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "Error reading files and/or updating digest", ex);
             version = "err-updater";
