@@ -18,7 +18,7 @@ echo "AS_ADMIN_PASSWORD=admin" > payarapwd
 bin/asadmin --user=admin --passwordfile=payarapwd enable-secure-admin
 bin/asadmin --user=admin --passwordfile=payarapwd stop-domain domain1
 
-cp $SAVE/src/main/docker/lib/* $FOLDER/glassfish/domains/domain1/lib/
+cp $SAVE/src/main/docker/lib/* ~/$FOLDER/glassfish/domains/domain1/lib/
 
 export BIN_PATH=/Users/vasko/bin
 export PHOTO_PATH=/Volumes/media/Pictures
@@ -26,6 +26,5 @@ export TEMP_PATH=/Volumes/media/Pictures/cache
 export WATERMARK_PATH=/opt/watermarks
 export EXTERNAL_URL=http://127.0.0.1:8080/nasphotos/
 
-bin/asadmin --user=admin --passwordfile=payarapwd start-domain domain1 --debug
-rm payarapwd
+bin/asadmin --user=admin --passwordfile=payarapwd start-domain --debug
 cd "$SAVE"
