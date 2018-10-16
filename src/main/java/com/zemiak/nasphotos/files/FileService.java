@@ -13,18 +13,18 @@ public class FileService {
     @Inject PictureControl pictures;
     @Inject MovieControl movies;
 
-    public JsonObject getList(String path) {
+    public JsonObject getList(String path, boolean encodePaths) {
         JsonArrayBuilder foldersArrayBuilder = Json.createArrayBuilder();
-        folders.getFolders(path).stream().map(this::pictureDataToJsonObject).forEach(foldersArrayBuilder::add);
+        folders.getFolders(path).stream().map(d -> pictureDataToJsonObject(d, encodePaths)).forEach(foldersArrayBuilder::add);
 
         JsonArrayBuilder filesArrayBuilder = Json.createArrayBuilder();
-        pictures.getPictures(path).stream().map(this::pictureDataToJsonObject).forEach(filesArrayBuilder::add);
+        pictures.getPictures(path).stream().map(d -> pictureDataToJsonObject(d, encodePaths)).forEach(filesArrayBuilder::add);
 
         JsonArrayBuilder livePhotosArrayBuilder = Json.createArrayBuilder();
-        movies.getLivePhotos(path).stream().map(this::livePhotoDataToJsonObject).forEach(livePhotosArrayBuilder::add);
+        movies.getLivePhotos(path).stream().map(d -> livePhotoDataToJsonObject(d, encodePaths)).forEach(livePhotosArrayBuilder::add);
 
         JsonArrayBuilder moviesArrayBuilder = Json.createArrayBuilder();
-        movies.getMovies(path).stream().map(this::pictureDataToJsonObject).forEach(moviesArrayBuilder::add);
+        movies.getMovies(path).stream().map(d -> pictureDataToJsonObject(d, encodePaths)).forEach(moviesArrayBuilder::add);
 
         JsonObject main = Json.createObjectBuilder()
                 .add("folders", foldersArrayBuilder.build())
@@ -36,19 +36,24 @@ public class FileService {
         return main;
     }
 
-    private JsonObject livePhotoDataToJsonObject(LivePhotoData data) {
+    private JsonObject livePhotoDataToJsonObject(LivePhotoData data, boolean encodePaths) {
+        String path = encodePaths ? FileName.encode(data.getPath()) : data.getPath();
+        String imagePath = encodePaths ? FileName.encode(data.getImageUrl()) : data.getImageUrl();
+
         return Json.createObjectBuilder()
-                .add("path", FileName.encode(data.getPath()))
-                .add("imagePath", FileName.encode(data.getImageUrl()))
+                .add("path", path)
+                .add("imagePath", imagePath)
                 .add("title", data.getTitle())
                 .add("width", data.getWidth())
                 .add("height", data.getHeight())
                 .build();
     }
 
-    public JsonObject pictureDataToJsonObject(PictureData data) {
+    public JsonObject pictureDataToJsonObject(PictureData data, boolean encodePaths) {
+        String path = encodePaths ? FileName.encode(data.getPath()) : data.getPath();
+        
         return Json.createObjectBuilder()
-                .add("path", FileName.encode(data.getPath()))
+                .add("path", path)
                 .add("title", data.getTitle())
                 .add("width", data.getWidth())
                 .add("height", data.getHeight())

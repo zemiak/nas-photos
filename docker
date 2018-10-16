@@ -7,11 +7,9 @@ if [ $? -eq 0 ]
 then
     cp ./target/nasphotos.war ./src/main/docker/
     cd ./src/main/docker
-    docker kill nasphotos-dev
-    docker rm -f nasphotos-dev
-    docker build --tag nasphotos-dev . || exit 4
+    
+    docker build --tag nasphotos-dev . || exit 10
     cd ../../..
-    pwd
 
     if [ -d /c/Windows ]
     then
@@ -22,6 +20,8 @@ then
         SRV=lenovo-server.local
     fi
 
-    scp ${FILE} vasko@${SRV}:/home/vasko/
-    ssh vasko@${SRV} "sh /home/vasko/${FILE}"
+    scp ${FILE} vasko@${SRV}:/home/vasko/ || exit 20
+    docker kill nasphotos-dev
+    docker rm -f nasphotos-dev
+    ssh vasko@${SRV} "sh /home/vasko/${FILE}" || exit 40
 fi

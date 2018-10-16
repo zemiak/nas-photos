@@ -1,9 +1,9 @@
 package com.zemiak.nasphotos.thumbnails;
 
 import com.zemiak.nasphotos.commandline.CommandLine;
+import com.zemiak.nasphotos.configuration.ConfigurationProvider;
 import com.zemiak.nasphotos.files.MetadataReader;
 import com.zemiak.nasphotos.files.MovieControl;
-import com.zemiak.nasphotos.configuration.ConfigurationProvider;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -83,7 +83,6 @@ public class MovieThumbnailCreator {
         } catch (IllegalStateException | InterruptedException | IOException ex) {
             LOG.log(Level.SEVERE, "DID NOT generate thumbnail {0}: {1} ...",
                     new Object[]{imageFileName, ex});
-            throw new RuntimeException(ex);
         }
     }
 
@@ -91,7 +90,7 @@ public class MovieThumbnailCreator {
         File source = outputPath.toFile();
         File target = File.createTempFile("watermarked-", ".jpg", new File(tempPath));
 
-        final List<String> params = Arrays.asList("-gravity", "center", watermarkPath + watermark,
+        final List<String> params = Arrays.asList("-gravity", "center", Paths.get(watermarkPath, watermark).toString(),
                 outputPath.toAbsolutePath().toString(), target.getAbsolutePath());
 
         try {
@@ -99,7 +98,8 @@ public class MovieThumbnailCreator {
         } catch (InterruptedException | IllegalStateException ex) {
             LOG.log(Level.SEVERE, "DID NOT generate watermark {0}: {1} ...",
                     new Object[]{target.getAbsolutePath(), ex});
-            throw new RuntimeException(ex);
+            source.delete();
+            return;
         }
 
         if (! source.delete()) {

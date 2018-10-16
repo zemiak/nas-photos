@@ -8,7 +8,6 @@ import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -30,11 +29,13 @@ public class CacheDataReader {
 
     private String version;
     private JsonObject cache;
+    private JsonObject cacheEncoded;
 
     @PostConstruct
     public void clearVersion() {
         version = null;
         cache = null;
+        cacheEncoded = null;
     }
 
     public String getVersion() {
@@ -60,18 +61,6 @@ public class CacheDataReader {
         }
     }
 
-    private MessageDigest getInitialDigest() {
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException ex) {
-            LOG.log(Level.SEVERE, "SHA-256 not supported!", ex);
-            return null;
-        }
-
-        return digest;
-    }
-
     public JsonObject getCache() {
         if (null == cache) {
             buildCache();
@@ -80,17 +69,32 @@ public class CacheDataReader {
         return cache;
     }
 
+    public JsonObject getCacheEncoded() {
+        if (null == cacheEncoded) {
+            buildCache();
+        }
+
+        return cacheEncoded;
+    }
+
     private void buildCache() {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         folders.getRootFolderPaths()
                 .stream()
-                .forEach(folder -> this.processFolder(folder, builder));
+                .forEach(folder -> this.processFolder(folder, builder, false));
 
         cache = builder.build();
+
+        JsonObjectBuilder builder2 = Json.createObjectBuilder();
+        folders.getRootFolderPaths()
+                .stream()
+                .forEach(folder -> this.processFolder(folder, builder2, true));
+
+        cacheEncoded = builder2.build();
     }
 
-    private void processFolder(String folder, JsonObjectBuilder builder) {
-        JsonObject list = service.getList(folder);
+    private void processFolder(String folder, JsonObjectBuilder builder, boolean encodePaths) {
+        JsonObject list = service.getList(folder, encodePaths);
 
         if (list.getJsonArray("folders").isEmpty() && list.getJsonArray("files").isEmpty() &&
                 list.getJsonArray("movies").isEmpty() && list.getJsonArray("livePhotos").isEmpty()) {
@@ -108,7 +112,8 @@ public class CacheDataReader {
                 continue;
             }
 
-            processFolder(item.getString("path"), builder);
+            String path = encodePaths ? FileName.decode(item.getString("path")) : item.getString("path");
+            processFolder(path, builder, encodePaths);
         }
     }
 

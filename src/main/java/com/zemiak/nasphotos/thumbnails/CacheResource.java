@@ -16,7 +16,6 @@ public class CacheResource {
     @Inject CacheDataReader cache;
 
     @DELETE
-    @Path("cache")
     public void refreshThumbnails() {
         cacheRecreator.refreshImageCache();
     }
@@ -33,7 +32,7 @@ public class CacheResource {
                 .add("version", cache.getVersion())
                 .add("motd", "")
                 .build();
-        JsonObject dataCache = cache.getCache();
+        JsonObject dataCache = cache.getCacheEncoded();
         JsonObject data = Json.createObjectBuilder()
                 .add("version", version)
                 .add("cache", dataCache)

@@ -11,11 +11,11 @@ public final class FileName {
     private FileName() {
     }
 
-    public static String decode(String base64EncodedFileName) {
+    static String decode(String base64EncodedFileName) {
         return new String(DECODER.decode(base64EncodedFileName.replace('_', '=')));
     }
 
-    public static String encode(String fileName) {
-        return ENCODER.encodeToString(fileName.getBytes());
+    static String encode(String fileName) {
+        return ENCODER.encodeToString(fileName.getBytes()).replace('=', '_');
     }
 }
