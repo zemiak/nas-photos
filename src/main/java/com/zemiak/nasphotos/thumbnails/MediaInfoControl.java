@@ -1,7 +1,7 @@
 package com.zemiak.nasphotos.thumbnails;
 
 import com.zemiak.nasphotos.commandline.CommandLine;
-import com.zemiak.nasphotos.lookup.ConfigurationProvider;
+import com.zemiak.nasphotos.configuration.ConfigurationProvider;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;

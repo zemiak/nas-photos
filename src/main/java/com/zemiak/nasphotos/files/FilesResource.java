@@ -1,10 +1,13 @@
 package com.zemiak.nasphotos.files;
 
+import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import java.io.File;
 import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.ws.rs.*;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -14,10 +17,34 @@ import javax.ws.rs.core.Response.Status;
 @Produces(MediaType.APPLICATION_JSON)
 public class FilesResource {
     @Inject FileService files;
-    @Inject CacheDataReader cache;
+    @Inject ThumbnailService thumbnails;
 
     @GET
-    public Response download(@QueryParam("path") @DefaultValue("") String path) {
+    @Path("{id}/thumbnail")
+    public Response thumbnail(@PathParam("id") @DefaultValue("") String encodedPath) {
+        String path = FileName.decode(encodedPath);
+        File file = thumbnails.getThumbnail(path);
+        if (null == file) {
+            return Response.status(Response.Status.GONE).build();
+        }
+
+        String fileName = files.getFileName(path);
+        Response.ResponseBuilder response = Response.ok((Object) file);
+        response.header("Content-Disposition", "attachment; filename=" + fileName);
+
+        if (fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".jpeg")) {
+            response.header("Content-Type", "image/jpeg");
+        } else if (fileName.toLowerCase().endsWith(".png")) {
+            response.header("Content-Type", "image/png");
+        }
+
+        return response.build();
+    }
+
+    @GET
+    @Path("{id}/binary")
+    public Response download(@PathParam("id") @DefaultValue("") String encodedPath) {
+        String path = FileName.decode(encodedPath);
         File file = files.getFile(path);
         if (null == file) {
             return Response.status(Status.GONE).build();
@@ -37,30 +64,9 @@ public class FilesResource {
     }
 
     @GET
-    @Path("list")
-    public Response get(@QueryParam("path") @DefaultValue("") String path) {
+    @Path("{id}/list")
+    public Response get(@PathParam("id") @DefaultValue("") String encodedPath) {
+        String path = FileName.decode(encodedPath);
         return Response.ok(files.getList(path)).build();
-    }
-
-    @GET
-    @Path("data")
-    public Response getData() {
-        return Response
-                .ok(buildData())
-                .build();
-    }
-
-    private JsonObject buildData() {
-        JsonObject version = Json.createObjectBuilder()
-                .add("version", cache.getVersion())
-                .add("motd", "")
-                .build();
-        JsonObject dataCache = cache.getCache();
-        JsonObject data = Json.createObjectBuilder()
-                .add("version", version)
-                .add("cache", dataCache)
-                .build();
-
-        return data;
     }
 }

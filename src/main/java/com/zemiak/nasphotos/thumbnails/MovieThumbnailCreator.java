@@ -3,7 +3,7 @@ package com.zemiak.nasphotos.thumbnails;
 import com.zemiak.nasphotos.commandline.CommandLine;
 import com.zemiak.nasphotos.files.MetadataReader;
 import com.zemiak.nasphotos.files.MovieControl;
-import com.zemiak.nasphotos.lookup.ConfigurationProvider;
+import com.zemiak.nasphotos.configuration.ConfigurationProvider;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

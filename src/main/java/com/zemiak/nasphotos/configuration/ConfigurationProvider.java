@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.lookup;
+package com.zemiak.nasphotos.configuration;
 
 import java.nio.file.Paths;
 

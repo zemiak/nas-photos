@@ -1,6 +1,6 @@
 package com.zemiak.nasphotos.files;
 
-import com.zemiak.nasphotos.lookup.ConfigurationProvider;
+import com.zemiak.nasphotos.configuration.ConfigurationProvider;
 import java.io.File;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;

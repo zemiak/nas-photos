@@ -1,6 +1,6 @@
 package com.zemiak.nasphotos.files;
 
-import com.zemiak.nasphotos.lookup.ConfigurationProvider;
+import com.zemiak.nasphotos.configuration.ConfigurationProvider;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;

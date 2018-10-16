@@ -1,7 +1,7 @@
 package com.zemiak.nasphotos.batch;
 
 import com.zemiak.nasphotos.files.CacheDataReader;
-import com.zemiak.nasphotos.lookup.ConfigurationProvider;
+import com.zemiak.nasphotos.configuration.ConfigurationProvider;
 import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import java.io.IOException;
 import java.nio.file.Files;

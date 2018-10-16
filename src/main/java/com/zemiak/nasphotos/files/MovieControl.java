@@ -1,6 +1,6 @@
 package com.zemiak.nasphotos.files;
 
-import com.zemiak.nasphotos.lookup.ConfigurationProvider;
+import com.zemiak.nasphotos.configuration.ConfigurationProvider;
 import com.zemiak.nasphotos.thumbnails.ImageInformation;
 import com.zemiak.nasphotos.thumbnails.ThumbnailService;
 import com.zemiak.nasphotos.thumbnails.ThumbnailSize;

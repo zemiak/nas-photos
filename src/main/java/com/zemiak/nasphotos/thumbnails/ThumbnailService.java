@@ -2,7 +2,7 @@ package com.zemiak.nasphotos.thumbnails;
 
 import com.zemiak.nasphotos.Hasher;
 import com.zemiak.nasphotos.files.*;
-import com.zemiak.nasphotos.lookup.ConfigurationProvider;
+import com.zemiak.nasphotos.configuration.ConfigurationProvider;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;

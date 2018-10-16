@@ -1,7 +1,7 @@
 package com.zemiak.nasphotos.files;
 
 import com.zemiak.nasphotos.Hasher;
-import com.zemiak.nasphotos.lookup.ConfigurationProvider;
+import com.zemiak.nasphotos.configuration.ConfigurationProvider;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitOption;

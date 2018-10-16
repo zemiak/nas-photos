@@ -1,7 +1,6 @@
 package com.zemiak.nasphotos.files;
 
 import java.io.File;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -10,8 +9,6 @@ import javax.json.JsonObject;
 
 @Stateless
 public class FileService {
-    private static final Logger LOG = Logger.getLogger(FileService.class.getName());
-
     @Inject FolderControl folders;
     @Inject PictureControl pictures;
     @Inject MovieControl movies;
@@ -41,8 +38,8 @@ public class FileService {
 
     private JsonObject livePhotoDataToJsonObject(LivePhotoData data) {
         return Json.createObjectBuilder()
-                .add("path", data.getPath())
-                .add("imagePath", data.getImageUrl())
+                .add("path", FileName.encode(data.getPath()))
+                .add("imagePath", FileName.encode(data.getImageUrl()))
                 .add("title", data.getTitle())
                 .add("width", data.getWidth())
                 .add("height", data.getHeight())
@@ -51,7 +48,7 @@ public class FileService {
 
     public JsonObject pictureDataToJsonObject(PictureData data) {
         return Json.createObjectBuilder()
-                .add("path", data.getPath())
+                .add("path", FileName.encode(data.getPath()))
                 .add("title", data.getTitle())
                 .add("width", data.getWidth())
                 .add("height", data.getHeight())

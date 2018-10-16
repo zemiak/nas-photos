@@ -17,7 +17,7 @@
 
 package com.zemiak.nasphotos.streaming;
 
-import com.zemiak.nasphotos.lookup.ConfigurationProvider;
+import com.zemiak.nasphotos.configuration.ConfigurationProvider;
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.file.Path;

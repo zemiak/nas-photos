@@ -1,6 +1,6 @@
 #/bin/sh
 
-export JAVA_HOME=$(/usr/libexec/java_home)
+test -f /usr/libexec/java_home && export JAVA_HOME=$(/usr/libexec/java_home)
 mvn -q package  || exit 3
 
 if [ $? -eq 0 ]
@@ -10,17 +10,18 @@ then
     docker kill nasphotos-dev
     docker rm -f nasphotos-dev
     docker build --tag nasphotos-dev . || exit 4
+    cd ../../..
+    pwd
 
-    docker run -d \
-        -e "BIN_PATH=/usr/bin" \
-        -e "PHOTO_PATH=/pictures" \
-        -e "TEMP_PATH=/cache" \
-        -e "WATERMARK_PATH=/opt/watermarks" \
-        -e "EXTERNAL_URL=http://127.0.0.1:8081/nasphotos/" \
-        -p 10081:8080 -p 10848:4848 -p 10009:9009 -p 10206:22 \
-        -v /Volumes/media/Pictures:/pictures \
-        -v /Volumes/media/Pictures/cache:/cache \
-        --name=nasphotos-dev nasphotos-dev
-    
-    cd ../../../..
+    if [ -d /c/Windows ]
+    then
+        FILE=run-dev-win.sh
+        SRV=10.8.13.65
+    else
+        FILE=run-dev-linux.sh
+        SRV=lenovo-server.local
+    fi
+
+    scp $FILE vasko@${SRV}:/home/vasko/
+    ssh vasko@${SRV} /home/vasko/${FILE}
 fi
