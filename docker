@@ -22,6 +22,6 @@ then
         SRV=lenovo-server.local
     fi
 
-    scp $FILE vasko@${SRV}:/home/vasko/
-    ssh vasko@${SRV} /home/vasko/${FILE}
+    scp ${FILE} vasko@${SRV}:/home/vasko/
+    ssh vasko@${SRV} "sh /home/vasko/${FILE}"
 fi
