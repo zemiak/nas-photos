@@ -18,6 +18,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class FolderControl {
     private static final Logger LOG = Logger.getLogger(FolderControl.class.getName());
     @Inject @ConfigProperty(name = "PHOTO_PATH") String photoPath;
+    @Inject FolderConverter converter;
 
     public JsonObject getList(String decode) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -74,7 +75,7 @@ public class FolderControl {
         Collections.sort(files, Collections.reverseOrder());
         return files
                 .stream()
-                .map(n -> folderConverter.convertFolderToPictureData(n))
+                .map(n -> converter.convertFolderToPictureData(n))
                 .collect(Collectors.toList());
     }
 }
