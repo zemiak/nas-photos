@@ -1,5 +1,6 @@
-package com.zemiak.nasphotos.files;
+package com.zemiak.nasphotos.pictures;
 
+import com.zemiak.nasphotos.pictures.PictureControl;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import org.junit.Test;

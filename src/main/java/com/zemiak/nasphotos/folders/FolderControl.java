@@ -1,6 +1,7 @@
-package com.zemiak.nasphotos.files;
+package com.zemiak.nasphotos.folders;
 
-import com.zemiak.nasphotos.configuration.ConfigurationProvider;
+import com.zemiak.nasphotos.pictures.PictureControl;
+import com.zemiak.nasphotos.pictures.PictureData;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
@@ -11,17 +12,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.json.JsonObject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 public class FolderControl {
     private static final Logger LOG = Logger.getLogger(FolderControl.class.getName());
+    @Inject @ConfigProperty(name = "PHOTO_PATH") String photoPath;
 
-    final private String photoPath = ConfigurationProvider.getPhotoPath();
-
-    @Inject FolderConverter folderConverter;
-    @Inject CoverControl covers;
+    public JsonObject getList(String decode) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
     public List<PictureData> getFolders(String pathName) {
-        if (FileService.isRoot(pathName)) {
+        if ("/".equals(pathName)) {
             return getRootFolders();
         }
 

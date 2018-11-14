@@ -1,7 +1,5 @@
-package com.zemiak.nasphotos.files;
+package com.zemiak.nasphotos.pictures;
 
-import static com.zemiak.nasphotos.files.FileService.isRoot;
-import com.zemiak.nasphotos.configuration.ConfigurationProvider;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
@@ -15,14 +13,14 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 public class PictureControl {
     private static final Logger LOG = Logger.getLogger(PictureControl.class.getName());
     private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.jpg|\\.png)");
 
-    final private String photoPath = ConfigurationProvider.getPhotoPath();
+    @Inject @ConfigProperty(name = "PHOTO_PATH") String photoPath;
     @Inject ImageReader imageReader;
-    @Inject CoverControl covers;
 
     public List<PictureData> getPictures(String pathName) {
         if (isRoot(pathName)) {
@@ -46,20 +44,9 @@ public class PictureControl {
         Collections.sort(files);
         return files
                 .stream()
-                .map(n -> imageReader.getImage(Paths.get(photoPath, pathName, n).toFile(), pathName))
-                .map(this::switchWidthAndHeightIfRotated)
+                .map(fileName -> new File(fileName))
+                .map(n -> imageReader.getImage(n))
                 .collect(Collectors.toList());
-    }
-
-    public PictureData switchWidthAndHeightIfRotated(PictureData pic) {
-        PictureData newPic = new PictureData(pic);
-
-        if (1 != pic.getOrientation()) {
-            newPic.setWidth(pic.getHeight());
-            newPic.setHeight(pic.getWidth());
-        }
-
-        return newPic;
     }
 
     public static boolean isImage(Path path, String rootPath) {
@@ -103,14 +90,10 @@ public class PictureControl {
             return null;
         }
 
-        if (file.isDirectory()) {
-            return covers.getFolderCoverFile(path);
-        }
-
-        if (imageReader.isRotated(file)) {
-            file = imageReader.getRotatedFilePath(file).toFile();
-        }
-
         return file;
+    }
+
+    private static boolean isRoot(String path) {
+        return null == path || "".equals(path) || "/".equals(path);
     }
 }
