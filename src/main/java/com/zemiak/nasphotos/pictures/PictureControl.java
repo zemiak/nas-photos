@@ -17,7 +17,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 public class PictureControl {
     private static final Logger LOG = Logger.getLogger(PictureControl.class.getName());
-    private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.jpg|\\.png)");
+    private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.jpg|\\.png|\\.heic)");
 
     @Inject @ConfigProperty(name = "PHOTO_PATH") String photoPath;
     @Inject ImageReader imageReader;

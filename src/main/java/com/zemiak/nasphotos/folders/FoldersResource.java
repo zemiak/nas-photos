@@ -14,7 +14,8 @@ public class FoldersResource {
 
     @GET
     @Path("{id}")
-    public Response download(@PathParam("id") @DefaultValue("/") String encodedPath) {
+    public Response download(@PathParam("id") @DefaultValue("Lw==") String encodedPath) {
+        // Lw== is "/" base64-encoded
         return Response.ok(folders.getList(FilenameEncoder.decode(encodedPath))).build();
     }
 }

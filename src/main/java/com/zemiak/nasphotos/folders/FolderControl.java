@@ -1,7 +1,9 @@
 package com.zemiak.nasphotos.folders;
 
+import com.zemiak.nasphotos.pictures.ImageReader;
 import com.zemiak.nasphotos.pictures.PictureControl;
 import com.zemiak.nasphotos.pictures.PictureData;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
@@ -12,19 +14,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 public class FolderControl {
     private static final Logger LOG = Logger.getLogger(FolderControl.class.getName());
     @Inject @ConfigProperty(name = "PHOTO_PATH") String photoPath;
-    @Inject FolderConverter converter;
+    @Inject ImageReader imageReader;
 
-    public JsonObject getList(String decode) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public JsonObject getList(String pathName) {
+        List<PictureData> folders = getFolders(pathName);
+        JsonArrayBuilder list = Json.createArrayBuilder();
+        folders.forEach(i -> list.add(i.toJson()));
+        return Json.createObjectBuilder().add("folders", list).build();
     }
 
-    public List<PictureData> getFolders(String pathName) {
+    private List<PictureData> getFolders(String pathName) {
         if ("/".equals(pathName)) {
             return getRootFolders();
         }
@@ -46,11 +53,11 @@ public class FolderControl {
         Collections.sort(files);
         return files
                 .stream()
-                .map(n -> folderConverter.convertFolderToPictureData(n))
+                .map(this::convertFolderToPictureData)
                 .collect(Collectors.toList());
     }
 
-    public List<String> getRootFolderPaths() {
+    private List<String> getRootFolderPaths() {
         List<String> files;
         try {
             files = Files.walk(Paths.get(photoPath), 1, FileVisitOption.FOLLOW_LINKS)
@@ -75,7 +82,18 @@ public class FolderControl {
         Collections.sort(files, Collections.reverseOrder());
         return files
                 .stream()
-                .map(n -> converter.convertFolderToPictureData(n))
+                .map(this::convertFolderToPictureData)
                 .collect(Collectors.toList());
+    }
+
+    private PictureData convertFolderToPictureData(String path) {
+        String cover = path + "/_cover.jpg";
+        File coverFile = new File(cover);
+        if (! coverFile.canRead()) {
+            cover = "/opt/watermarks/folder.png";
+            coverFile = new File(cover);
+        }
+
+        return imageReader.getImage(coverFile);
     }
 }

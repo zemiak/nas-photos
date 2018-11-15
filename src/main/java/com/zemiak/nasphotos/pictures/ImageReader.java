@@ -64,6 +64,7 @@ public class ImageReader {
                 if (Math.abs(ar - (double)m/i) < 0.01) {
                     data.setRatioWidth(m);
                     data.setRatioHeight(i);
+                    break;
                 }
             }
         } catch (IOException ex) {

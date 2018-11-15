@@ -1,6 +1,8 @@
 package com.zemiak.nasphotos.pictures;
 
 import java.util.Objects;
+import javax.json.Json;
+import javax.json.JsonObject;
 
 public class PictureData {
     private String id;
@@ -107,5 +109,17 @@ public class PictureData {
     @Override
     public String toString() {
         return "PictureData{" + "id=" + id + ", title=" + title + ", width=" + width + ", height=" + height + ", orientation=" + orientation + ", ratioWidth=" + ratioWidth + ", ratioHeight=" + ratioHeight + '}';
+    }
+
+    public JsonObject toJson() {
+        return Json.createObjectBuilder()
+                .add("id", this.getId())
+                .add("title", this.getTitle())
+                .add("width", this.getWidth())
+                .add("height", this.getHeight())
+                .add("orientation", this.getOrientation())
+                .add("ratioWidth", this.getRatioWidth())
+                .add("ratioHeight", this.getRatioHeight())
+                .build();
     }
 }

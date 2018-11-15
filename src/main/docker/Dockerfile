@@ -6,6 +6,5 @@ RUN mkdir -p /pictures /cache /opt/watermarks
 
 VOLUME ["/pictures", "/cache"]
 
-COPY lib/* /opt/payara5/glassfish/domains/domain1/lib/
 COPY *.png /opt/watermarks/
 COPY nasphotos.war $DEPLOY_DIR

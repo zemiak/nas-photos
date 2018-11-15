@@ -1,11 +1,10 @@
 package com.zemiak.nasphotos.pictures;
 
-import com.zemiak.nasphotos.pictures.PictureControl;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 public class PictureControlTest {
     private final static String PHOTO_PATH = "/Volumes/media/Pictures/";

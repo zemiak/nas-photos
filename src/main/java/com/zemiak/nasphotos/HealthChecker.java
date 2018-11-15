@@ -10,6 +10,6 @@ import org.eclipse.microprofile.health.HealthCheckResponse;
 public class HealthChecker implements HealthCheck {
     @Override
     public HealthCheckResponse call() {
-        return HealthCheckResponse.builder().up().build();
+        return HealthCheckResponse.builder().up().name("nasphotos-backend").build();
   }
 }
