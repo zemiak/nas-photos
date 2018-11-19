@@ -1,5 +1,6 @@
 package com.zemiak.nasphotos.pictures;
 
+import com.zemiak.nasphotos.files.PictureData;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +16,12 @@ public class ImageReaderTest {
 
     @Test
     public void ratioCalc() throws IOException {
-        File file = new File("/tmp/folder.png");
+        String photoPath = System.getenv("PHOTO_PATH");
+        if (null == photoPath || photoPath.isEmpty()) {
+            photoPath = "/Volumes/media/Pictures";
+        }
+
+        File file = new File(photoPath + "/special/folder.png");
         if (! file.canRead()) {
             throw new IOException("File folder.png does not exist");
         }

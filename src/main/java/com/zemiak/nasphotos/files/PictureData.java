@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.pictures;
+package com.zemiak.nasphotos.files;
 
 import java.util.Objects;
 import javax.json.Json;

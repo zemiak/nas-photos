@@ -1,5 +1,6 @@
 package com.zemiak.nasphotos.pictures;
 
+import com.zemiak.nasphotos.files.PictureControl;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import static org.junit.Assert.assertFalse;

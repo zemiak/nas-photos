@@ -1,8 +1,6 @@
-package com.zemiak.nasphotos.folders;
+package com.zemiak.nasphotos.files;
 
-import com.zemiak.nasphotos.pictures.ImageReader;
-import com.zemiak.nasphotos.pictures.PictureControl;
-import com.zemiak.nasphotos.pictures.PictureData;
+import com.zemiak.nasphotos.FilenameEncoder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
@@ -21,7 +19,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 public class FolderControl {
     private static final Logger LOG = Logger.getLogger(FolderControl.class.getName());
-    @Inject @ConfigProperty(name = "PHOTO_PATH") String photoPath;
+    @Inject @ConfigProperty(name = "PHOTO_PATH", defaultValue = "/Volumes/media/Pictures/") String photoPath;
     @Inject ImageReader imageReader;
 
     public JsonObject getList(String pathName) {
@@ -90,10 +88,22 @@ public class FolderControl {
         String cover = path + "/_cover.jpg";
         File coverFile = new File(cover);
         if (! coverFile.canRead()) {
-            cover = "/opt/watermarks/folder.png";
+            cover = photoPath + "/special/folder.png";
             coverFile = new File(cover);
         }
 
-        return imageReader.getImage(coverFile);
+        PictureData image = imageReader.getImage(coverFile);
+        image.setId(FilenameEncoder.encode(path));
+
+        String name = path.contains("/") ? path.substring(path.lastIndexOf("/") + 1) : path;
+        name = name.contains(".") ? name.substring(0, name.indexOf(".")) : name;
+        image.setTitle(name);
+
+        return image;
+    }
+
+    public boolean isLeafFolder(String realPath) {
+        List<PictureData> folders = getFolders(realPath);
+        return folders.isEmpty();
     }
 }

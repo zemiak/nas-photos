@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.pictures;
+package com.zemiak.nasphotos.files;
 
 import com.zemiak.nasphotos.FilenameEncoder;
 import java.io.File;

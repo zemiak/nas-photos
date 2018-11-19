@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.pictures;
+package com.zemiak.nasphotos.files;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
@@ -25,12 +25,12 @@ public class ImageReader {
         }
 
         PictureData data = new PictureData();
-        data.setId(FilenameEncoder.encode(file.getAbsolutePath()));
-
         String name = file.getAbsolutePath();
-        name = name.contains("/") ? name.substring(name.lastIndexOf("/") + 1) : name;
-        name = name.contains(".") ? name.substring(0, name.indexOf(".")) : name;
-        data.setTitle(name);
+
+        data.setId(FilenameEncoder.encode(name));
+        String title = name.contains("/") ? name.substring(name.lastIndexOf("/") + 1) : name;
+        title = title.contains(".") ? title.substring(0, title.indexOf(".")) : title;
+        data.setTitle(title);
 
         setImageInfo(file, data);
 

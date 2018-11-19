@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.pictures;
+package com.zemiak.nasphotos.files;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,16 +13,26 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 public class PictureControl {
     private static final Logger LOG = Logger.getLogger(PictureControl.class.getName());
     private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.jpg|\\.png|\\.heic)");
 
-    @Inject @ConfigProperty(name = "PHOTO_PATH") String photoPath;
+    @Inject @ConfigProperty(name = "PHOTO_PATH", defaultValue = "/Volumes/media/Pictures/") String photoPath;
     @Inject ImageReader imageReader;
 
-    public List<PictureData> getPictures(String pathName) {
+    public JsonObject getPictures(String pathName) {
+        List<PictureData> pictures = getPicturesRaw(pathName);
+        JsonArrayBuilder list = Json.createArrayBuilder();
+        pictures.forEach(i -> list.add(i.toJson()));
+        return Json.createObjectBuilder().add("pictures", list).build();
+    }
+
+    private List<PictureData> getPicturesRaw(String pathName) {
         if (isRoot(pathName)) {
             return Collections.EMPTY_LIST;
         }
@@ -42,8 +52,10 @@ public class PictureControl {
         }
 
         Collections.sort(files);
+        String[] yearAndFolder = pathName.split("/");
         return files
                 .stream()
+                .map(pictureFileName -> Paths.get(photoPath, yearAndFolder[0], yearAndFolder[1], pictureFileName).toString())
                 .map(fileName -> new File(fileName))
                 .map(n -> imageReader.getImage(n))
                 .collect(Collectors.toList());
