@@ -119,12 +119,17 @@ public class PictureData {
         return Json.createObjectBuilder()
                 .add("id", this.getId())
                 .add("title", this.getTitle())
-                .add("width", this.getWidth())
-                .add("height", this.getHeight())
+                .add("realWidth", this.getWidth())
+                .add("realHeight", this.getHeight())
                 .add("orientation", this.getOrientation())
-                .add("ratioWidth", this.getRatioWidth())
-                .add("ratioHeight", this.getRatioHeight())
+                .add("width", this.getRatioWidth())
+                .add("height", this.getRatioHeight())
+                .add("src", this.getSourceUrl())
                 .add("type", this.getType())
                 .build();
+    }
+
+    public String getSourceUrl() {
+        return System.getenv("EXTERNAL_URL") + "rest/pictures/" + this.getId();
     }
 }
