@@ -45,7 +45,7 @@ public class FolderControl {
                     .collect(Collectors.toList());
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "getFolders IO/Exception" + ex.getMessage(), ex);
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         Collections.sort(files);
@@ -68,7 +68,7 @@ public class FolderControl {
                     .collect(Collectors.toList());
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "getRootFolders IO/Exception" + ex.getMessage(), ex);
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         return files;

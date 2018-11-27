@@ -34,7 +34,7 @@ public class PictureControl {
 
     private List<PictureData> getPicturesRaw(String pathName) {
         if (isRoot(pathName)) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         List<String> files;
@@ -48,7 +48,7 @@ public class PictureControl {
                     .collect(Collectors.toList());
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "getPictures IO/Exception" + ex.getMessage(), ex);
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
         Collections.sort(files);
