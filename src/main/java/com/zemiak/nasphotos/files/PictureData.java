@@ -12,9 +12,9 @@ public class PictureData {
     private int orientation;
     private int ratioWidth = 4;
     private int ratioHeight = 3;
+    private String type = "picture";
 
     public PictureData() {
-
     }
 
     public PictureData(PictureData old) {
@@ -23,6 +23,15 @@ public class PictureData {
         this.width = old.getWidth();
         this.height = old.getHeight();
         this.orientation = old.getOrientation();
+        this.type = old.getType();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getId() {
@@ -106,11 +115,6 @@ public class PictureData {
         this.ratioHeight = ratioHeight;
     }
 
-    @Override
-    public String toString() {
-        return "PictureData{" + "id=" + id + ", title=" + title + ", width=" + width + ", height=" + height + ", orientation=" + orientation + ", ratioWidth=" + ratioWidth + ", ratioHeight=" + ratioHeight + '}';
-    }
-
     public JsonObject toJson() {
         return Json.createObjectBuilder()
                 .add("id", this.getId())
@@ -120,6 +124,7 @@ public class PictureData {
                 .add("orientation", this.getOrientation())
                 .add("ratioWidth", this.getRatioWidth())
                 .add("ratioHeight", this.getRatioHeight())
+                .add("type", this.getType())
                 .build();
     }
 }

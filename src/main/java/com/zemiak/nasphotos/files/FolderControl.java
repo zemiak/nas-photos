@@ -26,7 +26,7 @@ public class FolderControl {
         List<PictureData> folders = getFolders(pathName);
         JsonArrayBuilder list = Json.createArrayBuilder();
         folders.forEach(i -> list.add(i.toJson()));
-        return Json.createObjectBuilder().add("folders", list).build();
+        return Json.createObjectBuilder().add("items", list).build();
     }
 
     private List<PictureData> getFolders(String pathName) {
@@ -98,6 +98,7 @@ public class FolderControl {
         String name = path.contains("/") ? path.substring(path.lastIndexOf("/") + 1) : path;
         name = name.contains(".") ? name.substring(0, name.indexOf(".")) : name;
         image.setTitle(name);
+        image.setType("folder");
 
         return image;
     }

@@ -29,7 +29,7 @@ public class PictureControl {
         List<PictureData> pictures = getPicturesRaw(pathName);
         JsonArrayBuilder list = Json.createArrayBuilder();
         pictures.forEach(i -> list.add(i.toJson()));
-        return Json.createObjectBuilder().add("pictures", list).build();
+        return Json.createObjectBuilder().add("items", list).build();
     }
 
     private List<PictureData> getPicturesRaw(String pathName) {
