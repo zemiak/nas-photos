@@ -84,13 +84,19 @@ public class FolderControl {
                 .collect(Collectors.toList());
     }
 
-    private PictureData convertFolderToPictureData(String path) {
+    public File getFolderCover(String path) {
         String cover = path + "/_cover.jpg";
         File coverFile = new File(cover);
         if (! coverFile.canRead()) {
             cover = photoPath + "/special/folder.png";
             coverFile = new File(cover);
         }
+
+        return coverFile;
+    }
+
+    private PictureData convertFolderToPictureData(String path) {
+        File coverFile = getFolderCover(path);
 
         PictureData image = imageReader.getImage(coverFile);
         image.setId(FilenameEncoder.encode(path));
