@@ -85,11 +85,11 @@ public class FolderControl {
     }
 
     public File getFolderCover(String path) {
-        String cover = path + "/_cover.jpg";
+        String absolutePath = path.startsWith("/") ? path : Paths.get(photoPath, path).toString();
+        String cover = Paths.get(absolutePath, "_cover.jpg").toString();
         File coverFile = new File(cover);
         if (! coverFile.canRead()) {
-            cover = photoPath + "/special/folder.png";
-            coverFile = new File(cover);
+            coverFile = new File(Paths.get(photoPath, "special", "folder.png").toString());
         }
 
         return coverFile;
