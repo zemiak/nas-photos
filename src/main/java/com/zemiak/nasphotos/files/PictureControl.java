@@ -12,12 +12,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+@RequestScoped
 public class PictureControl {
     private static final Logger LOG = Logger.getLogger(PictureControl.class.getName());
     private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.jpg|\\.png|\\.heic)");

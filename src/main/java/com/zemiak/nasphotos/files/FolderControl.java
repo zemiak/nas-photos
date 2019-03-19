@@ -11,12 +11,15 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+@RequestScoped
 public class FolderControl {
     private static final Logger LOG = Logger.getLogger(FolderControl.class.getName());
     @Inject @ConfigProperty(name = "PHOTO_PATH", defaultValue = "/Volumes/media/Pictures/") String photoPath;

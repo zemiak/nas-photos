@@ -13,9 +13,12 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.enterprise.context.RequestScoped;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 
+@RequestScoped
 public class ImageReader {
     private static final Logger LOG = Logger.getLogger(ImageReader.class.getName());
 

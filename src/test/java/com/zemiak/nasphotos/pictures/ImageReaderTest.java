@@ -1,6 +1,9 @@
 package com.zemiak.nasphotos.pictures;
 
 import com.zemiak.nasphotos.files.PictureData;
+
+import org.junit.jupiter.api.Test;
+
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
@@ -9,8 +12,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
-import org.junit.Test;
 
+import io.quarkus.test.junit.QuarkusTest;
+
+@QuarkusTest
 public class ImageReaderTest {
     private static final Logger LOG = Logger.getLogger(ImageReaderTest.class.getName());
 

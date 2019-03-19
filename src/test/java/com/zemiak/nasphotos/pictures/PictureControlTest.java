@@ -1,12 +1,18 @@
 package com.zemiak.nasphotos.pictures;
 
 import com.zemiak.nasphotos.files.PictureControl;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.nio.file.Paths;
 import java.util.Arrays;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
 
+import io.quarkus.test.junit.QuarkusTest;
+
+@QuarkusTest
 public class PictureControlTest {
     private final static String PHOTO_PATH = "/Volumes/media/Pictures/";
 
@@ -25,7 +31,7 @@ public class PictureControlTest {
             PHOTO_PATH + "YYMM Svadba/website/.Fotografie_files/P4010496.jpg",
             PHOTO_PATH + "YYMM Svadba/website/Fotografie_files/.P4010496.jpg",
         }).stream().forEach(picFileName -> {
-            assertFalse(picFileName, PictureControl.isImage(Paths.get(picFileName), PHOTO_PATH));
+            assertFalse(PictureControl.isImage(Paths.get(picFileName), PHOTO_PATH), picFileName);
         });
     }
 
@@ -36,7 +42,7 @@ public class PictureControlTest {
             PHOTO_PATH + "2089/1202 Vianoce/IMG_2302.JPG",
             PHOTO_PATH + "2012/1203 Maruska/IMG_0126.JPG"
         }).stream().forEach(picFileName -> {
-            assertTrue(picFileName, PictureControl.isImage(Paths.get(picFileName), PHOTO_PATH));
+            assertTrue(PictureControl.isImage(Paths.get(picFileName), PHOTO_PATH), picFileName);
         });
     }
 
@@ -49,7 +55,7 @@ public class PictureControlTest {
             PHOTO_PATH + "2014/01 Deti/photo.Png",
             PHOTO_PATH + "2089/12 Vianoce/IMG_2302.JPG"
         }).stream().forEach(picFileName -> {
-            assertFalse(picFileName, PictureControl.isHidden(Paths.get(picFileName)));
+            assertFalse(PictureControl.isHidden(Paths.get(picFileName)), picFileName);
         });
     }
 
@@ -65,7 +71,7 @@ public class PictureControlTest {
             PHOTO_PATH + "YYMM Svadba/website/.Fotografie_files/P4010496.jpg",
             PHOTO_PATH + "YYMM Svadba/website/Fotografie_files/.P4010496.jpg"
         }).stream().forEach(picFileName -> {
-            assertTrue(picFileName, PictureControl.isHidden(Paths.get(picFileName)));
+            assertTrue(PictureControl.isHidden(Paths.get(picFileName)), picFileName);
         });
     }
 }
