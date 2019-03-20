@@ -1,0 +1,14 @@
+FROM bitnami/minideb:stretch
+
+USER root
+RUN echo "deb http://deb.debian.org/debian stretch main contrib non-free" >>/etc/apt/sources.list && \
+    install_packages openjdk-8-jdk ffmpegthumbnailer mediainfo imagemagick && \
+    mkdir -p /pictures /cache /opt/watermarks /opt/application/lib
+
+VOLUME ["/pictures", "/cache"]
+
+COPY ./target/lib/* /opt/application/lib/
+COPY ./src/main/docker/*.png /opt/watermarks/
+COPY ./target/nasphotos-runner.jar /opt/application/
+
+CMD cd /opt/application && java -jar nasphotos-runner.jar
