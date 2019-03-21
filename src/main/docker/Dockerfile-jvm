@@ -11,4 +11,4 @@ COPY ./target/lib/* /opt/application/lib/
 COPY ./src/main/docker/*.png /opt/watermarks/
 COPY ./target/nasphotos-runner.jar /opt/application/
 
-CMD cd /opt/application && java -jar nasphotos-runner.jar
+CMD cd /opt/application && java -jar -Dquarkus.http.host=0.0.0.0 nasphotos-runner.jar
