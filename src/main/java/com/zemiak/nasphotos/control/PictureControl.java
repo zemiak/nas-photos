@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.files;
+package com.zemiak.nasphotos.control;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +18,9 @@ import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+
+import com.zemiak.nasphotos.entity.PictureData;
+
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @RequestScoped
@@ -25,7 +28,7 @@ public class PictureControl {
     private static final Logger LOG = Logger.getLogger(PictureControl.class.getName());
     private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.jpg|\\.png|\\.heic)");
 
-    @Inject @ConfigProperty(name = "PHOTO_PATH", defaultValue = "/Volumes/media/Pictures/") String photoPath;
+    @Inject @ConfigProperty(name = "photoPath") String photoPath;
     @Inject ImageReader imageReader;
 
     public JsonObject getPictures(String pathName) {

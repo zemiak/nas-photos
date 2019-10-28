@@ -1,14 +1,14 @@
 package com.zemiak.nasphotos.pictures;
 
-import com.zemiak.nasphotos.files.PictureControl;
-
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
+
+import com.zemiak.nasphotos.control.PictureControl;
+
+import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
 

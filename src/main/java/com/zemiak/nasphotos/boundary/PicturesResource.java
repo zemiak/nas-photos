@@ -1,28 +1,35 @@
-package com.zemiak.nasphotos.files;
+package com.zemiak.nasphotos.boundary;
 
-import com.zemiak.nasphotos.FilenameEncoder;
 import java.io.File;
 import java.nio.file.Paths;
+
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.Response.Status;
+
+import com.zemiak.nasphotos.SafeFile;
+import com.zemiak.nasphotos.control.FolderControl;
+
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-@Path("pictures")
 @Produces(MediaType.APPLICATION_JSON)
+@Path("backend/download")
 public class PicturesResource {
-    @Inject @ConfigProperty(name = "PHOTO_PATH", defaultValue = "/Volumes/media/Pictures/") String photoPath;
+    @Inject @ConfigProperty(name = "photoPath") String photoPath;
     @Inject FolderControl folders;
 
     @GET
-    @Path("{id}")
-    public Response download(@PathParam("id") String encodedPath) {
-        String path = FilenameEncoder.decode(encodedPath);
+    public Response download(@QueryParam("path") String path) {
+        if (! SafeFile.isSafe(path)) {
+            return Response.status(Status.FORBIDDEN).entity("Path " + path + " is unsafe").build();
+        }
+
         if (! path.startsWith("/")) {
             path = Paths.get(photoPath, path).toString();
         }

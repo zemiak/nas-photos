@@ -1,17 +1,19 @@
 package com.zemiak.nasphotos.pictures;
 
-import com.zemiak.nasphotos.files.PictureData;
-
-import org.junit.jupiter.api.Test;
-
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
+
+import com.zemiak.nasphotos.entity.PictureData;
+
+import org.eclipse.microprofile.config.ConfigProvider;
+import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
 
@@ -21,7 +23,7 @@ public class ImageReaderTest {
 
     @Test
     public void ratioCalc() throws IOException {
-        String photoPath = System.getenv("PHOTO_PATH");
+        String photoPath = ConfigProvider.getConfig().getValue("photoPath", String.class);
         if (null == photoPath || photoPath.isEmpty()) {
             photoPath = "/Volumes/media/Pictures";
         }

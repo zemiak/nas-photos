@@ -1,12 +1,5 @@
-package com.zemiak.nasphotos.files;
+package com.zemiak.nasphotos.control;
 
-import com.drew.imaging.ImageMetadataReader;
-import com.drew.imaging.ImageProcessingException;
-import com.drew.metadata.Directory;
-import com.drew.metadata.Metadata;
-import com.drew.metadata.MetadataException;
-import com.drew.metadata.exif.ExifIFD0Directory;
-import com.zemiak.nasphotos.FilenameEncoder;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
@@ -17,10 +10,23 @@ import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
+import javax.inject.Inject;
+
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.MetadataException;
+import com.drew.metadata.exif.ExifIFD0Directory;
+import com.zemiak.nasphotos.entity.PictureData;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @RequestScoped
 public class ImageReader {
     private static final Logger LOG = Logger.getLogger(ImageReader.class.getName());
+
+    @Inject @ConfigProperty(name = "photoPath") String photoPath;
 
     public PictureData getImage(File file) {
         if (null == file) {
@@ -30,7 +36,7 @@ public class ImageReader {
         PictureData data = new PictureData();
         String name = file.getAbsolutePath();
 
-        data.setId(FilenameEncoder.encode(name));
+        data.setId(relativePath(name));
         String title = name.contains("/") ? name.substring(name.lastIndexOf("/") + 1) : name;
         title = title.contains(".") ? title.substring(0, title.indexOf(".")) : title;
         data.setTitle(title);
@@ -38,6 +44,18 @@ public class ImageReader {
         setImageInfo(file, data);
 
         return data;
+    }
+
+    private String relativePath(String absolute) {
+        if (! absolute.startsWith("/")) {
+            return absolute;
+        }
+
+        if (! absolute.startsWith(photoPath)) {
+            throw new RuntimeException("Photo path " + photoPath + " is not inside of the boundaries.");
+        }
+
+        return absolute.substring(photoPath.length());
     }
 
     private void setImageInfo(File file, PictureData data) {

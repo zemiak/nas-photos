@@ -1,6 +1,5 @@
-package com.zemiak.nasphotos.files;
+package com.zemiak.nasphotos.control;
 
-import com.zemiak.nasphotos.FilenameEncoder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
@@ -17,12 +16,16 @@ import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+
+import com.rometools.utils.Strings;
+import com.zemiak.nasphotos.entity.PictureData;
+
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @RequestScoped
 public class FolderControl {
     private static final Logger LOG = Logger.getLogger(FolderControl.class.getName());
-    @Inject @ConfigProperty(name = "PHOTO_PATH", defaultValue = "/Volumes/media/Pictures/") String photoPath;
+    @Inject @ConfigProperty(name = "photoPath") String photoPath;
     @Inject ImageReader imageReader;
 
     public JsonObject getList(String pathName) {
@@ -33,7 +36,7 @@ public class FolderControl {
     }
 
     private List<PictureData> getFolders(String pathName) {
-        if ("/".equals(pathName)) {
+        if (Strings.isEmpty(pathName)) {
             return getRootFolders();
         }
 
@@ -102,11 +105,11 @@ public class FolderControl {
         File coverFile = getFolderCover(path);
 
         PictureData image = imageReader.getImage(coverFile);
-        image.setId(FilenameEncoder.encode(path));
+        image.setId(path);
 
-        String name = path.contains("/") ? path.substring(path.lastIndexOf("/") + 1) : path;
-        name = name.contains(".") ? name.substring(0, name.indexOf(".")) : name;
-        image.setTitle(name);
+        String title = path.contains("/") ? path.substring(path.lastIndexOf("/") + 1) : path;
+        title = title.contains(".") ? title.substring(0, title.indexOf(".")) : title;
+        image.setTitle(title);
         image.setType("folder");
 
         return image;
