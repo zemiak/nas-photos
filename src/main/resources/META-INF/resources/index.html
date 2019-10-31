@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>nasphotos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
-<!-- see Adam Bien stockz: https://github.com/AdamBien/effectiveweb.training -->
-
 <body>
-    <output></output>
-    <photo-router>
-        <a href="#view">Main - Years</a>
-        <a href="#about">About</a>
-    </photo-router>
-
+    <img class="spinner-hidden" id="spinner" src="img/bluespinner.svg" />
+    <div id="gallery" class="wrapper"></div>
+    <render-gallery></render-gallery>
     <script src="app.js" type="module"></script>
 </body>
+
 </html>

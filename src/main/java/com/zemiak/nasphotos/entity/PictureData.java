@@ -124,7 +124,7 @@ public class PictureData {
         return Json.createObjectBuilder().add("id", this.getId()).add("title", this.getTitle())
                 .add("realWidth", this.getWidth()).add("realHeight", this.getHeight())
                 .add("orientation", this.getOrientation()).add("width", this.getRatioWidth())
-                .add("height", this.getRatioHeight()).add("src", this.getSourceUrl()).add("type", this.getType())
+                .add("height", this.getRatioHeight()).add("path", this.getPath()).add("type", this.getType())
                 .build();
     }
 
@@ -132,15 +132,14 @@ public class PictureData {
         return "folder".equals(getType());
     }
 
-    public String getSourceUrl() {
-        String externalUrl = ConfigProvider.getConfig().getValue("externalUrl", String.class);
+    public String getPath() {
         String idEncoded = urlEncode(getId());
 
         if (isFolder()) {
-            return externalUrl + "browse/?path=" + idEncoded;
+            return idEncoded;
         }
 
-        return externalUrl + "download/?path=" + idEncoded;
+        return idEncoded;
     }
 
     private String urlEncode(String param) {

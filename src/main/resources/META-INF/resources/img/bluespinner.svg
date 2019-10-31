@@ -1,0 +1,17 @@
+<svg class="lds-curve-bars" width="64px"  height="64px"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="background: none;"><g transform="translate(50,50)"><circle cx="0" cy="0" r="5.555555555555555" fill="none" stroke="#1d3f72" stroke-width="2" stroke-dasharray="17.453292519943293 17.453292519943293" transform="rotate(130.842)">
+<animateTransform attributeName="transform" type="rotate" values="0 0 0;360 0 0" times="0;1" dur="1s" calcMode="spline" keySplines="0.2 0 0.8 1" begin="0" repeatCount="indefinite"></animateTransform>
+</circle><circle cx="0" cy="0" r="11.11111111111111" fill="none" stroke="#5699d2" stroke-width="2" stroke-dasharray="34.906585039886586 34.906585039886586" transform="rotate(186.81)">
+<animateTransform attributeName="transform" type="rotate" values="0 0 0;360 0 0" times="0;1" dur="1s" calcMode="spline" keySplines="0.2 0 0.8 1" begin="-0.125" repeatCount="indefinite"></animateTransform>
+</circle><circle cx="0" cy="0" r="16.666666666666668" fill="none" stroke="#d8ebf9" stroke-width="2" stroke-dasharray="52.35987755982989 52.35987755982989" transform="rotate(242.472)">
+<animateTransform attributeName="transform" type="rotate" values="0 0 0;360 0 0" times="0;1" dur="1s" calcMode="spline" keySplines="0.2 0 0.8 1" begin="-0.25" repeatCount="indefinite"></animateTransform>
+</circle><circle cx="0" cy="0" r="22.22222222222222" fill="none" stroke="#71c2cc" stroke-width="2" stroke-dasharray="69.81317007977317 69.81317007977317" transform="rotate(294.991)">
+<animateTransform attributeName="transform" type="rotate" values="0 0 0;360 0 0" times="0;1" dur="1s" calcMode="spline" keySplines="0.2 0 0.8 1" begin="-0.375" repeatCount="indefinite"></animateTransform>
+</circle><circle cx="0" cy="0" r="27.77777777777778" fill="none" stroke="#4996a2" stroke-width="2" stroke-dasharray="87.26646259971648 87.26646259971648" transform="rotate(339.466)">
+<animateTransform attributeName="transform" type="rotate" values="0 0 0;360 0 0" times="0;1" dur="1s" calcMode="spline" keySplines="0.2 0 0.8 1" begin="-0.5" repeatCount="indefinite"></animateTransform>
+</circle><circle cx="0" cy="0" r="33.333333333333336" fill="none" stroke="#785471" stroke-width="2" stroke-dasharray="104.71975511965978 104.71975511965978" transform="rotate(0.61644)">
+<animateTransform attributeName="transform" type="rotate" values="0 0 0;360 0 0" times="0;1" dur="1s" calcMode="spline" keySplines="0.2 0 0.8 1" begin="-0.625" repeatCount="indefinite"></animateTransform>
+</circle><circle cx="0" cy="0" r="38.888888888888886" fill="none" stroke="#e8cdc5" stroke-width="2" stroke-dasharray="122.17304763960306 122.17304763960306" transform="rotate(30.1006)">
+<animateTransform attributeName="transform" type="rotate" values="0 0 0;360 0 0" times="0;1" dur="1s" calcMode="spline" keySplines="0.2 0 0.8 1" begin="-0.75" repeatCount="indefinite"></animateTransform>
+</circle><circle cx="0" cy="0" r="44.44444444444444" fill="none" stroke="#eee7d8" stroke-width="2" stroke-dasharray="139.62634015954634 139.62634015954634" transform="rotate(77.241)">
+<animateTransform attributeName="transform" type="rotate" values="0 0 0;360 0 0" times="0;1" dur="1s" calcMode="spline" keySplines="0.2 0 0.8 1" begin="-0.875" repeatCount="indefinite"></animateTransform>
+</circle></g></svg>
