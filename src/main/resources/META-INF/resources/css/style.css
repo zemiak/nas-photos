@@ -1,69 +1,70 @@
+.wrapper > bread-crumbs {
+    font-size: 2rem;
+    max-width: 65rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
 /*
   AUTO GRID
   Set the minimum item size with `--auto-grid-min-size` and you'll
   get a fully responsive grid with no media queries.
 */
 .auto-grid {
-    --auto-grid-min-size: 16rem;
+    --auto-grid-min-size: 10rem;
   }
 
-  .auto-grid > * {
+.auto-grid > * {
     max-width: 400px;
-  }
+}
 
-  .auto-grid > * + * {
+.auto-grid > * + * {
     margin-top: 1rem;
-  }
+}
 
-  @supports(display: grid) {
+@supports(display: grid) {
     .auto-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(var(--auto-grid-min-size), 1fr));
-      grid-gap: 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(var(--auto-grid-min-size), 1fr));
+        grid-gap: 1rem;
     }
 
     .auto-grid > * {
-      max-width: unset;
+        max-width: unset;
     }
 
     .auto-grid > * + * {
-      margin-top: unset;
+        margin-top: unset;
     }
-  }
+}
 
-  /*
-    WRAPPER
-    A utility with a max width that contains child elements and horizontal centers them
-  */
-  .wrapper {
+/*
+  WRAPPER
+  A utility with a max width that contains child elements and horizontal centers them
+*/
+.wrapper {
     max-width: 65rem;
     margin: 0 auto;
     padding: 0 1rem;
-  }
+}
 
-
-  /* Presentational styles */
-
-  body {
+/* Presentational styles */
+body {
     background: #efefef;
     padding: 1rem 0;
     line-height: 1.4;
     font-family: sans-serif;
-  }
+}
 
-  li {
+li {
     padding: 0.5rem 0.5rem;
     text-align: center;
     font-size: 1rem;
-  }
+}
 
-  li>img {
-    cursor: grab;
-  }
-
-  ul {
+ul {
     list-style-type: none;
-  }
+}
 
 
 /* Loading Indicator */

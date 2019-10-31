@@ -4,10 +4,9 @@ export class TemplateService {
     }
 
     render(name, data) {
-        const folderTitle = this.getFolderTitle(name);
         var html = "";
 
-        html = html + this.header(folderTitle) + "\n";
+        html = html + this.header() + "\n";
 
         this.folders = false;
         data.items.forEach(item => {html = html + this.element(item)});
@@ -21,24 +20,13 @@ export class TemplateService {
         return html;
     }
 
-    header(title) {
+    header() {
 
 
         return `
-    <h1>${title}</h1>
+    <bread-crumbs></bread-crumbs>
     <ul class="auto-grid">
         `;
-    }
-
-    getFolderTitle(name) {
-        if ("" === name) {
-            return "Roky";
-        }
-
-        const decoded = decodeURIComponent(name).replace("+", " ");
-        const pieces = decoded.split(/[\/]+/);
-        const lastPart = pieces[pieces.length - 1];
-        return lastPart;
     }
 
     footer() {
@@ -47,7 +35,6 @@ export class TemplateService {
     }
 
     element(item) {
-        console.log(item);
         if ("folder" === item.type) {
             return this.renderFolder(item);
         }
@@ -60,18 +47,19 @@ export class TemplateService {
 
         return `
         <li>
-            <img src="${imageUrl}" alt="${item.title}">
+            <img src="${imageUrl}" alt="${item.title}" width="90%">
         </li>
 `;
     }
 
     renderFolder(item) {
         this.folders = true;
-        // <img onclick="window._gallery.render('${item.path}')" src="/img/folder.png" width="128px" height="128px" alt="${item.title}">
 
         return `
         <li>
-            <img onclick="window._gallery.render('${item.path}')" src="/img/folder.png" width="90%" height="90%" alt="${item.title}">
+            <a href="#${item.path}">
+                <img src="/img/folder.png" width="90%" height="90%" alt="${item.title}">
+            </a>
             <span>${item.title}</span>
         </li>
 `;

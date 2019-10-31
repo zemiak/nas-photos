@@ -11,18 +11,22 @@ export class FolderService {
         return (name in this.cache);
     }
 
+    getBaseUri() {
+        const changedPort = window.location.href.replace(":8000/", ":8080/");
+        return changedPort.split('#')[0];
+    }
+
     getBaseDownloadUri() {
-        return window.location.href.replace(":8000/", ":8080/") + "backend/download/?path=";
+        return this.getBaseUri() + "backend/download/?path=";
     }
 
     getFolderFetchUri(name) {
-        return window.location.href.replace(":8000/", ":8080/") + "backend/browse/?path=" + name;
+        return this.getBaseUri() + "backend/browse/?path=" + name;
     }
 
     async fetchFolder(name) {
         if (!(name in this.cache)) {
             var uri = this.getFolderFetchUri(name);
-            console.log("Fetching", uri);
 
             const response = await fetch(uri);
             const payload = await response.json();
@@ -34,9 +38,8 @@ export class FolderService {
     }
 
     dispatchDataEvent(name) {
-        // const folderDataEvent = new CustomEvent(this.getEventName(), {detail: name, bubbles: true});
-        // dispatchEvent(folderDataEvent);  // @TODO: !!! does NOT work
-        window._gallery.onFolderData({detail: name});  // ugly as fuck
+        const folderDataEvent = new CustomEvent(this.getEventName(), {detail: name, bubbles: true});
+        dispatchEvent(folderDataEvent);
     }
 
     getFolder(name) {

@@ -1,4 +1,4 @@
-export class SpinnerService {
+export class Spinner {
     constructor() {
         this.spinner = document.querySelector("#spinner");
     }
