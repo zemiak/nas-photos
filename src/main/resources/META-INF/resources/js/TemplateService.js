@@ -47,7 +47,9 @@ export class TemplateService {
 
         return `
         <li>
-            <img src="${imageUrl}" alt="${item.title}" width="90%">
+            <a href="${imageUrl}" data-glightbox="gallery1" class="glightbox">
+                <img src="${imageUrl}" alt="${item.title}" width="90%">
+            </a>
         </li>
 `;
     }
@@ -72,6 +74,6 @@ export class TemplateService {
     dispatchGalleryEvent() {
         const folderDataEvent = new CustomEvent(this.getEventName(), {detail: {}, bubbles: true});
         dispatchEvent(folderDataEvent);
-        console.log("dispatchGalleryEvent ran")
+        console.log("dispatchGalleryEvent ran");
     }
 }
