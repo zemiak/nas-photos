@@ -3,7 +3,7 @@ export class TemplateService {
         this.imageDownloadBaseUrl = url;
     }
 
-    render(name, data) {
+    render(data) {
         var html = "";
 
         html = html + this.header() + "\n";
@@ -14,7 +14,7 @@ export class TemplateService {
         html = html + this.footer() + "\n";
 
         if (! this.folders) {
-            console.log("TemplateService.render: turning images into gallery");
+            this.dispatchGalleryEvent();
         }
 
         return html;
@@ -63,5 +63,15 @@ export class TemplateService {
             <span>${item.title}</span>
         </li>
 `;
+    }
+
+    getEventName() {
+        return "render-lightbox-event";
+    }
+
+    dispatchGalleryEvent() {
+        const folderDataEvent = new CustomEvent(this.getEventName(), {detail: {}, bubbles: true});
+        dispatchEvent(folderDataEvent);
+        console.log("dispatchGalleryEvent ran")
     }
 }
