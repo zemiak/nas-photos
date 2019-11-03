@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.boundary;
+package com.zemiak.nasphotos.files.boundary;
 
 import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
@@ -10,8 +10,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.zemiak.nasphotos.SafeFile;
-import com.zemiak.nasphotos.control.FolderControl;
-import com.zemiak.nasphotos.control.PictureControl;
+import com.zemiak.nasphotos.files.control.FolderControl;
+import com.zemiak.nasphotos.files.control.PictureControl;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 

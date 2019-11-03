@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.boundary;
+package com.zemiak.nasphotos.files.boundary;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
 import com.zemiak.nasphotos.SafeFile;
-import com.zemiak.nasphotos.control.FolderControl;
+import com.zemiak.nasphotos.files.control.FolderControl;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 

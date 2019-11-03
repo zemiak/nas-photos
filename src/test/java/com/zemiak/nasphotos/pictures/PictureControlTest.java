@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-import com.zemiak.nasphotos.control.PictureControl;
+import com.zemiak.nasphotos.files.control.PictureControl;
 
 import org.junit.jupiter.api.Test;
 

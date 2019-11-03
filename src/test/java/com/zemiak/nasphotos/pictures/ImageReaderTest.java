@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 
-import com.zemiak.nasphotos.entity.PictureData;
+import com.zemiak.nasphotos.files.entity.PictureData;
 
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.control;
+package com.zemiak.nasphotos.files.control;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
 import com.rometools.utils.Strings;
-import com.zemiak.nasphotos.entity.PictureData;
+import com.zemiak.nasphotos.files.entity.PictureData;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -117,6 +117,6 @@ public class FolderControl {
 
     public boolean isLeafFolder(String realPath) {
         List<PictureData> folders = getFolders(realPath);
-        return folders.isEmpty();
+        return folders.isEmpty() || folders.contains("Ori");
     }
 }

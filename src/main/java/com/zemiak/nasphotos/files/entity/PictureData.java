@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.entity;
+package com.zemiak.nasphotos.files.entity;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -6,8 +6,6 @@ import java.util.Objects;
 
 import javax.json.Json;
 import javax.json.JsonObject;
-
-import org.eclipse.microprofile.config.ConfigProvider;
 
 public class PictureData {
     private String id;

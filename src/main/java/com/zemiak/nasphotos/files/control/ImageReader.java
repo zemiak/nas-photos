@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.control;
+package com.zemiak.nasphotos.files.control;
 
 import java.awt.Dimension;
 import java.io.File;
@@ -18,7 +18,7 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataException;
 import com.drew.metadata.exif.ExifIFD0Directory;
-import com.zemiak.nasphotos.entity.PictureData;
+import com.zemiak.nasphotos.files.entity.PictureData;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 

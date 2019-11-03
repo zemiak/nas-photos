@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.control;
+package com.zemiak.nasphotos.files.control;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
-import com.zemiak.nasphotos.entity.PictureData;
+import com.zemiak.nasphotos.files.entity.PictureData;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -90,7 +90,7 @@ public class PictureControl {
 
         for (int i = 0; i < path.getNameCount(); i++) {
             name = path.getName(i).toString();
-            if (name.startsWith(".") || name.startsWith("_")) {
+            if (name.startsWith(".") || name.startsWith("_") || name.equalsIgnoreCase("Originals")) {
                 return true;
             }
         }
