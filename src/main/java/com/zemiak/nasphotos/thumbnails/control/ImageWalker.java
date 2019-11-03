@@ -3,30 +3,31 @@ package com.zemiak.nasphotos.thumbnails.control;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
 
 import com.zemiak.nasphotos.files.control.FolderControl;
 import com.zemiak.nasphotos.files.control.PictureControl;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.config.ConfigProvider;
 
-@Dependent
 public class ImageWalker {
     private static final Logger LOG = Logger.getLogger(FolderControl.class.getName());
-
-    @Inject
-    @ConfigProperty(name = "photoPath")
     String photoPath;
+    Function<String, Void> operator;
+    Predicate<Path> fileFilter;
 
-    public void walkImages(Function<String, Void> operator) {
-        System.out.println("walkImages()");
+    public ImageWalker(Function<String, Void> operator, Predicate<Path> fileFilter) {
+        this.photoPath = ConfigProvider.getConfig().getValue("photoPath", String.class);
+        this.operator = operator;
+        this.fileFilter = fileFilter;
+    }
 
+    public void walk() {
         try {
             walkFromRoot(operator);
         } catch (IOException e) {
@@ -41,49 +42,44 @@ public class ImageWalker {
                     .filter(path -> path.toFile().canRead())
                     .filter(path -> !PictureControl.isHidden(path))
                     .map(path -> path.getFileName().toString())
-                    .filter(fileName -> fileName.length() == 4)
-                    .forEach(rootFolder ->{
-                        System.out.println("Visiting root level folder " + rootFolder);
-
+                    .filter(path -> path.toString().length() == 4)
+                    .map(path -> {return Paths.get(photoPath, path.toString());})
+                    .forEach(rootPath ->{
                         try {
-                            walkSecondLevel(rootFolder, operator);
+                            walkSecondLevel(rootPath, operator);
                         } catch (IOException e) {
                             LOG.log(Level.SEVERE, "Error walking and processing files", e);
                         }
                     });
     }
 
-    private void walkSecondLevel(String pathName, Function<String, Void> operator) throws IOException {
-        Files.walk(Paths.get(photoPath, pathName), 1, FileVisitOption.FOLLOW_LINKS)
+    private void walkSecondLevel(Path startingPath, Function<String, Void> operator) throws IOException {
+        Files.walk(startingPath, 1, FileVisitOption.FOLLOW_LINKS)
             .skip(1)
             .filter(path -> path.toFile().isDirectory())
             .filter(path -> path.toFile().canRead())
             .filter(path -> !PictureControl.isHidden(path))
-            .map(path -> Paths.get(pathName, path.getFileName().toString()).toString())
-            .forEach(secondLevelFolder -> {
-                System.out.println("Visiting second level folder " + secondLevelFolder);
-
+            .forEach(path -> {
                 try {
-                    walkFiles(secondLevelFolder, operator);
+                    walkFiles(path, operator);
                 } catch (IOException e) {
                     LOG.log(Level.SEVERE, "Error walking and processing files", e);
                 }
             });
     }
 
-    private void walkFiles(String pathName, Function<String, Void> operator) throws IOException {
-        Files.walk(Paths.get(photoPath, pathName), 1, FileVisitOption.FOLLOW_LINKS)
+    private void walkFiles(Path startingPath, Function<String, Void> operator) throws IOException {
+        Files.walk(startingPath, 1, FileVisitOption.FOLLOW_LINKS)
             .skip(1)
             .filter(path -> !path.toFile().isDirectory())
             .filter(path -> path.toFile().canRead())
-            .filter(path -> PictureControl.isImage(path, photoPath))
-            .map(path -> path.getFileName().toString())
+            .filter(this.fileFilter)
             .forEach(fileName -> {
                 visitFile(fileName, operator);
             });
     }
 
-    private void visitFile(String pathName, Function<String, Void> operator) {
-        System.out.println("Visiting file " + pathName);
+    private void visitFile(Path picturePath, Function<String, Void> operator) {
+        System.out.println("Visiting file " + picturePath.toString());
     }
 }

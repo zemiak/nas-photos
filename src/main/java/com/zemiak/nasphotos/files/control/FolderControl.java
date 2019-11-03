@@ -117,6 +117,6 @@ public class FolderControl {
 
     public boolean isLeafFolder(String realPath) {
         List<PictureData> folders = getFolders(realPath);
-        return folders.isEmpty() || folders.contains("Ori");
+        return folders.isEmpty();
     }
 }

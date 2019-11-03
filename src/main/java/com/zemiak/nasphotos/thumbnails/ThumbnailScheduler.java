@@ -7,6 +7,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.google.common.base.Predicate;
+import com.zemiak.nasphotos.files.control.PictureControl;
 import com.zemiak.nasphotos.thumbnails.control.ImageWalker;
 import com.zemiak.nasphotos.thumbnails.control.Rotator;
 import com.zemiak.nasphotos.thumbnails.control.Thumbnailer;
@@ -22,13 +24,11 @@ public class ThumbnailScheduler {
     @Inject @ConfigProperty(name = "photoPath") String photoPath;
     @Inject Rotator rotator;
     @Inject Thumbnailer thumbnailer;
-    @Inject ImageWalker walker;
 
     @Scheduled(cron = "0 15 1 * * ?")
     @GET
     public void rotatePicturesAndGenerateThumbnails() {
-        // 1:15am every day
-        walker.walkImages(this::makeThumbnailAndRotate);
+        new ImageWalker(this::makeThumbnailAndRotate, (path) -> PictureControl.isImage(path, photoPath)).walk();
     }
 
     private Void makeThumbnailAndRotate(String fullPath) {
