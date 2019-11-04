@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.thumbnails;
+package com.zemiak.nasphotos.rotation;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -8,9 +8,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.zemiak.nasphotos.files.control.PictureControl;
-import com.zemiak.nasphotos.thumbnails.control.ImageWalker;
-import com.zemiak.nasphotos.thumbnails.control.Rotator;
-import com.zemiak.nasphotos.thumbnails.control.Thumbnailer;
+import com.zemiak.nasphotos.rotation.control.ImageWalker;
+import com.zemiak.nasphotos.rotation.control.Rotator;
+import com.zemiak.nasphotos.thumbnails.Thumbnailer;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 

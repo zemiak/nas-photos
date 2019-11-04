@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.thumbnails.control;
+package com.zemiak.nasphotos.rotation.control;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,10 +10,12 @@ import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.enterprise.context.Dependent;
 import javax.imageio.ImageIO;
 
-import com.zemiak.nasphotos.thumbnails.entity.ImageInformation;
+import com.zemiak.nasphotos.rotation.entity.ImageInformation;
 
+@Dependent
 public class ImageManipulation {
 
     private static final Logger LOG = Logger.getLogger(ImageManipulation.class.getName());

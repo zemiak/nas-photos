@@ -20,8 +20,8 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
 import com.zemiak.nasphotos.files.entity.PictureData;
-import com.zemiak.nasphotos.thumbnails.control.Rotator;
-import com.zemiak.nasphotos.thumbnails.control.Thumbnailer;
+import com.zemiak.nasphotos.rotation.control.Rotator;
+import com.zemiak.nasphotos.thumbnails.Thumbnailer;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 

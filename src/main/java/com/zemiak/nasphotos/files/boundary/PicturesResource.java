@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response.Status;
 
 import com.zemiak.nasphotos.SafeFile;
 import com.zemiak.nasphotos.files.control.FolderControl;
-import com.zemiak.nasphotos.thumbnails.control.Rotator;
+import com.zemiak.nasphotos.rotation.control.Rotator;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 

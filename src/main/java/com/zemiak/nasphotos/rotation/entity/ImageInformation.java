@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.thumbnails.entity;
+package com.zemiak.nasphotos.rotation.entity;
 
 import java.awt.geom.AffineTransform;
 

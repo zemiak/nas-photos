@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.thumbnails.control;
+package com.zemiak.nasphotos.rotation.control;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 import com.zemiak.nasphotos.files.control.ImageReader;
 import com.zemiak.nasphotos.files.entity.PictureData;
-import com.zemiak.nasphotos.thumbnails.entity.ImageInformation;
+import com.zemiak.nasphotos.rotation.entity.ImageInformation;
 
 @Dependent
 public class Rotator {
@@ -106,6 +106,7 @@ public class Rotator {
         if (!rotatedFolder.isDirectory()) {
             try {
                 Files.createDirectory(Paths.get(rotatedFolderName));
+                LOG.log(Level.INFO, "Created rotated folder {0}", rotatedFolderName);
             } catch (IOException e) {
                 throw new RuntimeException("Cannot create folder " + rotatedFolderName);
             }

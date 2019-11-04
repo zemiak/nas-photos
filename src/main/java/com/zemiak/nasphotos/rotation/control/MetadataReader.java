@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.thumbnails.control;
+package com.zemiak.nasphotos.rotation.control;
 
 import java.awt.Dimension;
 import java.io.File;
@@ -18,7 +18,7 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataException;
 import com.drew.metadata.exif.ExifIFD0Directory;
-import com.zemiak.nasphotos.thumbnails.entity.ImageInformation;
+import com.zemiak.nasphotos.rotation.entity.ImageInformation;
 
 @Dependent
 public class MetadataReader {
