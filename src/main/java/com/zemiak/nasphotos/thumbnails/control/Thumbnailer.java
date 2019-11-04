@@ -4,6 +4,8 @@ import javax.enterprise.context.Dependent;
 
 @Dependent
 public class Thumbnailer {
+    public static final String SUBFOLDER_THUMBNAILED = "rotated";
+
     public void createOrUpdate(String fullPath) {
         /**
           * protected static BufferedImage load(String name) {

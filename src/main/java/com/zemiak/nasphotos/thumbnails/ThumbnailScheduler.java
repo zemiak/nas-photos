@@ -7,7 +7,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.google.common.base.Predicate;
 import com.zemiak.nasphotos.files.control.PictureControl;
 import com.zemiak.nasphotos.thumbnails.control.ImageWalker;
 import com.zemiak.nasphotos.thumbnails.control.Rotator;

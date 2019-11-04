@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response.Status;
 
 import com.zemiak.nasphotos.SafeFile;
 import com.zemiak.nasphotos.files.control.FolderControl;
+import com.zemiak.nasphotos.thumbnails.control.Rotator;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -34,7 +35,7 @@ public class PicturesResource {
             path = Paths.get(photoPath, path).toString();
         }
 
-        File file = new File(path);
+        File file = new File(Rotator.getRotatedFileName(path));
         if (file.isDirectory()) {
             file = folders.getFolderCover(path);
         }

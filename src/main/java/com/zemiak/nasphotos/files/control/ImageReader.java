@@ -26,7 +26,8 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class ImageReader {
     private static final Logger LOG = Logger.getLogger(ImageReader.class.getName());
 
-    @Inject @ConfigProperty(name = "photoPath") String photoPath;
+    @Inject
+    @ConfigProperty(name = "photoPath") String photoPath;
 
     public PictureData getImage(File file) {
         if (null == file) {
@@ -104,6 +105,16 @@ public class ImageReader {
         data.setHeight(height);
     }
 
+    /**
+     * 1. 0 degrees – the correct orientation, no adjustment is required.
+     * 2. 0 degrees, mirrored – image has been flipped back-to-front.
+     * 3. 180 degrees – image is upside down.
+     * 4. 180 degrees, mirrored – image is upside down and flipped back-to-front.
+     * 5. 90 degrees – image is on its side.
+     * 6. 90 degrees, mirrored – image is on its side and flipped back-to-front.
+     * 7. 270 degrees – image is on its far side.
+     * 8. 270 degrees, mirrored – image is on its far side and flipped back-to-front.
+     */
     private int readImageOrientation(File imageFile) throws IOException, MetadataException, ImageProcessingException {
         Metadata metadata = ImageMetadataReader.readMetadata(imageFile);
         Directory directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
