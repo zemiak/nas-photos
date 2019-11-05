@@ -1,10 +1,4 @@
 #!/bin/sh
-mvn package || exit 2
-
-folder="$(pwd)"
-cd ../../.. || exit 4
-docker build . -f ./src/main/docker/Dockerfile-jvm -t nasphotos || exit 6
-cd "${folder}"
 
 which systemctl
 if [ $? -eq 0 ]
