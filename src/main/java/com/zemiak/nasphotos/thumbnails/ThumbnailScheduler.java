@@ -17,7 +17,7 @@ import io.quarkus.scheduler.Scheduled;
 
 @ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
-@Path("schedules/prepare")
+@Path("schedulers/thumbnails")
 public class ThumbnailScheduler {
     @Inject @ConfigProperty(name = "photoPath") String photoPath;
     @Inject Thumbnailer thumbnailer;
