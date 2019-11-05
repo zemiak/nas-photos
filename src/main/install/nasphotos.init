@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# nasphotos      NAS Photos Viewer
+#
+# chk#config: - 45 24
+# description: Restarts the nasphotos components
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+prog=nasphotos
+
+DOPTS="--restart=always"
+CONTAINERNAME=nasphotos
+IMAGE=nasphotos
+PORT=8081
+PORTMAP=8081:8081
+PHOTOPATH=/data/
+VOLUME=/mnt/media/Pictures:/data
+
+# See how we were called.
+case "$1" in
+  start)
+        docker run $DOPTS --name ${CONTAINERNAME} -p ${PORTMAP} -e PHOTOPATH=${PHOTOPATH} -e PORT=${PORT} -v ${VOLUME} ${IMAGE}
+        ;;
+  stop)
+        /usr/bin/docker stop -t 10 ${CONTAINERNAME}
+        /usr/bin/docker rm -f ${CONTAINERNAME}
+        ;;
+  status)
+        docker ps | grep ${CONTAINERNAME}
+        ;;
+  restart)
+        /usr/bin/docker stop -t 10 ${CONTAINERNAME}
+        /usr/bin/docker rm -f ${CONTAINERNAME}
+        sleep 2s
+        docker run $DOPTS --name ${CONTAINERNAME} -p ${PORTMAP} -e PHOTOPATH=${PHOTOPATH} -e PORT=${PORT} -v ${VOLUME} ${IMAGE}
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart|status}"
+        exit 1
+esac
+
+exit 0

@@ -1,14 +1,17 @@
-FROM bitnami/minideb:stretch
+FROM fabric8/java-alpine-openjdk8-jre
+ENV AB_ENABLED=jmx_exporter
+ENV PORT=8081
+COPY target/lib/* /deployments/lib/
+COPY target/*-runner.jar /deployments/app.jar
+EXPOSE 8081
+VOLUME ["/data"]
 
-USER root
-RUN echo "deb http://deb.debian.org/debian stretch main contrib non-free" >>/etc/apt/sources.list && \
-    install_packages openjdk-8-jdk ffmpegthumbnailer mediainfo imagemagick && \
-    mkdir -p /pictures /cache /opt/watermarks /opt/application/lib
+# run with user 1001 and be prepared for be running in OpenShift too
+RUN adduser -G root --no-create-home --disabled-password 1001 \
+  && chown -R 1001 /deployments \
+  && chmod -R "g+rwX" /deployments \
+  && chown -R 1001:root /deployments \
+  && mkdir -p /data
+USER 1001
 
-VOLUME ["/pictures", "/cache"]
-
-COPY ./target/lib/* /opt/application/lib/
-COPY ./src/main/docker/*.png /opt/watermarks/
-COPY ./target/nasphotos-runner.jar /opt/application/
-
-CMD cd /opt/application && java -jar -Dquarkus.http.host=0.0.0.0 nasphotos-runner.jar
+CMD cd /deployments && java -Dquarkus.http.port=${PORT} -Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -jar app.jar

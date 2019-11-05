@@ -12,7 +12,7 @@ export class FolderService {
     }
 
     getBaseUri() {
-        const changedPort = window.location.href.replace(":8000/", ":8080/");
+        const changedPort = window.location.href.replace(":8000/", ":8081/");
         return changedPort.split('#')[0];
     }
 
