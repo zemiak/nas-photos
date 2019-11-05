@@ -6,12 +6,10 @@ COPY target/*-runner.jar /deployments/app.jar
 EXPOSE 8081
 VOLUME ["/data"]
 
-# run with user 1001 and be prepared for be running in OpenShift too
 RUN adduser -G root --no-create-home --disabled-password 1001 \
   && chown -R 1001 /deployments \
   && chmod -R "g+rwX" /deployments \
   && chown -R 1001:root /deployments \
   && mkdir -p /data
-USER 1001
 
 CMD cd /deployments && java -Dquarkus.http.port=${PORT} -Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -jar app.jar
