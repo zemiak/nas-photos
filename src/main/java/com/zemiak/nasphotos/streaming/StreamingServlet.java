@@ -17,8 +17,12 @@
 
 package com.zemiak.nasphotos.streaming;
 
-import com.zemiak.nasphotos.configuration.ConfigurationProvider;
-import java.io.*;
+import java.io.Closeable;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,12 +32,15 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.eclipse.microprofile.config.ConfigProvider;
 
 @WebServlet(urlPatterns = {"/stream/*"})
 public class StreamingServlet extends HttpServlet {
@@ -48,7 +55,7 @@ public class StreamingServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        this.photoPath = ConfigurationProvider.getPhotoPath();
+        this.photoPath = ConfigProvider.getConfig().getValue("photoPath", String.class);
     }
 
     @Override
