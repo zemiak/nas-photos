@@ -14,8 +14,6 @@ import java.util.logging.Logger;
 import javax.enterprise.context.Dependent;
 import javax.imageio.ImageIO;
 
-import com.zemiak.nasphotos.rotation.control.Rotator;
-
 @Dependent
 public class Thumbnailer {
     public static final String SUBFOLDER_THUMBNAILED = "thumbnails";
@@ -29,7 +27,7 @@ public class Thumbnailer {
         }
 
         createFolderIfNeeded(fullPath);
-        createThumbnail(Paths.get(Rotator.getRotatedFileName(fullPath)), Paths.get(thumbnailedFullName));
+        createThumbnail(Paths.get(fullPath), Paths.get(thumbnailedFullName));
 
         LOG.log(Level.INFO, "Thumbnailed picture {0}", fullPath);
     }

@@ -1,4 +1,4 @@
-package com.zemiak.nasphotos.rotation.control;
+package com.zemiak.nasphotos.thumbnails;
 
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
