@@ -20,6 +20,10 @@ export class FolderService {
         return this.getBaseUri() + "backend/download/?path=";
     }
 
+    getBaseDownloadThumbnailUri() {
+        return this.getBaseUri() + "backend/thumbnail/?path=";
+    }
+
     getFolderFetchUri(name) {
         return this.getBaseUri() + "backend/browse/?path=" + name;
     }

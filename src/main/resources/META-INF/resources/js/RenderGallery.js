@@ -9,7 +9,7 @@ export class RenderGallery extends HTMLElement {
 
         this.service = new FolderService();
         this.spinner = new Spinner();
-        this.template = new TemplateService(this.service.getBaseDownloadUri());
+        this.template = new TemplateService(this.service.getBaseDownloadUri(), this.service.getBaseDownloadThumbnailUri());
         this.currentFolder = "";
     }
 

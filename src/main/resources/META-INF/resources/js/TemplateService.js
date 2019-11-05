@@ -1,6 +1,7 @@
 export class TemplateService {
-    constructor(url) {
+    constructor(url, thumbnailUrl) {
         this.imageDownloadBaseUrl = url;
+        this.imageDownloadThumbnailBaseUrl = thumbnailUrl;
     }
 
     render(data) {
@@ -44,11 +45,12 @@ export class TemplateService {
 
     renderPicture(item) {
         const imageUrl = this.imageDownloadBaseUrl + item.path;
+        const imageThumbnailUrl = this.imageDownloadThumbnailBaseUrl + item.path;
 
         return `
         <li>
             <a href="${imageUrl}" data-glightbox="gallery1" class="glightbox">
-                <img src="${imageUrl}" alt="${item.title}" width="90%">
+                <img src="${imageThumbnailUrl}" alt="${item.title}" width="90%">
             </a>
         </li>
 `;
