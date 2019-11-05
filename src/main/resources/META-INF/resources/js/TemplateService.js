@@ -57,12 +57,14 @@ export class TemplateService {
     }
 
     renderFolder(item) {
+        const imageThumbnailUrl = this.imageDownloadThumbnailBaseUrl + item.path;
+
         this.folders = true;
 
         return `
         <li>
             <a href="#${item.path}">
-                <img src="/img/folder.png" width="90%" height="90%" alt="${item.title}">
+                <img src="${imageThumbnailUrl}" width="90%" height="90%" alt="${item.title}">
             </a>
             <span>${item.title}</span>
         </li>
