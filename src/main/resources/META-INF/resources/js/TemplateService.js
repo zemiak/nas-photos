@@ -50,7 +50,7 @@ export class TemplateService {
         return `
         <li>
             <a href="${imageUrl}" data-glightbox="gallery1" class="glightbox">
-                <img src="${imageThumbnailUrl}" alt="${item.title}" width="90%">
+                <img src="${imageThumbnailUrl}" alt="${item.title}">
             </a>
         </li>
 `;
@@ -64,7 +64,7 @@ export class TemplateService {
         return `
         <li>
             <a href="#${item.path}">
-                <img src="${imageThumbnailUrl}" width="90%" height="90%" alt="${item.title}">
+                <img src="${imageThumbnailUrl}" width="512px" height="300px" alt="${item.title}">
             </a>
             <span>${item.title}</span>
         </li>
