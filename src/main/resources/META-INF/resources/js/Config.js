@@ -1,6 +1,6 @@
 export class Config {
     constructor() {
-        this.config = JSON.parse(window.localStorage.getItem("nasphotos.config"));
+        this.config = JSON.parse(window._nasphotos_config);
     }
 
     getPort() {
