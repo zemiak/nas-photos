@@ -1,9 +1,9 @@
 FROM fabric8/java-alpine-openjdk8-jre
 ENV AB_ENABLED=jmx_exporter
-ENV PORT=8081
+ENV QUARKUS_HTTP_PORT=8081
 COPY target/lib/* /deployments/lib/
 COPY target/*-runner.jar /deployments/app.jar
-EXPOSE 8081
+EXPOSE ${QUARKUS_HTTP_PORT}
 VOLUME ["/data"]
 
 RUN adduser -G root --no-create-home --disabled-password 1001 \
@@ -12,4 +12,4 @@ RUN adduser -G root --no-create-home --disabled-password 1001 \
   && chown -R 1001:root /deployments \
   && mkdir -p /data
 
-CMD cd /deployments && java -Dquarkus.http.port=${PORT} -Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -jar app.jar
+CMD cd /deployments && java -Dquarkus.http.port=${QUARKUS_HTTP_PORT} -Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -jar app.jar

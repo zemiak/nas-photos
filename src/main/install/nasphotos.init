@@ -13,15 +13,15 @@ prog=nasphotos
 DOPTS="--restart=always"
 CONTAINERNAME=nasphotos
 IMAGE=nasphotos
-PORT=8081
-PORTMAP=8081:8081
+QUARKUS_HTTP_PORT=8081
+PORTMAP=${QUARKUS_HTTP_PORT}:${QUARKUS_HTTP_PORT}
 PHOTOPATH=/data/
 VOLUME=/mnt/media/Pictures:/data
 
 # See how we were called.
 case "$1" in
   start)
-        docker run $DOPTS --name ${CONTAINERNAME} -p ${PORTMAP} -e PHOTOPATH=${PHOTOPATH} -e PORT=${PORT} -v ${VOLUME} ${IMAGE}
+        docker run $DOPTS --name ${CONTAINERNAME} -p ${PORTMAP} -e PHOTOPATH=${PHOTOPATH} -e QUARKUS_HTTP_PORT=${QUARKUS_HTTP_PORT} -v ${VOLUME} ${IMAGE}
         ;;
   stop)
         /usr/bin/docker stop -t 10 ${CONTAINERNAME}
@@ -34,7 +34,7 @@ case "$1" in
         /usr/bin/docker stop -t 10 ${CONTAINERNAME}
         /usr/bin/docker rm -f ${CONTAINERNAME}
         sleep 2s
-        docker run $DOPTS --name ${CONTAINERNAME} -p ${PORTMAP} -e PHOTOPATH=${PHOTOPATH} -e PORT=${PORT} -v ${VOLUME} ${IMAGE}
+        docker run $DOPTS --name ${CONTAINERNAME} -p ${PORTMAP} -e PHOTOPATH=${PHOTOPATH} -e QUARKUS_HTTP_PORT=${QUARKUS_HTTP_PORT} -v ${VOLUME} ${IMAGE}
         ;;
   *)
         echo $"Usage: $0 {start|stop|restart|status}"

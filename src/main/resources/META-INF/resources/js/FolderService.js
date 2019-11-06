@@ -1,8 +1,10 @@
 import { Cache } from "./Cache.js";
+import { Config } from "./Config.js";
 
 export class FolderService {
     constructor() {
         this.cache = new Cache();
+        this.config = new Config();
     }
 
     contains(name) {
@@ -10,7 +12,7 @@ export class FolderService {
     }
 
     getBaseUri() {
-        const changedPort = window.location.href.replace(":8000/", ":8081/");
+        const changedPort = window.location.href.replace(":8000/", ":" + this.config.getPort() + "/");
         return changedPort.split('#')[0];
     }
 
