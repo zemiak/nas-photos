@@ -1,5 +1,7 @@
 package com.zemiak.nasphotos;
 
+import java.util.logging.Logger;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -20,6 +22,8 @@ import io.quarkus.scheduler.Scheduled;
 @Produces(MediaType.APPLICATION_JSON)
 @Path("schedules/prepare")
 public class ImagePreparationScheduler {
+    private static final Logger LOG = Logger.getLogger(ImagePreparationScheduler.class.getName());
+
     @Inject @ConfigProperty(name = "photoPath") String photoPath;
     @Inject Rotator rotator;
     @Inject Thumbnailer thumbnailer;
@@ -28,6 +32,7 @@ public class ImagePreparationScheduler {
     @GET
     public void rotatePicturesAndGenerateThumbnails() {
         new ImageWalker(this::makeThumbnailAndRotate, (path) -> PictureControl.isImage(path, photoPath)).walk();
+        LOG.info("Done.");
     }
 
     private Void makeThumbnailAndRotate(String fullPath) {

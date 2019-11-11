@@ -39,7 +39,7 @@ public class ImageManipulation {
 
         try {
             ImageIO.write(scaled, "jpg", destination.toFile());
-            LOG.log(Level.INFO, "Rotated and cached image {0} -> {1}", new Object[]{original.toString(), destination.toString()});
+            LOG.log(Level.INFO, "Rotated image {0} -> {1}", new Object[]{original.toString(), destination.toString()});
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "Cannot write rotated image " + destination.toString(), ex);
         }

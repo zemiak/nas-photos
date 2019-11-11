@@ -80,6 +80,7 @@ public class ImageWalker {
     }
 
     private void visitFile(Path picturePath, Function<String, Void> operator) {
-        System.out.println("Visiting file " + picturePath.toString());
+        LOG.log(Level.FINE, "Visiting file", picturePath.toString());
+        operator.apply(picturePath.toString());
     }
 }

@@ -14,11 +14,13 @@ import java.util.logging.Logger;
 import javax.enterprise.context.Dependent;
 import javax.imageio.ImageIO;
 
+import com.zemiak.nasphotos.rotation.control.Rotator;
+
 @Dependent
 public class Thumbnailer {
     public static final String SUBFOLDER_THUMBNAILED = "thumbnails";
     private static final float MAX_SIZE = 256;
-	private static final Logger LOG = Logger.getLogger(Thumbnailer.class.getName());
+    private static final Logger LOG = Logger.getLogger(Thumbnailer.class.getName());
 
     public void createOrUpdate(String fullPath) {
         String thumbnailedFullName = getThumbnailedPathAndFile(fullPath);
@@ -28,8 +30,6 @@ public class Thumbnailer {
 
         createFolderIfNeeded(fullPath);
         createThumbnail(Paths.get(fullPath), Paths.get(thumbnailedFullName));
-
-        LOG.log(Level.INFO, "Thumbnailed picture {0}", fullPath);
     }
 
     public static String getThumbnailedFileName(String fullName) {
@@ -69,10 +69,11 @@ public class Thumbnailer {
 
     public void createThumbnail(Path originalFullPath, Path destinationFullPath) {
         BufferedImage img;
+        Path rotatedFullPath = Paths.get(Rotator.getRotatedFileName(originalFullPath.toString()));
         try {
-            img = ImageIO.read(originalFullPath.toFile());
+            img = ImageIO.read(rotatedFullPath.toFile());
         } catch (IOException ex) {
-            LOG.log(Level.SEVERE, "Cannot read image " + originalFullPath.toString(), ex);
+            LOG.log(Level.SEVERE, "Cannot read image " + rotatedFullPath.toString(), ex);
             return;
         }
 
@@ -86,6 +87,7 @@ public class Thumbnailer {
 
         try {
             ImageIO.write(scaled, "jpg", destinationFullPath.toFile());
+            LOG.log(Level.INFO, "Thumbnailed picture {0}", rotatedFullPath.toString());
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, "Cannot write thumbnailed " + destinationFullPath.toString(), ex);
         }
