@@ -6,6 +6,9 @@ COPY target/*-runner.jar /deployments/app.jar
 EXPOSE ${QUARKUS_HTTP_PORT}
 VOLUME ["/data"]
 
+HEALTHCHECK \
+ CMD curl --fail http://localhost:${QUARKUS_HTTP_PORT} || exit 1
+
 RUN adduser -G root --no-create-home --disabled-password 1001 \
   && chown -R 1001 /deployments \
   && chmod -R "g+rwX" /deployments \
