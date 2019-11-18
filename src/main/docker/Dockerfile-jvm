@@ -1,6 +1,6 @@
 FROM adoptopenjdk/openjdk8:alpine-jre
 
-RUN apk add --update curl && rm -rf /var/cache/apk/*
+RUN apk add --no-cache --add curl
 
 # Memory limit is in Megs
 ENV AB_ENABLED=jmx_exporter \
@@ -24,4 +24,4 @@ RUN adduser -G root --no-create-home --disabled-password 1001 \
   && mkdir -p /data
 
 WORKDIR ${AUTODEPLOY_FOLDER}
-ENTRYPOINT [ "sh", "-c", "java -Dquarkus.http.host=0.0.0.0 -Dquarkus.http.port=${QUARKUS_HTTP_PORT} -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Xms32m -Xmx${MEMORY_LIMIT}m -jar app.jar" ]
+ENTRYPOINT [ "sh", "-c", "exec java -Dquarkus.http.host=0.0.0.0 -Dquarkus.http.port=${QUARKUS_HTTP_PORT} -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Xms32m -Xmx${MEMORY_LIMIT}m -jar app.jar" ]
