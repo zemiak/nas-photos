@@ -14,7 +14,7 @@ COPY target/*-runner.jar ${AUTODEPLOY_FOLDER}/app.jar
 EXPOSE ${QUARKUS_HTTP_PORT}
 VOLUME ["/data"]
 
-HEALTHCHECK --interval=4s --timeout=2s \
+HEALTHCHECK --interval=15s --timeout=2s \
  CMD curl --fail http://localhost:${QUARKUS_HTTP_PORT} || exit 1
 
 RUN adduser -G root --no-create-home --disabled-password 1001 \
