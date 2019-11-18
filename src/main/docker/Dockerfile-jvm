@@ -5,7 +5,7 @@ RUN apk add --no-cache --add curl
 # Memory limit is in Megs
 ENV AB_ENABLED=jmx_exporter \
     QUARKUS_HTTP_PORT=8080 \
-    MEMORY_LIMIT=256 \
+    MEMORY_LIMIT=64 \
     AUTODEPLOY_FOLDER=/deployments
 
 COPY target/lib/* ${AUTODEPLOY_FOLDER}/lib/
