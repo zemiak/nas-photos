@@ -1,18 +1,27 @@
-FROM fabric8/java-alpine-openjdk8-jre
-ENV AB_ENABLED=jmx_exporter
-ENV QUARKUS_HTTP_PORT=8081
-COPY target/lib/* /deployments/lib/
-COPY target/*-runner.jar /deployments/app.jar
+FROM adoptopenjdk/openjdk8:alpine-jre
+
+RUN apk add --update curl && rm -rf /var/cache/apk/*
+
+# Memory limit is in Megs
+ENV AB_ENABLED=jmx_exporter \
+    QUARKUS_HTTP_PORT=8080 \
+    MEMORY_LIMIT=256 \
+    AUTODEPLOY_FOLDER=/deployments
+
+COPY target/lib/* ${AUTODEPLOY_FOLDER}/lib/
+COPY target/*-runner.jar ${AUTODEPLOY_FOLDER}/app.jar
+
 EXPOSE ${QUARKUS_HTTP_PORT}
 VOLUME ["/data"]
 
-HEALTHCHECK \
+HEALTHCHECK --interval=4s --timeout=2s \
  CMD curl --fail http://localhost:${QUARKUS_HTTP_PORT} || exit 1
 
 RUN adduser -G root --no-create-home --disabled-password 1001 \
-  && chown -R 1001 /deployments \
-  && chmod -R "g+rwX" /deployments \
-  && chown -R 1001:root /deployments \
+  && chown -R 1001 ${AUTODEPLOY_FOLDER} \
+  && chmod -R "g+rwX" ${AUTODEPLOY_FOLDER} \
+  && chown -R 1001:root ${AUTODEPLOY_FOLDER} \
   && mkdir -p /data
 
-CMD cd /deployments && java -Dquarkus.http.port=${QUARKUS_HTTP_PORT} -Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -jar app.jar
+WORKDIR ${AUTODEPLOY_FOLDER}
+ENTRYPOINT [ "sh", "-c", "java -Dquarkus.http.host=0.0.0.0 -Dquarkus.http.port=${QUARKUS_HTTP_PORT} -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Xms32m -Xmx${MEMORY_LIMIT}m -jar app.jar" ]
