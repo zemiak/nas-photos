@@ -17,3 +17,6 @@ else
     /sbin/service ${svc} stop
     /sbin/service ${svc} start || exit 30
 fi
+
+cp ../process-movies-thumbnails/process-movies-thumbnails /etc/cron.daily/ || exit 40
+chmod +x /etc/cron.daily/process-movies-thumbnails

@@ -1,6 +1,6 @@
 FROM adoptopenjdk/openjdk8:alpine-jre
 
-RUN apk add --no-cache --add curl
+RUN apk add --no-cache curl
 
 # Memory limit is in Megs
 ENV AB_ENABLED=jmx_exporter \
