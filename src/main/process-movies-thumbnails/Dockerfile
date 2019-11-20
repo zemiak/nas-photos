@@ -1,7 +1,6 @@
-FROM ubuntu:18.04
+FROM alpine
 
-RUN apt update && \
-    apt -y install curl unrar && \
+RUN apk add --no-cache curl unrar && \
     cd /tmp && \
     curl -L https://github.com/Revan654/movie-thumbnailer-mtn/releases/download/2.0.1/mtn-Linux.rar >mtn-Linux.rar && \
     unrar x mtn-Linux.rar && \
