@@ -4,7 +4,7 @@ baseFolder=/data/
 
 main() {
     cd "${baseFolder}"
-    find . -depth 1 -type d | while read mfile
+    find . -maxdepth 1 -type d | while read mfile
     do
         echo "${mfile}" | grep -E '.{0}[[:digit:]]{4}$' >/dev/null
         if [ $? -eq 0 ]
@@ -18,7 +18,7 @@ yearFolder()
 {
     echo "... year folder ${1}"
     cd "${1}"
-    find . -depth 1 -type d | while read yfile
+    find . -maxdepth 1 -type d | while read yfile
     do
         echo "${yfile}" | grep -E '.{0}[[:digit:]]{4}.+$' >/dev/null
         if [ $? -eq 0 ]
@@ -31,7 +31,7 @@ yearFolder()
 
 pictureFolder() {
     cd "${1}"
-    find . -depth 1 -type f | while read photoFile
+    find . -maxdepth 1 -type f | while read photoFile
     do
         echo "${photoFile}" | grep -Ei '.*\.(mov|mp4)$' >/dev/null
         if [ $? -eq 0 ]
