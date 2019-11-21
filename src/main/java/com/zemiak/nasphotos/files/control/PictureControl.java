@@ -28,9 +28,11 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class PictureControl {
     private static final Logger LOG = Logger.getLogger(PictureControl.class.getName());
     private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.jpg|\\.png|\\.heic)");
+    private static final Pattern VALID_VIDEO = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.mov|\\.mp4|\\.m4v)");
 
     @Inject @ConfigProperty(name = "photoPath") String photoPath;
     @Inject ImageReader imageReader;
+    @Inject MovieReader movieReader;
 
     public JsonObject getPictures(String pathName) {
         List<PictureData> pictures = getPicturesRaw(pathName);
@@ -50,7 +52,7 @@ public class PictureControl {
                     .skip(1)
                     .filter(path -> !path.toFile().isDirectory())
                     .filter(path -> path.toFile().canRead())
-                    .filter(path -> isImage(path, photoPath))
+                    .filter(path -> isImage(path, photoPath) || isVideo(path, photoPath))
                     .map(path -> path.getFileName().toString())
                     .collect(Collectors.toList());
         } catch (IOException ex) {
@@ -64,8 +66,22 @@ public class PictureControl {
                 .stream()
                 .map(pictureFileName -> Paths.get(photoPath, yearAndFolder[0], yearAndFolder[1], pictureFileName).toString())
                 .map(fileName -> new File(fileName))
-                .map(n -> imageReader.getImage(n))
+                .map(n -> isImageFile(n) ? imageReader.getImage(n) : movieReader.getMovie(n))
                 .collect(Collectors.toList());
+    }
+
+    private boolean isImageFile(File file) {
+        String ext = getFileExtension(file).toLowerCase();
+        return ".jpg".equals(ext) || ".png".equals(ext) || ".heif".equals(ext);
+    }
+
+    private String getFileExtension(File file) {
+        String name = file.getName();
+        int lastIndexOf = name.lastIndexOf(".");
+        if (lastIndexOf == -1) {
+            return ""; // empty extension
+        }
+        return name.substring(lastIndexOf);
     }
 
     public static boolean isImage(Path path, String rootPath) {
@@ -82,8 +98,34 @@ public class PictureControl {
             name = name.substring(1);
         }
 
-        boolean matches = VALID_PICTURE.matcher(name.toLowerCase()).matches();
-        return matches;
+        return VALID_PICTURE.matcher(name.toLowerCase()).matches();
+    }
+
+    private static boolean isVideo(Path path, String rootPath) {
+        if (isHidden(path)) {
+            LOG.log(Level.FINE, "isVideo: hidden: {0}", path.toString());
+            return false;
+        }
+
+        String name = path.toAbsolutePath().toString();
+        if (name.startsWith(rootPath)) {
+            name = name.substring(rootPath.length());
+        }
+        if (name.startsWith("/")) {
+            name = name.substring(1);
+        }
+
+        if (VALID_VIDEO.matcher(name.toLowerCase()).matches()) {
+            String baseName = path.toAbsolutePath().toString();
+            int dot = baseName.lastIndexOf(".");
+            baseName = baseName.substring(0, dot);
+
+            return !new File(baseName + ".jpg").isFile() && !new File(baseName + ".JPG").isFile()
+                && !new File(baseName + ".png").isFile() && !new File(baseName + ".PNG").isFile()
+                && !new File(baseName + ".heif").isFile() && !new File(baseName + ".HEIF").isFile();
+        }
+
+        return false;
     }
 
     public static boolean isHidden(Path path) {

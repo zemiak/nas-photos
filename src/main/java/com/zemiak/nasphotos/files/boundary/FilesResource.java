@@ -24,7 +24,7 @@ public class FilesResource {
     @Inject @ConfigProperty(name = "photoPath") String photoPath;
 
     @GET
-    public Response download(@QueryParam("path") @DefaultValue("/") String path) {
+    public Response getFileList(@QueryParam("path") @DefaultValue("/") String path) {
         if (! SafeFile.isSafe(path)) {
             return Response.status(Response.Status.FORBIDDEN).entity("Path " + path + " is unsafe").build();
         }
