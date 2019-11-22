@@ -20,6 +20,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
 import com.zemiak.nasphotos.files.entity.PictureData;
+import com.zemiak.nasphotos.rotation.control.Rotator;
 import com.zemiak.nasphotos.thumbnails.Thumbnailer;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -133,7 +134,7 @@ public class PictureControl {
 
         for (int i = 0; i < path.getNameCount(); i++) {
             name = path.getName(i).toString();
-            if (name.startsWith(".") || name.startsWith("_") || name.equalsIgnoreCase("Originals") || name.equalsIgnoreCase(Thumbnailer.SUBFOLDER_THUMBNAILED)) {
+            if (name.startsWith(".") || name.startsWith("_") || name.equalsIgnoreCase("Originals") || name.equalsIgnoreCase(Thumbnailer.SUBFOLDER_THUMBNAILED) || name.equalsIgnoreCase(Rotator.SUBFOLDER_ROTATED) || name.equalsIgnoreCase(Thumbnailer.SUBFOLDER_THUMBNAILED_VIDEOS)) {
                 return true;
             }
         }
