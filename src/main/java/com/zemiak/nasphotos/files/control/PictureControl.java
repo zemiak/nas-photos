@@ -75,8 +75,12 @@ public class PictureControl {
     }
 
     private boolean isImageFile(File file) {
-        String ext = getFileExtension(file).substring(1).toLowerCase();
-        return PICTURE_EXTENSIONS.contains(ext.toLowerCase());
+        String ext = getFileExtension(file);
+        if (".".equals(ext) || ext.isEmpty()) {
+            return false;
+        }
+
+        return PICTURE_EXTENSIONS.contains(ext.substring(1).toLowerCase());
     }
 
     private String getFileExtension(File file) {

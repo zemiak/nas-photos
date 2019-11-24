@@ -48,7 +48,7 @@ export class RenderGallery extends HTMLElement {
         const folder = e.detail;
         const data = this.service.getFolder(folder);
 
-        this.gallery.innerHTML = this.template.render(data);
+        this.template.renderGallery(data, this.gallery);
     }
 
     onHashChange(e) {

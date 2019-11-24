@@ -19,8 +19,12 @@ public class VideoControl {
     private static final Pattern VALID_VIDEO = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.mov|\\.mp4|\\.m4v)");
 
     public boolean isVideo(String path) {
-        String ext = getFileExtension(path).substring(1).toLowerCase();
-        return VIDEO_EXTENSIONS.contains(ext.toLowerCase());
+        String ext = getFileExtension(path);
+        if (".".equals(ext) || ext.isEmpty()) {
+            return false;
+        }
+
+        return VIDEO_EXTENSIONS.contains(ext.substring(1).toLowerCase());
     }
 
     public File getVideoCover(String path) {

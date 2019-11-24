@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
 
 import com.coremedia.iso.IsoFile;
 import com.coremedia.iso.boxes.Box;
@@ -49,8 +50,8 @@ public class MovieReader {
             return absolute;
         }
 
-        if (! absolute.startsWith(photoPath)) {
-            throw new RuntimeException("Photo path " + photoPath + " is not inside of the boundaries.");
+        if (!absolute.startsWith(photoPath)) {
+            throw new WebApplicationException("Movie path " + absolute + " is not inside of the boundaries: " + photoPath);
         }
 
         return absolute.substring(photoPath.length());

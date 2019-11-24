@@ -1,4 +1,4 @@
-import { html } from "./lib/lit-html.js";
+import { html, render } from "./lib/lit-html.js";
 
 export class TemplateService {
     constructor(url, thumbnailUrl, videoUrl) {
@@ -7,7 +7,7 @@ export class TemplateService {
         this.videoStreamingUrl = videoUrl;
     }
 
-    render(data) {
+    renderGallery(data, element) {
         var plainHtml = "";
 
         plainHtml = plainHtml + this.header() + "\n";
@@ -21,7 +21,11 @@ export class TemplateService {
             this.dispatchGalleryEvent();
         }
 
-        return html(plainHtml);
+        // const template = html(plainHtml);
+        // console.log(template);
+        // render(template, element);
+
+        element.innerHTML = plainHtml;
     }
 
     header() {
@@ -84,7 +88,7 @@ export class TemplateService {
         return `
         <li>
             <a href="#${item.path}">
-                <img src="${imageThumbnailUrl}" width="512px" height="300px" alt="${item.title}">
+                <img src="${imageThumbnailUrl}" width="512px" alt="${item.title}">
             </a>
             <span>${item.title}</span>
         </li>

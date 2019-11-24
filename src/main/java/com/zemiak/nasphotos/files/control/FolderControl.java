@@ -96,7 +96,7 @@ public class FolderControl {
         String cover = Paths.get(absolutePath, "_cover.jpg").toString();
         File coverFile = new File(cover);
         if (! coverFile.canRead()) {
-            coverFile = new File(Paths.get(photoPath, "special", "folder.png").toString());
+            coverFile = new File(getClass().getClassLoader().getResource("folder.png").getFile());
         }
 
         return coverFile;

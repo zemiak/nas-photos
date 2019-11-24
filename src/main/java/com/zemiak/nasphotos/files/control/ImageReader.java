@@ -11,6 +11,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
@@ -25,6 +26,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @RequestScoped
 public class ImageReader {
     private static final Logger LOG = Logger.getLogger(ImageReader.class.getName());
+    private static String DEFAULT_FOLDER_THUMBNAIL = "nasphotos/target/classes/folder.png";
 
     @Inject
     @ConfigProperty(name = "photoPath") String photoPath;
@@ -52,8 +54,8 @@ public class ImageReader {
             return absolute;
         }
 
-        if (! absolute.startsWith(photoPath)) {
-            throw new RuntimeException("Photo path " + photoPath + " is not inside of the boundaries.");
+        if (! absolute.startsWith(photoPath) && !absolute.endsWith(DEFAULT_FOLDER_THUMBNAIL)) {
+            throw new WebApplicationException("Photo path " + absolute + " is not inside of the boundaries: " + photoPath);
         }
 
         return absolute.substring(photoPath.length());
