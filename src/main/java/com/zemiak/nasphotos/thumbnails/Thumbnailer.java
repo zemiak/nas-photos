@@ -21,7 +21,6 @@ public class Thumbnailer {
     public static final String SUBFOLDER_THUMBNAILED = "thumbnails";
     private static final float MAX_SIZE = 256;
     private static final Logger LOG = Logger.getLogger(Thumbnailer.class.getName());
-	public static String SUBFOLDER_THUMBNAILED_VIDEOS = "video-thumbnails";
 
     public void createOrUpdate(String fullPath) {
         String thumbnailedFullName = getThumbnailedPathAndFile(fullPath);

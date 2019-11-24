@@ -24,6 +24,10 @@ export class FolderService {
         return this.getBaseUri() + "backend/thumbnail/?path=";
     }
 
+    getBaseVideoStreamingUrl() {
+        return this.getBaseUri() + "streaming/";
+    }
+
     getFolderFetchUri(name) {
         return this.getBaseUri() + "backend/browse/?path=" + name;
     }

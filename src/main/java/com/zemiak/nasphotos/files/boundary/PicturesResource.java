@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response.Status;
 
 import com.zemiak.nasphotos.SafeFile;
 import com.zemiak.nasphotos.files.control.FolderControl;
+import com.zemiak.nasphotos.files.control.VideoControl;
 import com.zemiak.nasphotos.thumbnails.Thumbnailer;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -24,6 +25,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class PicturesResource {
     @Inject @ConfigProperty(name = "photoPath") String photoPath;
     @Inject FolderControl folders;
+    @Inject VideoControl videos;
 
     @GET
     @Path("download")
@@ -70,7 +72,11 @@ public class PicturesResource {
         if (file.isDirectory()) {
             file = folders.getFolderCover(path);
         } else {
-            file = new File(Thumbnailer.getThumbnailedFileName(path));
+            if (videos.isVideo(path)) {
+                file = videos.getVideoCover(path);
+            } else {
+                file = new File(Thumbnailer.getThumbnailedFileName(path));
+            }
         }
 
         ResponseBuilder response = Response.ok((Object) file);

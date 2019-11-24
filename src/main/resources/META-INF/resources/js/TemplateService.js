@@ -1,24 +1,27 @@
+import { html } from "./lib/lit-html.js";
+
 export class TemplateService {
-    constructor(url, thumbnailUrl) {
+    constructor(url, thumbnailUrl, videoUrl) {
         this.imageDownloadBaseUrl = url;
         this.imageDownloadThumbnailBaseUrl = thumbnailUrl;
+        this.videoStreamingUrl = videoUrl;
     }
 
     render(data) {
-        var html = "";
+        var plainHtml = "";
 
-        html = html + this.header() + "\n";
+        plainHtml = plainHtml + this.header() + "\n";
 
         this.folders = false;
-        data.items.forEach(item => {html = html + this.element(item)});
+        data.items.forEach(item => {plainHtml = plainHtml + this.element(item)});
 
-        html = html + this.footer() + "\n";
+        plainHtml = plainHtml + this.footer() + "\n";
 
         if (! this.folders) {
             this.dispatchGalleryEvent();
         }
 
-        return html;
+        return html(plainHtml);
     }
 
     header() {
@@ -40,6 +43,10 @@ export class TemplateService {
             return this.renderFolder(item);
         }
 
+        if ("video" === item.type) {
+            return this.renderVideo(item);
+        }
+
         return this.renderPicture(item);
     }
 
@@ -49,7 +56,20 @@ export class TemplateService {
 
         return `
         <li>
-            <a href="${imageUrl}" data-glightbox="gallery1" class="glightbox">
+            <a href="${imageUrl}" data-glightbox="type: image" class="glightbox">
+                <img src="${imageThumbnailUrl}" alt="${item.title}">
+            </a>
+        </li>
+`;
+    }
+
+    renderVideo(item) {
+        const imageUrl = this.videoStreamingUrl + item.path;
+        const imageThumbnailUrl = this.imageDownloadThumbnailBaseUrl + item.path;
+
+        return `
+        <li>
+            <a href="${imageUrl}" data-glightbox="type: video" class="glightbox">
                 <img src="${imageThumbnailUrl}" alt="${item.title}">
             </a>
         </li>

@@ -6,8 +6,11 @@ import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -29,7 +32,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class PictureControl {
     private static final Logger LOG = Logger.getLogger(PictureControl.class.getName());
     private static final Pattern VALID_PICTURE = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.jpg|\\.png|\\.heic)");
-    private static final Pattern VALID_VIDEO = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.mov|\\.mp4|\\.m4v)");
+    private static Set<String> PICTURE_EXTENSIONS = new HashSet<>(Arrays.asList("jpg", "png", "heif"));
 
     @Inject @ConfigProperty(name = "photoPath") String photoPath;
     @Inject ImageReader imageReader;
@@ -53,7 +56,7 @@ public class PictureControl {
                     .skip(1)
                     .filter(path -> !path.toFile().isDirectory())
                     .filter(path -> path.toFile().canRead())
-                    .filter(path -> isImage(path, photoPath) || isVideo(path, photoPath))
+                    .filter(path -> isImage(path, photoPath) || VideoControl.isVideo(path, photoPath))
                     .map(path -> path.getFileName().toString())
                     .collect(Collectors.toList());
         } catch (IOException ex) {
@@ -72,8 +75,8 @@ public class PictureControl {
     }
 
     private boolean isImageFile(File file) {
-        String ext = getFileExtension(file).toLowerCase();
-        return ".jpg".equals(ext) || ".png".equals(ext) || ".heif".equals(ext);
+        String ext = getFileExtension(file).substring(1).toLowerCase();
+        return PICTURE_EXTENSIONS.contains(ext.toLowerCase());
     }
 
     private String getFileExtension(File file) {
@@ -102,39 +105,12 @@ public class PictureControl {
         return VALID_PICTURE.matcher(name.toLowerCase()).matches();
     }
 
-    private static boolean isVideo(Path path, String rootPath) {
-        if (isHidden(path)) {
-            LOG.log(Level.FINE, "isVideo: hidden: {0}", path.toString());
-            return false;
-        }
-
-        String name = path.toAbsolutePath().toString();
-        if (name.startsWith(rootPath)) {
-            name = name.substring(rootPath.length());
-        }
-        if (name.startsWith("/")) {
-            name = name.substring(1);
-        }
-
-        if (VALID_VIDEO.matcher(name.toLowerCase()).matches()) {
-            String baseName = path.toAbsolutePath().toString();
-            int dot = baseName.lastIndexOf(".");
-            baseName = baseName.substring(0, dot);
-
-            return !new File(baseName + ".jpg").isFile() && !new File(baseName + ".JPG").isFile()
-                && !new File(baseName + ".png").isFile() && !new File(baseName + ".PNG").isFile()
-                && !new File(baseName + ".heif").isFile() && !new File(baseName + ".HEIF").isFile();
-        }
-
-        return false;
-    }
-
     public static boolean isHidden(Path path) {
         String name;
 
         for (int i = 0; i < path.getNameCount(); i++) {
             name = path.getName(i).toString();
-            if (name.startsWith(".") || name.startsWith("_") || name.equalsIgnoreCase("Originals") || name.equalsIgnoreCase(Thumbnailer.SUBFOLDER_THUMBNAILED) || name.equalsIgnoreCase(Rotator.SUBFOLDER_ROTATED) || name.equalsIgnoreCase(Thumbnailer.SUBFOLDER_THUMBNAILED_VIDEOS)) {
+            if (name.startsWith(".") || name.startsWith("_") || name.equalsIgnoreCase("Originals") || name.equalsIgnoreCase(Thumbnailer.SUBFOLDER_THUMBNAILED) || name.equalsIgnoreCase(Rotator.SUBFOLDER_ROTATED) || name.equalsIgnoreCase(VideoControl.SUBFOLDER_THUMBNAILED_VIDEOS)) {
                 return true;
             }
         }

@@ -28,6 +28,7 @@ public class FolderControl {
     @Inject @ConfigProperty(name = "photoPath") String photoPath;
     @Inject ImageReader imageReader;
 
+
     public JsonObject getList(String pathName) {
         List<PictureData> folders = getFolders(pathName);
         JsonArrayBuilder list = Json.createArrayBuilder();
