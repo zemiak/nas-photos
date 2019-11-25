@@ -2,8 +2,6 @@ import { Cache } from "./Cache.js";
 import { Config } from "./Config.js";
 
 export class FolderService {
-    static EVENT_NAME = "folder-data-event";
-
     constructor() {
         this.cache = new Cache();
         this.config = new Config();
@@ -48,7 +46,7 @@ export class FolderService {
     }
 
     dispatchDataEvent(name) {
-        const folderDataEvent = new CustomEvent(FolderService.EVENT_NAME, {detail: name, bubbles: true});
+        const folderDataEvent = new CustomEvent(FolderService.eventName(), {detail: name, bubbles: true});
         dispatchEvent(folderDataEvent);
     }
 
@@ -58,5 +56,9 @@ export class FolderService {
         }
 
         throw new Error("FolderService.getFolder: Cache data for " + name + " does not exist!");
+    }
+
+    static eventName() {
+        return "folder-data-event";
     }
 }

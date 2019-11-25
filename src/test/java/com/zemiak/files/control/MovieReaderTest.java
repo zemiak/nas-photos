@@ -9,7 +9,6 @@ import com.zemiak.nasphotos.files.control.MovieReader;
 import com.zemiak.nasphotos.files.entity.PictureData;
 
 import org.apache.tika.exception.TikaException;
-import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 /**

@@ -1,8 +1,6 @@
 import { html, render } from "./lib/lit-html.js";
 
 export class TemplateService {
-    static EVENT_NAME = "render-lightbox-event"
-    
     constructor(url, thumbnailUrl, videoUrl) {
         this.imageDownloadBaseUrl = url;
         this.imageDownloadThumbnailBaseUrl = thumbnailUrl;
@@ -98,8 +96,12 @@ export class TemplateService {
     }
 
     dispatchGalleryEvent() {
-        const folderDataEvent = new CustomEvent(TemplateService.EVENT_NAME, {detail: {}, bubbles: true});
+        const folderDataEvent = new CustomEvent(TemplateService.eventName(), {detail: {}, bubbles: true});
         dispatchEvent(folderDataEvent);
         console.log("dispatchGalleryEvent ran");
+    }
+
+    static eventName() {
+        return "render-lightbox-event";
     }
 }
