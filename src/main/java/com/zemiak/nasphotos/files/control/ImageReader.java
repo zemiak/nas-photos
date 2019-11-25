@@ -55,6 +55,7 @@ public class ImageReader {
         }
 
         if (! absolute.startsWith(photoPath) && !absolute.endsWith(DEFAULT_FOLDER_THUMBNAIL)) {
+            LOG.log(Level.SEVERE, "Photo path " + absolute + " is not inside of the boundaries: " + photoPath);
             throw new WebApplicationException("Photo path " + absolute + " is not inside of the boundaries: " + photoPath);
         }
 

@@ -1,6 +1,8 @@
 import { html, render } from "./lib/lit-html.js";
 
 export class TemplateService {
+    static EVENT_NAME = "render-lightbox-event"
+    
     constructor(url, thumbnailUrl, videoUrl) {
         this.imageDownloadBaseUrl = url;
         this.imageDownloadThumbnailBaseUrl = thumbnailUrl;
@@ -60,8 +62,8 @@ export class TemplateService {
 
         return `
         <li>
-            <a href="${imageUrl}" data-glightbox="type: image" class="glightbox">
-                <img src="${imageThumbnailUrl}" alt="${item.title}">
+            <a href="${imageUrl}" data-glightbox="type: image" class="glightbox" data-gallery="gallery1">
+                <img src="${imageThumbnailUrl}" width="192px" alt="${item.title}">
             </a>
         </li>
 `;
@@ -73,8 +75,8 @@ export class TemplateService {
 
         return `
         <li>
-            <a href="${imageUrl}" data-glightbox="type: video" class="glightbox">
-                <img src="${imageThumbnailUrl}" alt="${item.title}">
+            <a href="${imageUrl}" data-glightbox="type: video" class="glightbox" data-gallery="gallery1">
+                <img src="${imageThumbnailUrl}" width="192px" alt="${item.title}">
             </a>
         </li>
 `;
@@ -88,19 +90,15 @@ export class TemplateService {
         return `
         <li>
             <a href="#${item.path}">
-                <img src="${imageThumbnailUrl}" width="512px" alt="${item.title}">
+                <img src="${imageThumbnailUrl}" width="192px" alt="${item.title}">
             </a>
             <span>${item.title}</span>
         </li>
 `;
     }
 
-    getEventName() {
-        return "render-lightbox-event";
-    }
-
     dispatchGalleryEvent() {
-        const folderDataEvent = new CustomEvent(this.getEventName(), {detail: {}, bubbles: true});
+        const folderDataEvent = new CustomEvent(TemplateService.EVENT_NAME, {detail: {}, bubbles: true});
         dispatchEvent(folderDataEvent);
         console.log("dispatchGalleryEvent ran");
     }

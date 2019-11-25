@@ -14,7 +14,7 @@ export class RenderGallery extends HTMLElement {
     }
 
     connectedCallback() {
-        addEventListener(this.service.getEventName(), e => this.onFolderData(e));
+        addEventListener(FolderService.EVENT_NAME, e => this.onFolderData(e));
         addEventListener("hashchange", e => this.onHashChange(e));
         this.render();
     }

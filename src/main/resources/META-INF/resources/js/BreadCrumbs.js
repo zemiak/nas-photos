@@ -25,7 +25,7 @@ export class BreadCrumbs extends HTMLElement {
             loc = loc.split('#')[1];
         }
 
-        const decoded = decodeURIComponent(loc).replace("+", " ");
+        const decoded = decodeURIComponent(loc).replace(/\+/g, " ");
         const pieces = decoded.split("/");
 
         var html = this.renderItem("/#", "Roky");

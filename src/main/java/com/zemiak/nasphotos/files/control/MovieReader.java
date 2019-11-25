@@ -51,6 +51,7 @@ public class MovieReader {
         }
 
         if (!absolute.startsWith(photoPath)) {
+            LOG.log(Level.SEVERE, "Movie path " + absolute + " is not inside of the boundaries: " + photoPath);
             throw new WebApplicationException("Movie path " + absolute + " is not inside of the boundaries: " + photoPath);
         }
 

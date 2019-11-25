@@ -30,6 +30,10 @@ public class PicturesResource {
     @GET
     @Path("download")
     public Response download(@QueryParam("path") String path) {
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
+
         if (! SafeFile.isSafe(path)) {
             return Response.status(Status.FORBIDDEN).entity("Path " + path + " is unsafe").build();
         }
@@ -60,6 +64,10 @@ public class PicturesResource {
     @GET
     @Path("thumbnail")
     public Response downloadThumbnail(@QueryParam("path") String path) {
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
+        
         if (! SafeFile.isSafe(path)) {
             return Response.status(Status.FORBIDDEN).entity("Path " + path + " is unsafe").build();
         }

@@ -25,6 +25,10 @@ public class FilesResource {
 
     @GET
     public Response getFileList(@QueryParam("path") @DefaultValue("/") String path) {
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
+
         if (! SafeFile.isSafe(path)) {
             return Response.status(Response.Status.FORBIDDEN).entity("Path " + path + " is unsafe").build();
         }
