@@ -8,6 +8,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
@@ -29,10 +30,10 @@ import com.zemiak.nasphotos.files.control.VideoControl;
 @Path("/backend/streaming")
 @RequestScoped
 public class StreamingResource {
+    private static final Logger LOG = Logger.getLogger(StreamingResource.class.getName());
+
     @Inject
     VideoControl videos;
-
-	final static Logger logger = Logger.getLogger( StreamingResource.class.getName() );
 
     private static final int CHUNK_SIZE = 1024 * 1024 * 2; // 2 MB chunks
 
@@ -41,8 +42,6 @@ public class StreamingResource {
     @Path("{path}")
     @Produces("video/mp4")
     public Response header(@PathParam("path") String path) {
-        logger.info("@HEAD request received: " + path);
-
         String relPath = videos.getRealPathForStreaming(path);
         if (null == relPath) {
             return Response.status(Status.FORBIDDEN).entity("Path " + path + " is unsafe").build();
@@ -60,8 +59,6 @@ public class StreamingResource {
     @Path("{path}")
     @Produces("video/mp4")
     public Response stream( @HeaderParam("Range") String range, @PathParam("path") String path ) throws Exception {
-        logger.info("@GET request received: " + path + ", range: " + range);
-
         String relPath = videos.getRealPathForStreaming(path);
         if (null == relPath) {
             return Response.status(Status.FORBIDDEN).entity("Path " + path + " is unsafe").build();
@@ -80,8 +77,6 @@ public class StreamingResource {
     private Response buildStream( final File asset, final String range ) throws Exception {
         // range not requested: firefox does not send range headers
         if ( range == null ) {
-        	logger.info("Request does not contain a range parameter!");
-
             StreamingOutput streamer = output -> {
                 try ( FileChannel inputChannel = new FileInputStream( asset ).getChannel();
                 	  WritableByteChannel outputChannel = Channels.newChannel( output ) ) {
@@ -89,8 +84,7 @@ public class StreamingResource {
                     inputChannel.transferTo( 0, inputChannel.size(), outputChannel );
                 }
                 catch( IOException io ) {
-                    logger.severe("buildStream/no-range exception");
-                	logger.info( io.getMessage() );
+                    LOG.log(Level.SEVERE, "buildStream/no-range exception", io);
                 }
             };
 
@@ -99,8 +93,6 @@ public class StreamingResource {
                 .header( HttpHeaders.CONTENT_LENGTH, asset.length() )
                 .build();
         }
-
-        logger.info( "Requested Range: " + range );
 
         String[] ranges = range.split( "=" )[1].split( "-" );
 
@@ -120,9 +112,6 @@ public class StreamingResource {
         }
 
         final String responseRange = String.format( "bytes %d-%d/%d", from, to, asset.length() );
-
-        logger.info( "Response Content-Range: " + responseRange + "\n");
-
         final RandomAccessFile raf = new RandomAccessFile( asset, "r" );
         raf.seek( from );
 
