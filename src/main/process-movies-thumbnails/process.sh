@@ -52,7 +52,7 @@ pictureFolder() {
 
 createThumbnail() {
     mkdir -p video-thumbnails
-    mtn -i -c 2 -r 2 -w 384 -h 144 -O video-thumbnails -o .JPG -f /opt/Roboto-Regular.ttf "${1}" >/dev/null
+    mtn -i -c 2 -r 2 -w 384 -h 90 -O video-thumbnails -o .JPG -f /opt/Roboto-Regular.ttf "${1}" >/dev/null
 }
 
 saveFolder="$(pwd)"

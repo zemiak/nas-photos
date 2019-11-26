@@ -20,7 +20,6 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class FilesResource {
     @Inject FolderControl folders;
     @Inject PictureControl pictures;
-
     @Inject @ConfigProperty(name = "photoPath") String photoPath;
 
     @GET

@@ -5,6 +5,19 @@
     padding: 0 1rem;
 }
 
+.video-box {
+    padding-top: 18px;
+    width: 192px;
+}
+
+.image-box {
+    width: 192px;
+}
+
+.folder-box {
+    width: 192px;
+}
+
 /*
   AUTO GRID
   Set the minimum item size with `--auto-grid-min-size` and you'll

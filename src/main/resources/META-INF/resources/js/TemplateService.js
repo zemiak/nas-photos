@@ -61,7 +61,7 @@ export class TemplateService {
         return `
         <li>
             <a href="${imageUrl}" data-glightbox="type: image" class="glightbox" data-gallery="gallery1">
-                <img src="${imageThumbnailUrl}" width="192px" alt="${item.title}">
+                <img src="${imageThumbnailUrl}" class="image-box" alt="${item.title}">
             </a>
         </li>
 `;
@@ -74,7 +74,7 @@ export class TemplateService {
         return `
         <li>
             <a href="${imageUrl}" data-glightbox="type: video" class="glightbox" data-gallery="gallery1">
-                <img src="${imageThumbnailUrl}" width="192px" alt="${item.title}">
+                <img src="${imageThumbnailUrl}" class="video-box" alt="${item.title}">
             </a>
         </li>
 `;
@@ -88,7 +88,7 @@ export class TemplateService {
         return `
         <li>
             <a href="#${item.path}">
-                <img src="${imageThumbnailUrl}" width="192px" alt="${item.title}">
+                <img src="${imageThumbnailUrl}" class="folder-box" alt="${item.title}">
             </a>
             <span>${item.title}</span>
         </li>

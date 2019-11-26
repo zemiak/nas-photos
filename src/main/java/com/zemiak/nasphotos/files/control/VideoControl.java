@@ -1,6 +1,8 @@
 package com.zemiak.nasphotos.files.control;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -11,13 +13,23 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
+import com.zemiak.nasphotos.SafeFile;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @Dependent
 public class VideoControl {
     private static final Logger LOG = Logger.getLogger(VideoControl.class.getName());
     public static String SUBFOLDER_THUMBNAILED_VIDEOS = "video-thumbnails";
     private static Set<String> VIDEO_EXTENSIONS = new HashSet<>(Arrays.asList("mov", "mp4", "m4v"));
-    private static final Pattern VALID_VIDEO = Pattern.compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.mov|\\.mp4|\\.m4v)");
+    private static final Pattern VALID_VIDEO = Pattern
+            .compile("^\\d\\d\\d\\d\\/\\d\\d\\d\\d .+\\/.+(\\.mov|\\.mp4|\\.m4v)");
+
+    @Inject
+    @ConfigProperty(name = "photoPath")
+    String photoPath;
 
     public boolean isVideo(String path) {
         String ext = getFileExtension(path);
@@ -40,9 +52,11 @@ public class VideoControl {
         Path folderPath = fullPath.getParent();
         String fileName = fullPath.getFileName().toString();
 
-        String fileNameWithPictureExt = (fileName.contains(".") ? fileName.substring(0, fileName.indexOf(".")) : fileName) + ".JPG";
+        String fileNameWithPictureExt = (fileName.contains(".") ? fileName.substring(0, fileName.indexOf("."))
+                : fileName) + ".JPG";
 
-        Path thumbnailedPathAndFile = Paths.get(folderPath.toString(), SUBFOLDER_THUMBNAILED_VIDEOS, fileNameWithPictureExt);
+        Path thumbnailedPathAndFile = Paths.get(folderPath.toString(), SUBFOLDER_THUMBNAILED_VIDEOS,
+                fileNameWithPictureExt);
 
         return thumbnailedPathAndFile.toString();
     }
@@ -75,10 +89,29 @@ public class VideoControl {
             baseName = baseName.substring(0, dot);
 
             return !new File(baseName + ".jpg").isFile() && !new File(baseName + ".JPG").isFile()
-                && !new File(baseName + ".png").isFile() && !new File(baseName + ".PNG").isFile()
-                && !new File(baseName + ".heif").isFile() && !new File(baseName + ".HEIF").isFile();
+                    && !new File(baseName + ".png").isFile() && !new File(baseName + ".PNG").isFile()
+                    && !new File(baseName + ".heif").isFile() && !new File(baseName + ".HEIF").isFile();
         }
 
         return false;
     }
+
+    public String getRealPathForStreaming(String path) {
+        String relPath;
+        try {
+            relPath = URLDecoder.decode(path, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
+
+        if (relPath.startsWith("/")) {
+            relPath = relPath.substring(1);
+        }
+
+        if (relPath.startsWith("/") || !isVideo(path) || !SafeFile.isSafe(relPath)) {
+            return null;
+        }
+
+        return Paths.get(photoPath, relPath).toString();
+	}
 }
