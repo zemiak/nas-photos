@@ -8,6 +8,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -67,7 +68,7 @@ public class PicturesResource {
         if (path.startsWith("/")) {
             path = path.substring(1);
         }
-        
+
         if (! SafeFile.isSafe(path)) {
             return Response.status(Status.FORBIDDEN).entity("Path " + path + " is unsafe").build();
         }
@@ -85,6 +86,10 @@ public class PicturesResource {
             } else {
                 file = new File(Thumbnailer.getThumbnailedFileName(path));
             }
+        }
+
+        if (null == file) {
+            return Response.status(Status.NOT_FOUND).entity("Cannot get thumbnail for " + path).build();
         }
 
         ResponseBuilder response = Response.ok((Object) file);

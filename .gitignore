@@ -13,3 +13,4 @@ src/main/resources/META-INF/persistence.xml
 nb-configuration.xml
 /nbproject/
 docker/*.war
+.vscode

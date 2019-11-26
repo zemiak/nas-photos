@@ -2,6 +2,7 @@ package com.zemiak.nasphotos.files.control;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +29,22 @@ public class VideoControl {
     }
 
     public File getVideoCover(String path) {
-        return null;
+        String thumbnailedFullName = getThumbnailedPathAndFile(path);
+        File thumbnailFile = new File(thumbnailedFullName);
+
+        return thumbnailFile.exists() ? thumbnailFile : null;
+    }
+
+    private static String getThumbnailedPathAndFile(String fullName) {
+        Path fullPath = Paths.get(fullName);
+        Path folderPath = fullPath.getParent();
+        String fileName = fullPath.getFileName().toString();
+
+        String fileNameWithPictureExt = (fileName.contains(".") ? fileName.substring(0, fileName.indexOf(".")) : fileName) + ".JPG";
+
+        Path thumbnailedPathAndFile = Paths.get(folderPath.toString(), SUBFOLDER_THUMBNAILED_VIDEOS, fileNameWithPictureExt);
+
+        return thumbnailedPathAndFile.toString();
     }
 
     private String getFileExtension(String name) {
