@@ -17,8 +17,8 @@ export class LightBox extends HTMLElement {
     }
 
     glightbox() {
-        var lightbox = GLightbox();
-        console.log("GLightbox instantiated", lightbox);
+        window.lightbox = GLightbox();
+        console.log("GLightbox instantiated");
     }
 }
 

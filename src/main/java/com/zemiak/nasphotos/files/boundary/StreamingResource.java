@@ -26,7 +26,7 @@ import javax.ws.rs.core.StreamingOutput;
 import com.zemiak.nasphotos.files.control.MediaStreamer;
 import com.zemiak.nasphotos.files.control.VideoControl;
 
-@Path("/")
+@Path("/backend/streaming")
 @RequestScoped
 public class StreamingResource {
     @Inject
@@ -38,7 +38,7 @@ public class StreamingResource {
 
     // for clients to check whether the server supports range / partial content requests
     @HEAD
-    @Path("/streaming/{path}")
+    @Path("{path}")
     @Produces("video/mp4")
     public Response header(@PathParam("path") String path) {
         logger.info("@HEAD request received: " + path);
@@ -50,14 +50,14 @@ public class StreamingResource {
         File file = new File( videos.getRealPathForStreaming(relPath) );
 
         return Response.ok()
-        		.status( Response.Status.PARTIAL_CONTENT )
-        		.header( HttpHeaders.CONTENT_LENGTH, file.length() )
-        		.header( "Accept-Ranges", "bytes" )
-        		.build();
+            .status( Response.Status.PARTIAL_CONTENT )
+            .header( HttpHeaders.CONTENT_LENGTH, file.length() )
+            .header( "Accept-Ranges", "bytes" )
+            .build();
     }
 
     @GET
-    @Path("/streaming/{path}")
+    @Path("{path}")
     @Produces("video/mp4")
     public Response stream( @HeaderParam("Range") String range, @PathParam("path") String path ) throws Exception {
         logger.info("@GET request received: " + path + ", range: " + range);
@@ -95,9 +95,9 @@ public class StreamingResource {
             };
 
             return Response.ok( streamer )
-            		.status( Response.Status.OK )
-            		.header( HttpHeaders.CONTENT_LENGTH, asset.length() )
-            		.build();
+                .status( Response.Status.OK )
+                .header( HttpHeaders.CONTENT_LENGTH, asset.length() )
+                .build();
         }
 
         logger.info( "Requested Range: " + range );
@@ -115,9 +115,9 @@ public class StreamingResource {
 
         // uncomment to let the client decide the upper bound
         // we want to send 2 MB chunks all the time
-        //if ( ranges.length == 2 ) {
-        //    to = Integer.parseInt( ranges[1] );
-        //}
+        if ( ranges.length == 2 ) {
+           to = Integer.parseInt( ranges[1] );
+        }
 
         final String responseRange = String.format( "bytes %d-%d/%d", from, to, asset.length() );
 

@@ -1209,7 +1209,7 @@
     var videoID = 'gvideo' + data.index;
     var slideMedia = slide.querySelector('.gvideo-wrapper');
     injectVideoApi(this.settings.plyr.css);
-    var url = data.href;
+    var url = data.href.toLowerCase();
     var protocol = location.protocol.replace(':', '');
     var videoSource = '';
     var embedID = '';
@@ -1233,7 +1233,7 @@
         embedID = youtubeID;
       }
 
-      if (url.match(/\.(mp4|ogg|webm)$/) !== null) {
+      if (url.match(/\.(mp4|ogg|webm|mov|m4v)$/) !== null) {
         videoSource = 'local';
 
         var _html = '<video id="' + videoID + '" ';
@@ -1248,6 +1248,8 @@
         var sources = {
           'mp4': '',
           'ogg': '',
+          'm4v': '',
+          'mov': '',
           'webm': ''
         };
         sources[format] = url;
