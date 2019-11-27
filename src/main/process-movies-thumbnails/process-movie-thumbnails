@@ -1,5 +1,0 @@
-#!/bin/sh
-
-IMAGE=process-movies-thumbnails
-VOLUME=/mnt/media/Pictures:/data
-docker run -ti --rm -m 64m -v ${VOLUME} ${IMAGE}

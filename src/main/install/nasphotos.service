@@ -10,8 +10,9 @@ Environment=IMAGE=nasphotos
 Environment=QUARKUS_HTTP_PORT=8081
 Environment=PHOTOPATH=/data/
 Environment=VOLUME=/mnt/media/Pictures:/data
-Environment=MEMORY=128m
-ExecStart=/usr/bin/docker run $DOPTS -m ${MEMORY} --name ${CONTAINERNAME} -p ${QUARKUS_HTTP_PORT}:${QUARKUS_HTTP_PORT} -e MEMORY_LIMIT=100 -e PHOTOPATH=${PHOTOPATH} -e QUARKUS_HTTP_PORT=${QUARKUS_HTTP_PORT} -v ${VOLUME} ${IMAGE}
+Environment=DOCKER_MEMORY=72m
+Environment=XMX=64
+ExecStart=/usr/bin/docker run $DOPTS -m ${DOCKER_MEMORY} --name ${CONTAINERNAME} -p ${QUARKUS_HTTP_PORT}:${QUARKUS_HTTP_PORT} -e MEMORY_LIMIT=${XMX} -e PHOTOPATH=${PHOTOPATH} -e QUARKUS_HTTP_PORT=${QUARKUS_HTTP_PORT} -v ${VOLUME} ${IMAGE}
 ExecStop=/usr/bin/docker stop -t 10 ${CONTAINERNAME}
 ExecStopPost=/usr/bin/docker rm -f ${CONTAINERNAME}
 ExecReload=/usr/bin/docker exec -t ${CONTAINERNAME} kill -HUP 1

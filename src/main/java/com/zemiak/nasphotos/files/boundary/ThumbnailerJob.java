@@ -1,5 +1,6 @@
-package com.zemiak.nasphotos;
+package com.zemiak.nasphotos.files.boundary;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -16,28 +17,27 @@ import com.zemiak.nasphotos.thumbnails.Thumbnailer;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import io.quarkus.scheduler.Scheduled;
-
 @ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
-@Path("schedules/prepare")
-public class ImagePreparationScheduler {
-    private static final Logger LOG = Logger.getLogger(ImagePreparationScheduler.class.getName());
+@Path("backend/batch/thumbnails")
+public class ThumbnailerJob {
+    private static final Logger LOG = Logger.getLogger(ThumbnailerJob.class.getName());
 
     @Inject @ConfigProperty(name = "photoPath") String photoPath;
     @Inject Rotator rotator;
     @Inject Thumbnailer thumbnailer;
 
-    @Scheduled(cron = "0 15 1 * * ?")
     @GET
     public void rotatePicturesAndGenerateThumbnails() {
+        LOG.log(Level.INFO, "Start: {0}.", photoPath);
         new ImageWalker(this::makeThumbnailAndRotate, (path) -> PictureControl.isImage(path, photoPath)).walk();
-        LOG.info("Done.");
+        LOG.log(Level.INFO, "Done.");
     }
 
     private Void makeThumbnailAndRotate(String fullPath) {
         rotator.rotate(fullPath);
         thumbnailer.createOrUpdate(fullPath);
+        LOG.log(Level.INFO, "... {0}", fullPath);
         return null;
     }
 }

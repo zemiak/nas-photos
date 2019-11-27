@@ -18,5 +18,8 @@ else
     /sbin/service ${svc} start || exit 30
 fi
 
-cp ../process-movies-thumbnails/process-movies-thumbnails /etc/cron.daily/ || exit 40
-chmod +x /etc/cron.daily/process-movies-thumbnails
+cp ../cron-moviethumbnails/nasphotos-moviethumbnails /etc/cron.daily/ || exit 40
+chmod +x /etc/cron.daily/nasphotos-moviethumbnails
+
+cp ../cron-thumbnails/nasphotos-thumbnails /etc/cron.daily/ || exit 40
+chmod +x /etc/cron.daily/nasphotos-thumbnails

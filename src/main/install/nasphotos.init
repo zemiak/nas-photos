@@ -17,12 +17,13 @@ QUARKUS_HTTP_PORT=8081
 PORTMAP=${QUARKUS_HTTP_PORT}:${QUARKUS_HTTP_PORT}
 PHOTOPATH=/data/
 VOLUME=/mnt/media/Pictures:/data
-MEMORY=128m
+DOCKER_MEMORY=72m
+XMX=64
 
 # See how we were called.
 case "$1" in
   start)
-        docker run $DOPTS -m ${MEMORY} --name ${CONTAINERNAME} -p ${PORTMAP} -e MEMORY_LIMIT=100 -e PHOTOPATH=${PHOTOPATH} -e QUARKUS_HTTP_PORT=${QUARKUS_HTTP_PORT} -v ${VOLUME} ${IMAGE}
+        docker run $DOPTS -m ${DOCKER_MEMORY} --name ${CONTAINERNAME} -p ${PORTMAP} -e MEMORY_LIMIT=${XMX} -e PHOTOPATH=${PHOTOPATH} -e QUARKUS_HTTP_PORT=${QUARKUS_HTTP_PORT} -v ${VOLUME} ${IMAGE}
         ;;
   stop)
         /usr/bin/docker stop -t 10 ${CONTAINERNAME}
@@ -35,7 +36,7 @@ case "$1" in
         /usr/bin/docker stop -t 10 ${CONTAINERNAME}
         /usr/bin/docker rm -f ${CONTAINERNAME}
         sleep 2s
-        docker run $DOPTS -m ${MEMORY} --name ${CONTAINERNAME} -p ${PORTMAP} -e MEMORY_LIMIT=100 -e PHOTOPATH=${PHOTOPATH} -e QUARKUS_HTTP_PORT=${QUARKUS_HTTP_PORT} -v ${VOLUME} ${IMAGE}
+        docker run $DOPTS -m ${DOCKER_MEMORY} --name ${CONTAINERNAME} -p ${PORTMAP} -e MEMORY_LIMIT=${XMX} -e PHOTOPATH=${PHOTOPATH} -e QUARKUS_HTTP_PORT=${QUARKUS_HTTP_PORT} -v ${VOLUME} ${IMAGE}
         ;;
   *)
         echo $"Usage: $0 {start|stop|restart|status}"
