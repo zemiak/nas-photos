@@ -100,7 +100,7 @@ public class ImageReader {
         try {
             orientation = readImageOrientation(file);
         } catch (IOException | MetadataException | ImageProcessingException ex) {
-            LOG.log(Level.SEVERE, "{0}: Could not get orientation", file.getAbsolutePath());
+            LOG.log(Level.FINE, "{0}: Could not get orientation", file.getAbsolutePath());
         }
 
         data.setOrientation(orientation);

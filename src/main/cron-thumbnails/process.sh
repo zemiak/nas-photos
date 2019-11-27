@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "Running app..."
+echo "Running app with ${MEMORY_LIMIT}m of heap..."
 
 java -Dquarkus.http.host=0.0.0.0 -Dquarkus.http.port=${QUARKUS_HTTP_PORT} \
     -Djava.util.logging.manager=org.jboss.logmanager.LogManager \

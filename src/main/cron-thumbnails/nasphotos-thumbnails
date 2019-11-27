@@ -2,6 +2,6 @@
 
 IMAGE=nasphotos-thumbnails
 VOLUME=/mnt/media/Pictures:/data
-DOCKER_MEMORY=72m
-XMX=64
+DOCKER_MEMORY=200m
+XMX=192
 docker run -ti --rm -m ${DOCKER_MEMORY} -v ${VOLUME} -e MEMORY_LIMIT=${XMX} -e PHOTOPATH=/data ${IMAGE}

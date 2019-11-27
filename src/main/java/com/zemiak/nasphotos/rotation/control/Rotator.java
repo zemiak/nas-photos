@@ -65,15 +65,19 @@ public class Rotator {
     }
 
     private void rotate(String fullName, int degrees) {
-        ImageInformation info = metadataReader.getImageInfo(new File(fullName));
-        if (! info.isRotated()) {
+        String rotatedFullName = getRotatedPathAndFile(fullName);
+        if (new File(rotatedFullName).exists()) {
+            LOG.log(Level.FINE, "Skipping {0}: already rotated", fullName);
             return;
         }
 
-        String rotatedFullName = getRotatedPathAndFile(fullName);
-        if (new File(rotatedFullName).exists()) {
+        ImageInformation info = metadataReader.getImageInfo(new File(fullName));
+        if (! info.isRotated()) {
+            LOG.log(Level.FINE, "Skipping {0}: not rotated", fullName);
             return;
         }
+
+        LOG.log(Level.FINE, "Going to rotate {0}", fullName);
 
         createFolderIfNeeded(fullName);
 
