@@ -37,7 +37,6 @@ public class ThumbnailerJob {
     private Void makeThumbnailAndRotate(String fullPath) {
         rotator.rotate(fullPath);
         thumbnailer.createOrUpdate(fullPath);
-        LOG.log(Level.INFO, "... {0}", fullPath);
         return null;
     }
 }
