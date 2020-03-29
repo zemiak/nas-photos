@@ -1,7 +1,4 @@
 #!/bin/sh
 
-IMAGE=nasphotos-thumbnails
-VOLUME=/mnt/media/Pictures:/data
-DOCKER_MEMORY=200m
-XMX=192
-docker run -ti --rm -m ${DOCKER_MEMORY} -v ${VOLUME} -e MEMORY_LIMIT=${XMX} -e PHOTOPATH=/data ${IMAGE}
+QUARKUS_HTTP_PORT=8081
+curl --fail http://localhost:${QUARKUS_HTTP_PORT}/backend/batch/thumbnails

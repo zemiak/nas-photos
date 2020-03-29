@@ -1,0 +1,27 @@
+FROM arm32v7/adoptopenjdk:11-hotspot
+
+# Memory limit is in Megs
+ENV AB_ENABLED=jmx_exporter \
+    QUARKUS_HTTP_PORT=8080 \
+    MEMORY_LIMIT=128 \
+    AUTODEPLOY_FOLDER=/deployments
+
+EXPOSE ${QUARKUS_HTTP_PORT}
+VOLUME ["/data"]
+
+HEALTHCHECK --interval=15s --timeout=2s \
+ CMD curl --fail http://localhost:${QUARKUS_HTTP_PORT} || exit 1
+
+RUN adduser --system --force-badname --no-create-home --disabled-login --uid 1001 u1001 && \
+    mkdir -p ${AUTODEPLOY_FOLDER} && \
+    chown -R u1001 ${AUTODEPLOY_FOLDER} && \
+    chmod -R "g+rwX" ${AUTODEPLOY_FOLDER} && \
+    chown -R u1001:root ${AUTODEPLOY_FOLDER} && \
+    mkdir -p /data
+
+COPY target/lib/* ${AUTODEPLOY_FOLDER}/lib/
+COPY target/*-runner.jar ${AUTODEPLOY_FOLDER}/app.jar
+
+WORKDIR ${AUTODEPLOY_FOLDER}
+USER u1001
+ENTRYPOINT [ "sh", "-c", "exec java -Dquarkus.http.host=0.0.0.0 -Dquarkus.http.port=${QUARKUS_HTTP_PORT} -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Xms32m -Xmx${MEMORY_LIMIT}m -jar app.jar" ]

@@ -52,7 +52,8 @@ pictureFolder() {
 
 createThumbnail() {
     mkdir -p video-thumbnails
-    mtn -i -c 2 -r 2 -w 384 -h 90 -O video-thumbnails -o .JPG -f /opt/Roboto-Regular.ttf "${1}" >/dev/null
+    pictureFileName=`echo "${1}" | sed 's/\.[^.]*$//'`
+    ffmpeg -i "${1}" -vframes 1 -an -s 720x399 -ss 30 "./video-thumbnails/${pictureFileName}.jpg"
 }
 
 saveFolder="$(pwd)"
