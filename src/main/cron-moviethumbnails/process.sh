@@ -43,7 +43,7 @@ pictureFolder() {
             then
                 echo pass ${photoFile} >/dev/null
             else
-                createThumbnail "${photoFile}"
+                createThumbnail "${photoFile}" "${filename}.jpg"
             fi
         fi
     done
@@ -52,8 +52,7 @@ pictureFolder() {
 
 createThumbnail() {
     mkdir -p video-thumbnails
-    pictureFileName=`echo "${1}" | sed 's/\.[^.]*$//'`
-    ffmpeg -i "${1}" -vframes 1 -an -s 720x399 -ss 30 "./video-thumbnails/${pictureFileName}.jpg"
+    ffmpeg -i "${1}" -vframes 1 -an -s 720x399 -ss 30 "./video-thumbnails/${2}"
 }
 
 saveFolder="$(pwd)"
